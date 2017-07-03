@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <!--<item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_outline_grey600_24dp"
+            android:title="@string/opcion_home" />-->
+        <item
+            android:id="@+id/nav_inicio"
+            android:title="@string/lbl_inicio" />
+        <item
+            android:id="@+id/nav_premios"
+            android:title="@string/lbl_premios" />
+        <item
+            android:id="@+id/nav_mis_premios"
+            android:title="@string/lbl_mis_premios" />
+        <item
+            android:id="@+id/nav_ajustes"
+            android:title="@string/lbl_ajustes" />
+        <item
+            android:id="@+id/nav_salir"
+            android:title="@string/lbl_salir" />
+    </group>
+</menu>

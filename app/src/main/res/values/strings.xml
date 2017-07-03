@@ -1,3 +1,56 @@
 <resources>
     <string name="app_name">Kuni</string>
+
+    <!--facebook-->
+    <string name="facebook_app_id">1398609956898291</string>
+    <string name="fb_login_protocol_scheme">fb1398609956898291</string>
+    <string name="success">SUCCESS</string>
+    <string name="cancel">CANCEL</string>
+    <string name="error">ERROR</string>
+
+    <!--botones-->
+    <string name="btn_entrar">Entrar</string>
+    <string name="btn_crear_cuenta">Crear cuenta</string>
+
+
+    <!--labels-->
+    <string name="lbl_correo">Correo</string>
+    <string name="lbl_contraseña">Contraseña</string>
+    <string name="lbl_nombre">Nombre(s)</string>
+
+    <string name="lbl_apellido">Apellido(s)</string>
+    <string name="lbl_contraseña_confirmar">Confirmar contraseña</string>
+
+    <string name="lbl_concurso">El concurso finaliza el %s</string>
+    <string name="lbl_nivel">Nivel %d</string>
+    <string name="lbl_series">Restan %d series</string>
+    <string name="lbl_premios_disponibles">Aún hay %d premios</string>
+    <string name="lbl_premios_agotados">Premios agotados</string>
+
+    <string name="lbl_inicio">Inicio</string>
+    <string name="lbl_premios">Premios</string>
+    <string name="lbl_mis_premios">Mis premios</string>
+    <string name="lbl_ajustes">Ajustes</string>
+    <string name="lbl_salir">Salir</string>
+
+    <!--algo-->
+    <string name="lbl_no_password">¿Olvidaste tu contraseña?</string>
+    <string name="lbl_no_account">¿No tienes una cuenta?</string>
+    <string name="lbl_yes_account">¿Ya tienes una cuenta?</string>
+
+    <!--Errores-->
+
+    <string name="error_correo">El correo electrónico es obligatorio</string>
+    <string name="error_correo_formato">El formato es incorrecto</string>
+    <string name="error_contraseña">La contraseña es obligatoria</string>
+    <string name="error_contraseña_formato">Debe ser mayor a 8 y menor a 15 caracteres</string>
+    <string name="error_contraseña_repetida">La contraseña no coincide</string>
+    <string name="error_nombre">El nombre es obligatorio</string>
+    <string name="error_apellido_paterno">El apellido es obligatorio</string>
+    <string name="error_campo">Campo obligatorio</string>
+    <string name="error_inicio_sesion">El usuario y/o contraseña son incorrectos, favor de verificarlo</string>
+    <string name="error_no_registrado">El correo electrónico no está registrado, favor de verificarlo</string>
+    <string name="no_conexion">No cuenta con conexión a internet</string>
+    <string name="error_exception">Algo salió mal, inténtelo más tarde</string>
+
 </resources>
