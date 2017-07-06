@@ -28,11 +28,12 @@
             android:layout_marginTop="8dp">
 
             <EditText
-                android:id="@+id/txtNombre"
+                android:id="@+id/txtName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/lbl_nombre"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textColor="@color/monsoon" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Address Label -->
@@ -43,11 +44,12 @@
             android:layout_marginTop="8dp">
 
             <EditText
-                android:id="@+id/txtApellido"
+                android:id="@+id/txtxFirstName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/lbl_apellido"
-                android:inputType="textCapSentences" />
+                android:inputType="textCapSentences"
+                android:textColor="@color/monsoon" />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -59,11 +61,12 @@
             android:layout_marginTop="8dp">
 
             <EditText
-                android:id="@+id/txtCorreo"
+                android:id="@+id/txtxEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/lbl_correo"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:textColor="@color/monsoon" />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -75,10 +78,11 @@
             android:layout_marginTop="8dp">
 
             <EditText
-                android:id="@+id/txtContraseña"
+                android:id="@+id/txtPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/lbl_contraseña"
+                android:textColor="@color/monsoon"
                 android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
 
@@ -90,16 +94,17 @@
             android:layout_marginTop="8dp">
 
             <EditText
-                android:id="@+id/input_reEnterPassword"
+                android:id="@+id/txtPasswordRepeat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/lbl_contraseña_confirmar"
+                android:textColor="@color/monsoon"
                 android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Signup Button -->
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btnCrearCuenta"
+            android:id="@+id/btnSignUp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"

@@ -11,6 +11,7 @@
     <!--botones-->
     <string name="btn_entrar">Entrar</string>
     <string name="btn_crear_cuenta">Crear cuenta</string>
+    <string name="btn_enviar">Enviar</string>
 
 
     <!--labels-->
@@ -33,6 +34,7 @@
     <string name="lbl_ajustes">Ajustes</string>
     <string name="lbl_salir">Salir</string>
 
+
     <!--algo-->
     <string name="lbl_no_password">¿Olvidaste tu contraseña?</string>
     <string name="lbl_no_account">¿No tienes una cuenta?</string>
@@ -52,5 +54,6 @@
     <string name="error_no_registrado">El correo electrónico no está registrado, favor de verificarlo</string>
     <string name="no_conexion">No cuenta con conexión a internet</string>
     <string name="error_exception">Algo salió mal, inténtelo más tarde</string>
+
 
 </resources>

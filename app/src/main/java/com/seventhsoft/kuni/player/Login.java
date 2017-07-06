@@ -1,11 +1,15 @@
-package com.seventhsoft.kuni.jugador;
+package com.seventhsoft.kuni.player;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,9 +22,10 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.DefaultAudience;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.seventhsoft.kuni.MainActivity;
 import com.seventhsoft.kuni.R;
 
-public class SignUpActivity extends AppCompatActivity {
+public class Login extends AppCompatActivity implements PlayerView {
 
     private static final String GRAPH_PATH = "me/permissions";
     private static final String SUCCESS = "success";
@@ -39,25 +44,39 @@ public class SignUpActivity extends AppCompatActivity {
     //private ProfilePictureView profilePictureView;
     //private TextView userNameView;
     private LoginButton fbLoginButton;
-    private TextView login;
+    private TextView signUp;
+    private TextView forgotPassword;
+    private EditText txtEmail;
+    private EditText txtxPassword;
+    private Button btnEnter;
+
+    private PlayerPresenter playerPresenter;
 
     private Fragment newFragment;
     private FragmentTransaction transaction;
 
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
+        setContentView(R.layout.activity_login);
+
+        playerPresenter = new PlayerPresenterImpl(this);
 
         callbackManager = CallbackManager.Factory.create();
-        login = (TextView) findViewById(R.id.link_login);
+        signUp = (TextView) findViewById(R.id.link_signup);
+        forgotPassword = (TextView) findViewById(R.id.link_forgot);
 
         fbLoginButton = (LoginButton) findViewById(R.id.login_button);
         if (isLoggedIn()) {
             setMainActivity();
         }
-        onClickLogin();
-
+        txtEmail = (EditText) findViewById(R.id.txtEmail);
+        txtxPassword = (EditText) findViewById(R.id.txtPassword);
+        btnEnter = (Button) findViewById(R.id.btn_login);
+        onClickEnter();
+        onClickSignUp();
+        onClickForgotPassword();
 
 
         // Callback registration
@@ -66,7 +85,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void onSuccess(final LoginResult loginResult) {
                 // App code
                 Toast.makeText(
-                        SignUpActivity.this,
+                        Login.this,
                         R.string.success,
                         Toast.LENGTH_LONG).show();
                 setMainActivity();
@@ -76,7 +95,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void onCancel() {
                 // App code
                 Toast.makeText(
-                        SignUpActivity.this,
+                        Login.this,
                         R.string.cancel,
                         Toast.LENGTH_LONG).show();
             }
@@ -85,9 +104,11 @@ public class SignUpActivity extends AppCompatActivity {
             public void onError(final FacebookException exception) {
                 // App code
                 Toast.makeText(
-                        SignUpActivity.this,
+                        Login.this,
                         R.string.error_exception,
                         Toast.LENGTH_LONG).show();
+                Log.e(TAG, "OSE| " + "Error Splash" + exception);
+
             }
         });
 
@@ -99,6 +120,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
         };
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -111,7 +133,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void setMainActivity() {
-        Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }
 
@@ -120,19 +142,38 @@ public class SignUpActivity extends AppCompatActivity {
         return !(accesstoken == null || accesstoken.getPermissions().isEmpty());
     }
 
-    private void onClickLogin() {
-        login.setOnClickListener(new View.OnClickListener() {
+    private void onClickSignUp() {
+        signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setLogin();
+                setSingUp();
             }
         });
     }
 
+    private void onClickEnter() {
+        btnEnter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                playerPresenter.validateCredentials(txtEmail.getText().toString(),
+                        txtxPassword.getText().toString());
+            }
+        });
+    }
 
+    private void onClickForgotPassword() {
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+                intent.putExtra("bandera", 1);
+                startActivity(intent);
+            }
+        });
+    }
 
-    private void setLogin() {
-        Intent intent = new Intent(getApplicationContext(), Login.class);
+    private void setSingUp() {
+        Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
         startActivity(intent);
 
     }
@@ -185,4 +226,71 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Overides PlayerView
+     */
+
+    public void setEmailEmptyError() {
+        txtEmail.setError(getString(R.string.error_correo));
+
+    }
+
+    public void setEmailError() {
+        txtEmail.setError(getString(R.string.error_correo_formato));
+    }
+
+    public void setPasswordError() {
+        txtxPassword.setError(getString(R.string.error_contraseña));
+
+    }
+
+    public void setPasswordSuccess() {
+
+    }
+
+    public void setLoginError() {
+        Login.this.runOnUiThread(new Runnable() {
+            public void run() {
+                Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.error_inicio_sesion), Toast.LENGTH_LONG);
+                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                if (v != null) v.setGravity(Gravity.CENTER);
+                toast.show();
+            }
+        });
+    }
+
+    public void setSignUpError() {
+    }
+
+    public void setRecoverPassword() {
+    }
+
+    public void setError() {
+    }
+
+    public void setNameError() {
+    }
+
+    public void setFirstNameError() {
+    }
+
+    public void setPasswordRepeatError() {
+    }
+
+    public void setLoginSuccess() {
+        Login.this.runOnUiThread(new Runnable() {
+            public void run() {
+                Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.error_inicio_sesion), Toast.LENGTH_LONG);
+                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                if (v != null) v.setGravity(Gravity.CENTER);
+                toast.show();
+            }
+        });
+    }
+
+    public void setRecoverPasswordSuccess() {
+    }
+
+    public void setSignUpSuccesss() {
+    }
 }

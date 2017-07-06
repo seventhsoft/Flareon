@@ -33,6 +33,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/lbl_correo"
                 android:inputType="textEmailAddress"
+                android:textColor="@color/monsoon"
+
                 android:maxLength="50" />
         </android.support.design.widget.TextInputLayout>
 
@@ -49,6 +51,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/lbl_contraseña"
                 android:inputType="textPassword"
+                android:textColor="@color/monsoon"
+
                 android:maxLength="50" />
         </android.support.design.widget.TextInputLayout>
 
