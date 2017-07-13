@@ -1,11 +1,15 @@
 package com.seventhsoft.kuni;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.GridView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -13,9 +17,13 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
+import com.seventhsoft.kuni.game.CustomAndroidGridViewAdapter;
 import com.seventhsoft.kuni.player.Login;
+import com.seventhsoft.kuni.utils.ToolbarFragment;
 
 import org.json.JSONException;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,11 +32,47 @@ public class MainActivity extends AppCompatActivity {
     private static final String GRAPH_PATH = "me/permissions";
     private static final String SUCCESS = "success";
 
+    private GridView gridView;
+    private Context context;
+    private ArrayList arrayList;
+
+    public static String[] gridViewStrings = {
+            "Android",
+            "Java",
+            "GridView",
+            "ListView",
+            "Adapter",
+
+
+    };
+    public static int[] gridViewImages = {
+            R.drawable.ic_account_black_18dp,
+            R.drawable.ic_calendario_azul_18dp,
+            R.drawable.ic_comparable_agregar_black_18dp,
+            R.drawable.ic_comparable_filtro_azul_18dp,
+            R.drawable.ic_comparable_renta_azul_18dp,
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setDrawer();
+        setToolbar();
+        gridView = (GridView) findViewById(R.id.gridView);
+        gridView.setAdapter(new CustomAndroidGridViewAdapter(this, gridViewStrings, gridViewImages));
+
+    }
+
+    private void setToolbar() {
+       FragmentManager fm = MainActivity.this.getSupportFragmentManager();
+        Fragment fragment;
+        //if (fragment == null) {
+        fragment = ToolbarFragment.newInstance(2);
+        fm.beginTransaction()
+                .add(R.id.toolbar_fragment, fragment)
+                .commit();
+        //}
     }
 
     private void setDrawer() {

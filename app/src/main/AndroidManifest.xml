@@ -16,21 +16,24 @@
             android:value="@string/facebook_app_id" />
 
         <activity
-            android:name=".MainActivity">
-
-        </activity>
-        <activity
-            android:name=".player.Login"
-            android:theme="@style/AppTheme.Dark">
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.Light"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+        </activity>
+        <activity
+            android:name=".player.Login"
+            android:theme="@style/AppTheme.Light">
+
         </activity>
         <activity
             android:name=".player.UserActivity"
-            android:theme="@style/AppTheme.Dark"/>
+            android:theme="@style/AppTheme.Light"/>
         <activity
             android:name=".facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -50,7 +53,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".player.SignUpActivity"
-            android:theme="@style/AppTheme.Dark">
+            android:theme="@style/AppTheme.Light">
 
         </activity>
     </application>

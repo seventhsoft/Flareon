@@ -22,19 +22,49 @@
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header"
             app:menu="@menu/nav_menu" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <FrameLayout
+                android:id="@+id/toolbar_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/gridView"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:columnWidth="100dp"
-            android:gravity="center"
-            android:horizontalSpacing="4dp"
-            android:numColumns="3"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="20dp">
+            </FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="16dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingTop="16dp"
+            android:orientation="vertical">
+            <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/gridView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:columnWidth="100dp"
+                android:gravity="center"
+                android:horizontalSpacing="4dp"
+                android:numColumns="3"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="20dp">
 
-        </GridView>
+            </GridView>
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_login"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="16dp"
+                android:padding="12dp"
+                android:textColor="@color/white"
+                android:text="@string/btn_entrar"/>
+        </LinearLayout>
+
+        </LinearLayout>
+
     </android.support.v4.widget.DrawerLayout>
 
 </RelativeLayout>
