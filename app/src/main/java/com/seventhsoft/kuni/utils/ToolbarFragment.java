@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.seventhsoft.kuni.MainActivity;
 import com.seventhsoft.kuni.R;
 
 
@@ -54,6 +55,18 @@ public class ToolbarFragment extends Fragment {
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         activity.getSupportActionBar().setHomeButtonEnabled(true);
         int bandera = getBandera();
+        switch (bandera){
+            case 0:
+                activity.getSupportActionBar().setHomeAsUpIndicator((activity.getDrawable(R.drawable.ic_menu_white_24dp)));
+                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((MainActivity) getActivity()).openDrawer();
+                        Log.i("cek", "home selected");
+                    }
+                });
+                break;
+        }
         /*if (bandera == 0) {
             activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getActivity().getResources().getColor(R.color.rojo)));
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {

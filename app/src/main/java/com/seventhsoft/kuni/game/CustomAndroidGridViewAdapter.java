@@ -17,18 +17,23 @@ import com.seventhsoft.kuni.R;
 public class CustomAndroidGridViewAdapter extends BaseAdapter {
 
     private Context mContext;
-    private final String[] string;
+    private final String[] titulo;
+    private final String[] subTitulo;
+    private final String[] supportText;
     private final int[] Imageid;
 
-    public CustomAndroidGridViewAdapter(Context c,String[] string,int[] Imageid ) {
+    public CustomAndroidGridViewAdapter(Context c, String[] titulo, String[] subTitulo, String[] supportText, int[] Imageid) {
         mContext = c;
         this.Imageid = Imageid;
-        this.string = string;
+        this.titulo = titulo;
+        this.subTitulo = subTitulo;
+        this.supportText = supportText;
+
     }
 
     @Override
     public int getCount() {
-        return string.length;
+        return titulo.length;
     }
 
     @Override
@@ -51,9 +56,14 @@ public class CustomAndroidGridViewAdapter extends BaseAdapter {
 
             grid = new View(mContext);
             grid = inflater.inflate(R.layout.layout_grid_view, null);
-            TextView textView = (TextView) grid.findViewById(R.id.gridview_text);
-            ImageView imageView = (ImageView)grid.findViewById(R.id.gridview_image);
-            textView.setText(string[p]);
+            TextView txtTitulo = (TextView) grid.findViewById(R.id.gridview_text_title);
+            TextView txtSubTitulo = (TextView) grid.findViewById(R.id.gridview_subText);
+            TextView txtSupportText = (TextView) grid.findViewById(R.id.gridview_support_text);
+
+            ImageView imageView = (ImageView) grid.findViewById(R.id.gridview_image);
+            txtTitulo.setText(titulo[p]);
+            txtSubTitulo.setText(subTitulo[p]);
+            txtSupportText.setText(supportText[p]);
             imageView.setImageResource(Imageid[p]);
         } else {
             grid = (View) convertView;

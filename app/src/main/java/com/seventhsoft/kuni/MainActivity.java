@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -35,22 +37,38 @@ public class MainActivity extends AppCompatActivity {
     private GridView gridView;
     private Context context;
     private ArrayList arrayList;
+    private TextView txtConcurso;
 
-    public static String[] gridViewStrings = {
-            "Android",
-            "Java",
-            "GridView",
-            "ListView",
-            "Adapter",
-
-
+    public static String[] niveles = {
+            "Nivel 1",
+            "Nivel 2",
+            "Nivel 3",
+            "Nivel 4",
+            "Nivel 5",
     };
+
+    public static String[] series = {
+            "0/10 series",
+            "10/25 series",
+            "50/50 series",
+            "80/80 series",
+            "120/120 series",
+    };
+
+    public static String[] premios = {
+            "Premios agotados",
+            "Restan 2 premios",
+            "Restan 30 premios",
+            "Restan 20 premios",
+            "Restan 5 premios",
+    };
+
     public static int[] gridViewImages = {
-            R.drawable.ic_account_black_18dp,
-            R.drawable.ic_calendario_azul_18dp,
-            R.drawable.ic_comparable_agregar_black_18dp,
-            R.drawable.ic_comparable_filtro_azul_18dp,
-            R.drawable.ic_comparable_renta_azul_18dp,
+            R.drawable.ic_account_black_24dp,
+            R.drawable.ic_calendario_azul_24dp,
+            R.drawable.ic_comparable_agregar_black_24dp,
+            R.drawable.ic_comparable_filtro_azul_24dp,
+            R.drawable.ic_comparable_renta_azul_24dp,
     };
 
     @Override
@@ -60,15 +78,17 @@ public class MainActivity extends AppCompatActivity {
         setDrawer();
         setToolbar();
         gridView = (GridView) findViewById(R.id.gridView);
-        gridView.setAdapter(new CustomAndroidGridViewAdapter(this, gridViewStrings, gridViewImages));
+        txtConcurso = (TextView) findViewById(R.id.txtConcurso);
+        txtConcurso.setText("El concurso termina el 31/07/2017");
+        gridView.setAdapter(new CustomAndroidGridViewAdapter(this, niveles, series, premios, gridViewImages));
 
     }
 
     private void setToolbar() {
-       FragmentManager fm = MainActivity.this.getSupportFragmentManager();
+        FragmentManager fm = MainActivity.this.getSupportFragmentManager();
         Fragment fragment;
         //if (fragment == null) {
-        fragment = ToolbarFragment.newInstance(2);
+        fragment = ToolbarFragment.newInstance(0);
         fm.beginTransaction()
                 .add(R.id.toolbar_fragment, fragment)
                 .commit();
@@ -105,6 +125,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
+
+    }
+
+    public void openDrawer() {
+        drawerLayout.openDrawer(GravityCompat.START);
 
     }
 
