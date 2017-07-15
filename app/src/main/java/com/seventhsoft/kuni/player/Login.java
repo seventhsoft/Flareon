@@ -22,7 +22,7 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.DefaultAudience;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.seventhsoft.kuni.MainActivity;
+import com.seventhsoft.kuni.game.MainActivity;
 import com.seventhsoft.kuni.R;
 
 public class Login extends AppCompatActivity implements PlayerView {

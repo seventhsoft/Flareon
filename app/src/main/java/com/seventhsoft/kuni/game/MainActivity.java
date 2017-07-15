@@ -1,15 +1,21 @@
-package com.seventhsoft.kuni;
+package com.seventhsoft.kuni.game;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,13 +25,15 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
-import com.seventhsoft.kuni.game.CustomAndroidGridViewAdapter;
+import com.seventhsoft.kuni.R;
 import com.seventhsoft.kuni.player.Login;
 import com.seventhsoft.kuni.utils.ToolbarFragment;
 
 import org.json.JSONException;
 
 import java.util.ArrayList;
+
+import model.Question;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -82,8 +90,53 @@ public class MainActivity extends AppCompatActivity {
         txtConcurso.setText("El concurso termina el 31/07/2017");
         gridView.setAdapter(new CustomAndroidGridViewAdapter(this, niveles, series, premios, gridViewImages));
 
+
     }
 
+    private void listenerGrid() {
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+            }
+
+        });
+    }
+
+    public void goToHeroeDetail(Question question, HeroesAdapter.Holder holder) {
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        QuestionFragment questionFragment;
+        questionFragment = QuestionFragment.newInstance(question);
+
+
+        // Inflate transitions to apply
+        Transition changeTransform = TransitionInflater.from(this).inflateTransition(R.transition.change_image_transform);
+
+        Transition explodeTransform = TransitionInflater.from(this).inflateTransition(android.R.transition.explode);
+
+        //Setup exit transition on first fragment
+        heroesListFragment.setSharedElementReturnTransition(changeTransform);
+        heroesListFragment.setExitTransition(explodeTransform);
+
+        // Setup enter transition on second fragment
+        questionFragment.setSharedElementEnterTransition(changeTransform);
+        questionFragment.setEnterTransition(explodeTransform);
+
+        transaction.addSharedElement(holder.getIvAvatar(), getString(R.string.transition_avatar));
+
+
+        transaction.addToBackStack(null);
+
+        transaction.replace(R.id.main_container, heroeDetailFragment);
+
+        transaction.commit();
+    }
+
+    /**
+     * Set the toolbar for the activity
+     */
     private void setToolbar() {
         FragmentManager fm = MainActivity.this.getSupportFragmentManager();
         Fragment fragment;

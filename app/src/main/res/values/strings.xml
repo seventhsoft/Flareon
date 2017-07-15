@@ -15,7 +15,6 @@
     <string name="btn_continuar">Continuar</string>
 
 
-
     <!--labels-->
     <string name="lbl_correo">Correo</string>
     <string name="lbl_contraseña">Contraseña</string>
@@ -56,6 +55,9 @@
     <string name="error_no_registrado">El correo electrónico no está registrado, favor de verificarlo</string>
     <string name="no_conexion">No cuenta con conexión a internet</string>
     <string name="error_exception">Algo salió mal, inténtelo más tarde</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

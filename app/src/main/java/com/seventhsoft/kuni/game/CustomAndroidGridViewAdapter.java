@@ -1,6 +1,7 @@
 package com.seventhsoft.kuni.game;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +11,22 @@ import android.widget.TextView;
 
 import com.seventhsoft.kuni.R;
 
+import model.Question;
+
 /**
  * Created by olibits on 12/07/17.
  */
 
-public class CustomAndroidGridViewAdapter extends BaseAdapter {
+public class CustomAndroidGridViewAdapter extends RecyclerView.Adapter<CustomAndroidGridViewAdapter.Holder> {
 
     private Context mContext;
     private final String[] titulo;
     private final String[] subTitulo;
     private final String[] supportText;
     private final int[] Imageid;
+
+    private OnCompetitionClickListener listener;
+
 
     public CustomAndroidGridViewAdapter(Context c, String[] titulo, String[] subTitulo, String[] supportText, int[] Imageid) {
         mContext = c;
@@ -70,5 +76,45 @@ public class CustomAndroidGridViewAdapter extends BaseAdapter {
         }
 
         return grid;
+    }
+
+    public static class Holder extends RecyclerView.ViewHolder {
+
+        private TextView tvName;
+
+        private TextView tvActor;
+
+        private ImageView ivAvatar;
+
+
+        public Holder(View itemView) {
+            super(itemView);
+            TextView txtTitulo = (TextView) itemView.findViewById(R.id.gridview_text_title);
+            TextView txtSubTitulo = (TextView) itemView.findViewById(R.id.gridview_subText);
+            TextView txtSupportText = (TextView) itemView.findViewById(R.id.gridview_support_text);
+
+        public void bind(final Question heroe, final OnCompetitionClickListener listener) {
+            tvName.setText(heroe.getName());
+            tvActor.setText(heroe.getActor());
+            Picasso.with(itemView.getContext()).load(heroe.getAvatarUrl()).transform(new CircleTransform()).into(ivAvatar);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onCompetitionClidked(heroe, Holder.this);
+                }
+            });
+        }
+
+        public ImageView getIvAvatar() {
+            return ivAvatar;
+        }
+
+        public TextView getTvActor() {
+            return tvActor;
+        }
+
+        public TextView getTvName() {
+            return tvName;
+        }
     }
 }

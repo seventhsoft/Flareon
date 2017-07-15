@@ -16,7 +16,7 @@
             android:value="@string/facebook_app_id" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".game.MainActivity"
             android:theme="@style/AppTheme.Light"
             >
             <intent-filter>
