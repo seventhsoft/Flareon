@@ -11,8 +11,11 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,9 +36,9 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
-import model.Question;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener {
+
 
     private DrawerLayout drawerLayout;
 
@@ -46,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     private Context context;
     private ArrayList arrayList;
     private TextView txtConcurso;
+
+    MyRecyclerViewAdapter adapter;
 
     public static String[] niveles = {
             "Nivel 1",
@@ -85,15 +90,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setDrawer();
         setToolbar();
-        gridView = (GridView) findViewById(R.id.gridView);
+        //gridView = (GridView) findViewById(R.id.gridView);
         txtConcurso = (TextView) findViewById(R.id.txtConcurso);
         txtConcurso.setText("El concurso termina el 31/07/2017");
-        gridView.setAdapter(new CustomAndroidGridViewAdapter(this, niveles, series, premios, gridViewImages));
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.gridView);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        adapter = new MyRecyclerViewAdapter(this, niveles, series, premios, gridViewImages);
+        adapter.setClickListener(this);
+        recyclerView.setAdapter(adapter);
+        //gridView.setAdapter(new CustomAndroidGridViewAdapter(this, niveles, series, premios, gridViewImages));
 
 
     }
 
-    private void listenerGrid() {
+    @Override
+    public void onItemClick(View view, int position) {
+        Log.i("OSE", "You clicked number " + adapter.getItem(position) + ", which is at cell position " + position);
+    }
+
+    /*private void listenerGrid() {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -132,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.main_container, heroeDetailFragment);
 
         transaction.commit();
-    }
+    }*/
 
     /**
      * Set the toolbar for the activity

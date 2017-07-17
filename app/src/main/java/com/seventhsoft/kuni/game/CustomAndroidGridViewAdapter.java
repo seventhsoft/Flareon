@@ -11,13 +11,12 @@ import android.widget.TextView;
 
 import com.seventhsoft.kuni.R;
 
-import model.Question;
 
 /**
  * Created by olibits on 12/07/17.
  */
 
-public class CustomAndroidGridViewAdapter extends RecyclerView.Adapter<CustomAndroidGridViewAdapter.Holder> {
+public class CustomAndroidGridViewAdapter{// extends RecyclerView.Adapter<CustomAndroidGridViewAdapter.Holder> {
 
     private Context mContext;
     private final String[] titulo;
@@ -25,7 +24,7 @@ public class CustomAndroidGridViewAdapter extends RecyclerView.Adapter<CustomAnd
     private final String[] supportText;
     private final int[] Imageid;
 
-    private OnCompetitionClickListener listener;
+    //private OnCompetitionClickListener listener;
 
 
     public CustomAndroidGridViewAdapter(Context c, String[] titulo, String[] subTitulo, String[] supportText, int[] Imageid) {
@@ -37,7 +36,7 @@ public class CustomAndroidGridViewAdapter extends RecyclerView.Adapter<CustomAnd
 
     }
 
-    @Override
+    /*@Override
     public int getCount() {
         return titulo.length;
     }
@@ -76,7 +75,7 @@ public class CustomAndroidGridViewAdapter extends RecyclerView.Adapter<CustomAnd
         }
 
         return grid;
-    }
+    }*/
 
     public static class Holder extends RecyclerView.ViewHolder {
 
@@ -92,8 +91,8 @@ public class CustomAndroidGridViewAdapter extends RecyclerView.Adapter<CustomAnd
             TextView txtTitulo = (TextView) itemView.findViewById(R.id.gridview_text_title);
             TextView txtSubTitulo = (TextView) itemView.findViewById(R.id.gridview_subText);
             TextView txtSupportText = (TextView) itemView.findViewById(R.id.gridview_support_text);
-
-        public void bind(final Question heroe, final OnCompetitionClickListener listener) {
+        }
+        /*public void bind(final Question heroe, final OnCompetitionClickListener listener) {
             tvName.setText(heroe.getName());
             tvActor.setText(heroe.getActor());
             Picasso.with(itemView.getContext()).load(heroe.getAvatarUrl()).transform(new CircleTransform()).into(ivAvatar);
@@ -103,7 +102,7 @@ public class CustomAndroidGridViewAdapter extends RecyclerView.Adapter<CustomAnd
                     listener.onCompetitionClidked(heroe, Holder.this);
                 }
             });
-        }
+        }*/
 
         public ImageView getIvAvatar() {
             return ivAvatar;
