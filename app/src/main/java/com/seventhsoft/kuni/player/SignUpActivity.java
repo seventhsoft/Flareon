@@ -76,6 +76,7 @@ public class SignUpActivity extends AppCompatActivity implements PlayerView {
         fbLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(final LoginResult loginResult) {
+                loginResult.getAccessToken().toString();
                 // App code
                 Toast.makeText(
                         SignUpActivity.this,

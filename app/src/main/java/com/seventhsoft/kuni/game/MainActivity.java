@@ -32,9 +32,13 @@ import com.seventhsoft.kuni.R;
 import com.seventhsoft.kuni.player.Login;
 import com.seventhsoft.kuni.utils.ToolbarFragment;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import model.Question;
 
 
 public class MainActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener {
@@ -106,6 +110,34 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
     @Override
     public void onItemClick(View view, int position) {
         Log.i("OSE", "You clicked number " + adapter.getItem(position) + ", which is at cell position " + position);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        QuestionFragment questionFragment;
+        Question question = new Question();
+        questionFragment = QuestionFragment.newInstance(question);
+
+
+        // Inflate transitions to apply
+        Transition changeTransform = TransitionInflater.from(this).inflateTransition(R.transition.change_image_transform);
+
+        Transition explodeTransform = TransitionInflater.from(this).inflateTransition(android.R.transition.explode);
+
+        //Setup exit transition on first fragment
+        //heroesListFragment.setSharedElementReturnTransition(changeTransform);
+        //heroesListFragment.setExitTransition(explodeTransform);
+
+        // Setup enter transition on second fragment
+        questionFragment.setSharedElementEnterTransition(changeTransform);
+        questionFragment.setEnterTransition(explodeTransform);
+        view.animate().translationX(-view.findViewById(R.id.)).setDuration(600);
+        transaction.addSharedElement(.getIvAvatar(), getString(R.string.transition_avatar));
+        JSONObject object = new JSONObject();
+        object.
+
+        transaction.addToBackStack(null);
+
+        transaction.replace(R.id.main_container, heroeDetailFragment);
+
+        transaction.commit();
     }
 
     /*private void listenerGrid() {
