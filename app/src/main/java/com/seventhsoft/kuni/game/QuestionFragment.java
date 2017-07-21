@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.seventhsoft.kuni.R;
 
-import model.Question;
+import com.seventhsoft.kuni.model.Question;
 
 public class QuestionFragment extends Fragment {
 

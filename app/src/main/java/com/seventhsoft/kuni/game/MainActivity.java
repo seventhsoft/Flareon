@@ -2,23 +2,17 @@ package com.seventhsoft.kuni.game;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,13 +26,10 @@ import com.seventhsoft.kuni.R;
 import com.seventhsoft.kuni.player.Login;
 import com.seventhsoft.kuni.utils.ToolbarFragment;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import model.Question;
 
 
 public class MainActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener {
@@ -109,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
 
     @Override
     public void onItemClick(View view, int position) {
-        Log.i("OSE", "You clicked number " + adapter.getItem(position) + ", which is at cell position " + position);
+        /*Log.i("OSE", "You clicked number " + adapter.getItem(position) + ", which is at cell position " + position);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         QuestionFragment questionFragment;
         Question question = new Question();
@@ -137,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
 
         transaction.replace(R.id.main_container, heroeDetailFragment);
 
-        transaction.commit();
+        transaction.commit();*/
     }
 
     /*private void listenerGrid() {

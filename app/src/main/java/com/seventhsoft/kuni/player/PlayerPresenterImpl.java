@@ -56,7 +56,7 @@ public class PlayerPresenterImpl implements PlayerPresenter {
         return error;
     }
 
-    public void validateSignUp(String name, String firstName, String email, String password) {
+    public void validateSignUp(String name, String firstName, String email, String password, Boolean facebook) {
         boolean error = false;
         if (playerView != null) {
             if (validateEmailFormat(email))
@@ -70,7 +70,7 @@ public class PlayerPresenterImpl implements PlayerPresenter {
                 playerView.setFirstNameError();
             }
             if (!error) {
-                playerInteractor.signUp(name, firstName, email, password);
+                playerInteractor.signUp(name, firstName, email, password, facebook);
             }
         }
     }
@@ -94,8 +94,6 @@ public class PlayerPresenterImpl implements PlayerPresenter {
 
     }
 
-    public void validatePassword() {
-    }
 
     public void onLoginFaiure() {
     }

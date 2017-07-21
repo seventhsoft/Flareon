@@ -10,9 +10,9 @@ public interface PlayerPresenter {
 
     void validateEmail(String email);
 
-    void validateSignUp(String name, String firstName, String email, String password);
+    void validateSignUp(String name, String firstName, String email, String password, Boolean facebook);
 
-    void validatePassword();
+    void validatePassword(String password, CharSequence passwordRepeat);
 
     void onLoginFaiure();
 

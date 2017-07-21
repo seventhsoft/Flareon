@@ -10,5 +10,5 @@ public interface PlayerInteractor {
 
     void sendEmail(String email);
 
-    void signUp(String name, String firstName, String email, String password);
+    void signUp(String name, String firstName, String email, String password, Boolean facebook);
 }

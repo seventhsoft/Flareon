@@ -3,6 +3,9 @@ package com.seventhsoft.kuni.player;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +22,9 @@ import com.facebook.login.DefaultAudience;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.seventhsoft.kuni.R;
+import com.seventhsoft.kuni.game.MainActivity;
+
+import static android.content.ContentValues.TAG;
 
 public class SignUpActivity extends AppCompatActivity implements PlayerView {
 
@@ -48,40 +54,44 @@ public class SignUpActivity extends AppCompatActivity implements PlayerView {
     private EditText txtPasswordRepeat;
     private Button btnSignUp;
     private PlayerPresenter playerPresenter;
+    private Boolean correctPassword;
 
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
+        correctPassword = false;
         playerPresenter = new PlayerPresenterImpl(this);
         callbackManager = CallbackManager.Factory.create();
         login = (TextView) findViewById(R.id.link_login);
-        txtName =(EditText) findViewById(R.id.txtName);
-        txtFirstName =(EditText) findViewById(R.id.txtxFirstName);
-        txtEmail =(EditText) findViewById(R.id.txtEmail);
-        txtPassword =(EditText) findViewById(R.id.txtPassword);
-        txtPasswordRepeat =(EditText) findViewById(R.id.txtPasswordRepeat);
+        txtName = (EditText) findViewById(R.id.txtName);
+        txtFirstName = (EditText) findViewById(R.id.txtxFirstName);
+        txtEmail = (EditText) findViewById(R.id.txtEmail);
+        txtPassword = (EditText) findViewById(R.id.txtPassword);
+        txtPasswordRepeat = (EditText) findViewById(R.id.txtPasswordRepeat);
 
+        btnSignUp = (Button) findViewById(R.id.btnSignUp);
         fbLoginButton = (LoginButton) findViewById(R.id.login_button);
         if (isLoggedIn()) {
             setMainActivity();
         }
         onClickLogin();
         onClickSignUp();
-
+        listenerPassword();
 
         // Callback registration
         fbLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(final LoginResult loginResult) {
-                loginResult.getAccessToken().toString();
+
+                Log.i(TAG, "OSE|" + " facebook token " + loginResult.getAccessToken().toString());
                 // App code
                 Toast.makeText(
                         SignUpActivity.this,
                         R.string.success,
                         Toast.LENGTH_LONG).show();
+
                 setMainActivity();
             }
 
@@ -109,6 +119,12 @@ public class SignUpActivity extends AppCompatActivity implements PlayerView {
             protected void onCurrentProfileChanged(
                     final Profile oldProfile,
                     final Profile currentProfile) {
+                if(currentProfile!=null) {
+                    Log.i(TAG, "OSE|" + " facebook current profile " +
+                            currentProfile.getFirstName() + " " +
+                            currentProfile.getId());
+                }
+
             }
         };
     }
@@ -125,7 +141,7 @@ public class SignUpActivity extends AppCompatActivity implements PlayerView {
     }
 
     private void setMainActivity() {
-        Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }
 
@@ -150,13 +166,41 @@ public class SignUpActivity extends AppCompatActivity implements PlayerView {
 
     }
 
-    private void onClickSignUp(){
+    private void onClickSignUp() {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //playerPresenter.validateSignUp();
+                if (correctPassword) {
+                    playerPresenter.validateSignUp(
+                            txtName.getText().toString(),
+                            txtFirstName.getText().toString(),
+                            txtEmail.getText().toString(),
+                            txtPassword.getText().toString(),
+                            false);
+                }
+                //txtPasswordRepeat);
             }
         });
+    }
+
+    private void listenerPassword() {
+        txtPasswordRepeat.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                playerPresenter.validatePassword(txtPassword.getText().toString(), s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
     }
 
     @Override
@@ -207,6 +251,7 @@ public class SignUpActivity extends AppCompatActivity implements PlayerView {
         }
     }
 
+
     /**
      * Overides PlayerView
      */
@@ -225,9 +270,11 @@ public class SignUpActivity extends AppCompatActivity implements PlayerView {
         txtPassword.setError(getString(R.string.error_contraseña));
     }
 
-    public void setPasswordSuccess(){
+    public void setPasswordSuccess() {
+        correctPassword = true;
 
     }
+
     public void setLoginError() {
     }
 

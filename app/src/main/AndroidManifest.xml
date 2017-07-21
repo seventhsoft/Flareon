@@ -19,17 +19,17 @@
             android:name=".game.MainActivity"
             android:theme="@style/AppTheme.Light"
             >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
         <activity
             android:name=".player.Login"
             android:theme="@style/AppTheme.Light">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".player.UserActivity"

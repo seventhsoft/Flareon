@@ -16,7 +16,7 @@ import com.seventhsoft.kuni.R;
  * Created by olibits on 12/07/17.
  */
 
-public class CustomAndroidGridViewAdapter{// extends RecyclerView.Adapter<CustomAndroidGridViewAdapter.Holder> {
+public class CustomAndroidGridViewAdapter {// extends RecyclerView.Adapter<CustomAndroidGridViewAdapter.Holder> {
 
     private Context mContext;
     private final String[] titulo;

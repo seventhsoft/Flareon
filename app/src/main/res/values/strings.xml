@@ -34,7 +34,7 @@
     <string name="lbl_mis_premios">Mis premios</string>
     <string name="lbl_ajustes">Ajustes</string>
     <string name="lbl_salir">Salir</string>
-
+    <string name="password_repeat">La contraseña no coincide</string>
 
     <!--algo-->
     <string name="lbl_no_password">¿Olvidaste tu contraseña?</string>
@@ -43,16 +43,16 @@
 
     <!--Errores-->
 
-    <string name="error_correo">El correo electrónico es obligatorio</string>
+    <string name="error_correo">El correoUsuario electrónico es obligatorio</string>
     <string name="error_correo_formato">El formato es incorrecto</string>
     <string name="error_contraseña">La contraseña es obligatoria</string>
     <string name="error_contraseña_formato">Debe ser mayor a 8 y menor a 15 caracteres</string>
     <string name="error_contraseña_repetida">La contraseña no coincide</string>
-    <string name="error_nombre">El nombre es obligatorio</string>
+    <string name="error_nombre">El nombreUsuario es obligatorio</string>
     <string name="error_apellido_paterno">El apellido es obligatorio</string>
     <string name="error_campo">Campo obligatorio</string>
     <string name="error_inicio_sesion">El usuario y/o contraseña son incorrectos, favor de verificarlo</string>
-    <string name="error_no_registrado">El correo electrónico no está registrado, favor de verificarlo</string>
+    <string name="error_no_registrado">El correoUsuario electrónico no está registrado, favor de verificarlo</string>
     <string name="no_conexion">No cuenta con conexión a internet</string>
     <string name="error_exception">Algo salió mal, inténtelo más tarde</string>
 
