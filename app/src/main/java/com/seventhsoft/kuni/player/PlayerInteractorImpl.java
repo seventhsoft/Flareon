@@ -2,7 +2,9 @@ package com.seventhsoft.kuni.player;
 
 import android.util.Log;
 
-import com.seventhsoft.kuni.model.modelrest.SignUpRestRequest;
+import com.seventhsoft.kuni.model.modelsrest.LoginRestRequest;
+import com.seventhsoft.kuni.model.modelsrest.LoginRestResponse;
+import com.seventhsoft.kuni.model.modelsrest.SignUpRestRequest;
 import com.seventhsoft.kuni.services.RestServiceFactory;
 import com.seventhsoft.kuni.services.TrackerService;
 
@@ -28,13 +30,42 @@ public class PlayerInteractorImpl implements PlayerInteractor {
     }
 
     public void login(String email, String password) {
+        LoginRestRequest loginRestRequest = new LoginRestRequest();
+        loginRestRequest.setUsername(email);
+        loginRestRequest.setPassword(password);
+        loginRestRequest.setClientId("mobileClient");
+        loginRestRequest.setGrantType("password");
 
+        token = "Basic bW9iaWxlQ2xpZW50Om1vYmlsZVNlY3JldA==";
+
+        TrackerService restService = RestServiceFactory.createRetrofitService(TrackerService.class,
+                TrackerService.SERVICE_ENDPOINT, token);
+        Scheduler scheduler = Schedulers.from(Executors.newSingleThreadExecutor());
+        restService.logIn(loginRestRequest)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(scheduler)
+                .subscribe(new Subscriber<LoginRestResponse>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "OSE|" + e.getMessage() + "Error en el servicio iniciar sesion");
+                    }
+
+                    @Override
+                    public void onNext(LoginRestResponse response) {
+                        playerPresenter.onLoginSuccess();
+                    }
+                });
     }
 
     public void sendEmail(String email) {
     }
 
-    public void signUp(String name, String firstName, String email, String password, Boolean facebook){
+    public void signUp(String name, String firstName, String email, String password, Boolean facebook) {
 
         SignUpRestRequest signUpRestRequest = new SignUpRestRequest();
         signUpRestRequest.setActivo(true);
@@ -46,6 +77,7 @@ public class PlayerInteractorImpl implements PlayerInteractor {
         signUpRestRequest.setUsuario(email);
         signUpRestRequest.setPassword(password);
 
+        token = "Basic bW9iaWxlQ2xpZW50Om1vYmlsZVNlY3JldA==";
 
         TrackerService restService = RestServiceFactory.createRetrofitService(TrackerService.class,
                 TrackerService.SERVICE_ENDPOINT, token);
@@ -56,16 +88,17 @@ public class PlayerInteractorImpl implements PlayerInteractor {
                 .subscribe(new Subscriber<String>() {
                     @Override
                     public void onCompleted() {
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e(TAG, "OSE|" + e.getMessage() + "Error en el servicio obtener cuenta");
+                        Log.e(TAG, "OSE|" + e.getMessage() + "Error en el servicio crear cuenta");
                     }
 
                     @Override
                     public void onNext(String response) {
-                        //aqui haces algo con el response
+                        playerPresenter.onSignUpSuccesss();
                     }
                 });
     }

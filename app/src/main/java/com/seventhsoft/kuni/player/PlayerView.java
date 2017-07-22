@@ -12,6 +12,11 @@ public interface PlayerView {
 
     void setPasswordError();
 
+    void setPasswordFormatError();
+
+    void setPasswordRepeatError();
+
+
     void setLoginError();
 
     void setSignUpError();
@@ -24,7 +29,6 @@ public interface PlayerView {
 
     void setFirstNameError();
 
-    void setPasswordRepeatError();
 
     void setPasswordSuccess();
 

@@ -1,18 +1,11 @@
 package com.seventhsoft.kuni.services;
 
-import com.seventhsoft.kuni.model.modelrest.SignUpRestRequest;
+import com.seventhsoft.kuni.model.modelsrest.LoginRestRequest;
+import com.seventhsoft.kuni.model.modelsrest.LoginRestResponse;
+import com.seventhsoft.kuni.model.modelsrest.SignUpRestRequest;
 
-import java.io.File;
-import java.util.ArrayList;
-
-import okhttp3.MultipartBody;
 import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
-import retrofit2.http.Part;
-import retrofit2.http.Path;
 import rx.Observable;
 
 /**
@@ -21,9 +14,22 @@ import rx.Observable;
 
 public interface TrackerService {
 
-    String SERVICE_ENDPOINT = "api.juegakuni.com.mx";
+    String SERVICE_ENDPOINT = "http://api.juegakuni.com.mx";
 
-    @POST("/fls/usuarios")
+    /**
+     * Crear una cuenta
+     * @param signUpRestRequest
+     * @return
+     */
+    @POST("/lfs/usuarios")
     Observable<String> signUp(@Body SignUpRestRequest signUpRestRequest);
+
+    /**
+     * Iniciar sesión
+     * @param loginRestRequest
+     * @return
+     */
+    @POST("/lfs/usuarios")
+    Observable<LoginRestResponse> logIn(@Body LoginRestRequest loginRestRequest);
 
 }

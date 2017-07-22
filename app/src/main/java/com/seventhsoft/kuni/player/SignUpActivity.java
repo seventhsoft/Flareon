@@ -78,7 +78,7 @@ public class SignUpActivity extends AppCompatActivity implements PlayerView {
         }
         onClickLogin();
         onClickSignUp();
-        listenerPassword();
+        //listenerPassword();
 
         // Callback registration
         fbLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -170,20 +170,20 @@ public class SignUpActivity extends AppCompatActivity implements PlayerView {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (correctPassword) {
                     playerPresenter.validateSignUp(
                             txtName.getText().toString(),
                             txtFirstName.getText().toString(),
                             txtEmail.getText().toString(),
                             txtPassword.getText().toString(),
+                            txtPasswordRepeat.getText().toString(),
                             false);
-                }
+
                 //txtPasswordRepeat);
             }
         });
     }
 
-    private void listenerPassword() {
+    /*private void listenerPassword() {
         txtPasswordRepeat.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -201,7 +201,7 @@ public class SignUpActivity extends AppCompatActivity implements PlayerView {
             }
         });
 
-    }
+    }*/
 
     @Override
     protected void onActivityResult(
@@ -268,6 +268,10 @@ public class SignUpActivity extends AppCompatActivity implements PlayerView {
 
     public void setPasswordError() {
         txtPassword.setError(getString(R.string.error_contraseña));
+    }
+
+    public void setPasswordFormatError(){
+        txtPassword.setError(getString(R.string.error_contraseña_formato));
     }
 
     public void setPasswordSuccess() {

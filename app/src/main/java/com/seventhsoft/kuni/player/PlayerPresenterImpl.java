@@ -56,18 +56,30 @@ public class PlayerPresenterImpl implements PlayerPresenter {
         return error;
     }
 
-    public void validateSignUp(String name, String firstName, String email, String password, Boolean facebook) {
+    public void validateSignUp(String name, String firstName, String email, String password, String passwordRepeat, Boolean facebook) {
         boolean error = false;
         if (playerView != null) {
             if (validateEmailFormat(email))
                 error = true;
             if (name.isEmpty()) {
                 error = true;
-                playerView.setPasswordError();
+                playerView.setNameError();
             }
             if (firstName.isEmpty()) {
                 error = true;
                 playerView.setFirstNameError();
+            }
+            if (password.isEmpty()) {
+                error = true;
+                playerView.setPasswordError();
+            }
+            if (password.length() < 8 || password.length() > 15) {
+                error = true;
+                playerView.setPasswordFormatError();
+            }
+            if (!password.equals(passwordRepeat)) {
+                error = true;
+                playerView.setPasswordRepeatError();
             }
             if (!error) {
                 playerInteractor.signUp(name, firstName, email, password, facebook);
@@ -81,7 +93,7 @@ public class PlayerPresenterImpl implements PlayerPresenter {
         if (TextUtils.isEmpty(contraseñaNueva)) {
             error = true;
             playerView.setPasswordError();
-        } else if (contraseñaNueva.length() < 8 || contraseñaNueva.length() > 15) {
+        } else if (contraseñaNueva.length() < 6 || contraseñaNueva.length() > 15) {
             error = true;
             playerView.setPasswordError();
         } else if (!contraseñaNueva.equals(contraseñaNuevaRepetida.toString())) {

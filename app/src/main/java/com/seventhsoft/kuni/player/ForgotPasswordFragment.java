@@ -86,6 +86,9 @@ public class ForgotPasswordFragment extends Fragment implements PlayerView {
         txtEmail.setError(getString(R.string.error_correo_formato));
     }
 
+    public void setPasswordFormatError(){
+    }
+
     public void setPasswordError() {
 
     }

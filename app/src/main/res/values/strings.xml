@@ -43,12 +43,12 @@
 
     <!--Errores-->
 
-    <string name="error_correo">El correoUsuario electrónico es obligatorio</string>
+    <string name="error_correo">El correo electrónico es obligatorio</string>
     <string name="error_correo_formato">El formato es incorrecto</string>
     <string name="error_contraseña">La contraseña es obligatoria</string>
     <string name="error_contraseña_formato">Debe ser mayor a 8 y menor a 15 caracteres</string>
     <string name="error_contraseña_repetida">La contraseña no coincide</string>
-    <string name="error_nombre">El nombreUsuario es obligatorio</string>
+    <string name="error_nombre">El nombre es obligatorio</string>
     <string name="error_apellido_paterno">El apellido es obligatorio</string>
     <string name="error_campo">Campo obligatorio</string>
     <string name="error_inicio_sesion">El usuario y/o contraseña son incorrectos, favor de verificarlo</string>

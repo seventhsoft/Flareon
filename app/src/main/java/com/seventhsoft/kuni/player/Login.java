@@ -244,6 +244,9 @@ public class Login extends AppCompatActivity implements PlayerView {
 
     }
 
+    public void setPasswordFormatError() {
+    }
+
     public void setPasswordSuccess() {
 
     }

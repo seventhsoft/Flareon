@@ -1,4 +1,4 @@
-package com.seventhsoft.kuni.model.modelrest;
+package com.seventhsoft.kuni.model.modelsrest;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

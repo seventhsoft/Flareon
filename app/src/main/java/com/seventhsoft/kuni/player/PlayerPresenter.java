@@ -10,7 +10,7 @@ public interface PlayerPresenter {
 
     void validateEmail(String email);
 
-    void validateSignUp(String name, String firstName, String email, String password, Boolean facebook);
+    void validateSignUp(String name, String firstName, String email, String password, String passwordRepeat, Boolean facebook);
 
     void validatePassword(String password, CharSequence passwordRepeat);
 
