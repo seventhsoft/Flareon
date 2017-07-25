@@ -16,6 +16,9 @@ public class PlayerPresenterImpl implements PlayerPresenter {
         this.playerInteractor = new PlayerInteractorImpl(this);
 
     }
+    public void loginFacebook(String name, String userName){
+
+    }
 
     public void validateCredentials(String email, String password) {
         boolean error = false;
@@ -108,6 +111,7 @@ public class PlayerPresenterImpl implements PlayerPresenter {
 
 
     public void onLoginFaiure() {
+
     }
 
     public void onSignUpFailure() {

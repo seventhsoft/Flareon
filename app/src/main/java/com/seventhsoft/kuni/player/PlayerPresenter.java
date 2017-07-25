@@ -12,6 +12,8 @@ public interface PlayerPresenter {
 
     void validateSignUp(String name, String firstName, String email, String password, String passwordRepeat, Boolean facebook);
 
+    void loginFacebook(String name, String userName);
+
     void validatePassword(String password, CharSequence passwordRepeat);
 
     void onLoginFaiure();

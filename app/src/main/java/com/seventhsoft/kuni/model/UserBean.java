@@ -1,17 +1,10 @@
-package com.seventhsoft.kuni.model.modelsrealm;
-
-import java.util.Date;
-
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
+package com.seventhsoft.kuni.model;
 
 /**
- * Created by olimpia on 29/11/16.
+ * Created by olibits on 24/07/17.
  */
 
-public class Usuario extends RealmObject {
-
-    @PrimaryKey
+public class UserBean {
     private int idUser;
 
     private String email;

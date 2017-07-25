@@ -8,13 +8,13 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class SignUpRestRequest {
-    @SerializedName("nombreUsuario")
+    @SerializedName("nombre")
     @Expose
     private String nombreUsuario;
-    @SerializedName("apellidoPaterno")
+    @SerializedName("apaterno")
     @Expose
     private String apellidoPaterno;
-    @SerializedName("correoUsuario")
+    @SerializedName("correo")
     @Expose
     private String correoUsuario;
     @SerializedName("usuario")

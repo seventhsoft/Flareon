@@ -2,6 +2,7 @@ package com.seventhsoft.kuni.player;
 
 import android.util.Log;
 
+import com.seventhsoft.kuni.model.UserBean;
 import com.seventhsoft.kuni.model.modelsrest.LoginRestRequest;
 import com.seventhsoft.kuni.model.modelsrest.LoginRestResponse;
 import com.seventhsoft.kuni.model.modelsrest.SignUpRestRequest;
@@ -36,12 +37,12 @@ public class PlayerInteractorImpl implements PlayerInteractor {
         loginRestRequest.setClientId("mobileClient");
         loginRestRequest.setGrantType("password");
 
-        token = "Basic bW9iaWxlQ2xpZW50Om1vYmlsZVNlY3JldA==";
+        token = "Basic bW9iaWxlQ2xpZW50OnNlY3JldE1vYmlsZQ==";
 
         TrackerService restService = RestServiceFactory.createRetrofitService(TrackerService.class,
                 TrackerService.SERVICE_ENDPOINT, token);
         Scheduler scheduler = Schedulers.from(Executors.newSingleThreadExecutor());
-        restService.logIn(loginRestRequest)
+        restService.logIn(email, password, "mobileClient", "password")
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(scheduler)
                 .subscribe(new Subscriber<LoginRestResponse>() {
@@ -68,7 +69,13 @@ public class PlayerInteractorImpl implements PlayerInteractor {
     public void signUp(String name, String firstName, String email, String password, Boolean facebook) {
 
         SignUpRestRequest signUpRestRequest = new SignUpRestRequest();
-        signUpRestRequest.setActivo(true);
+        if(facebook){
+            signUpRestRequest.setActivo(true);
+
+        }else{
+            signUpRestRequest.setActivo(false);
+
+        }
         signUpRestRequest.setApellidoPaterno(firstName);
         signUpRestRequest.setCorreoUsuario(email);
         signUpRestRequest.setFacebook(facebook);
@@ -77,7 +84,7 @@ public class PlayerInteractorImpl implements PlayerInteractor {
         signUpRestRequest.setUsuario(email);
         signUpRestRequest.setPassword(password);
 
-        token = "Basic bW9iaWxlQ2xpZW50Om1vYmlsZVNlY3JldA==";
+        token = "Basic bW9iaWxlQ2xpZW50OnNlY3JldE1vYmlsZQ==";
 
         TrackerService restService = RestServiceFactory.createRetrofitService(TrackerService.class,
                 TrackerService.SERVICE_ENDPOINT, token);
@@ -98,9 +105,23 @@ public class PlayerInteractorImpl implements PlayerInteractor {
 
                     @Override
                     public void onNext(String response) {
+
                         playerPresenter.onSignUpSuccesss();
                     }
                 });
     }
 
+    /**
+     * Repository to iteractor
+     */
+
+    public void onSaveSuccess(){}
+
+    public void onSaveError(){}
+
+    public void onGetError(){}
+
+    public void setUser(UserBean userBean){
+
+    }
 }

@@ -1,12 +1,14 @@
 package com.seventhsoft.kuni.player;
 
+import com.seventhsoft.kuni.model.UserBean;
+
 /**
  * Created by olibits on 21/07/17.
  */
 
 public interface PlayerRepository {
 
-    void setUser(String name, String firstName, String email, String password, Boolean facebook);
+    void saveUser(UserBean userBean);
 
     void getUser();
 }

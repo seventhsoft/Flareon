@@ -17,6 +17,8 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.DefaultAudience;
@@ -24,6 +26,8 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.seventhsoft.kuni.game.MainActivity;
 import com.seventhsoft.kuni.R;
+
+import org.json.JSONObject;
 
 public class Login extends AppCompatActivity implements PlayerView {
 
@@ -84,39 +88,50 @@ public class Login extends AppCompatActivity implements PlayerView {
             @Override
             public void onSuccess(final LoginResult loginResult) {
                 // App code
-                Toast.makeText(
-                        Login.this,
-                        R.string.success,
-                        Toast.LENGTH_LONG).show();
-                setMainActivity();
+                Toast.makeText(Login.this, R.string.success, Toast.LENGTH_LONG).show();
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                Log.i("LoginActivity", response.toString());
+
+                                // Application code
+                                try {
+                                    String email = object.getString("email");
+                                    String name = object.getString("name"); // 01/31/1980 format
+                                    playerPresenter.loginFacebook(name);
+
+                                }catch (Exception e){
+                                    Log.e(TAG, "OSE| " + "Error email facebook" + e);
+
+                                }
+                            }
+                        });
+                //playerPresenter.validateCredentials();
+                //setMainActivity();
             }
 
             @Override
             public void onCancel() {
                 // App code
-                Toast.makeText(
-                        Login.this,
-                        R.string.cancel,
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(Login.this, R.string.cancel, Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onError(final FacebookException exception) {
                 // App code
-                Toast.makeText(
-                        Login.this,
-                        R.string.error_exception,
-                        Toast.LENGTH_LONG).show();
-                Log.e(TAG, "OSE| " + "Error Splash" + exception);
+                Toast.makeText(Login.this, R.string.error_exception, Toast.LENGTH_LONG).show();
+                Log.e(TAG, "OSE| " + "Error login facebook" + exception);
 
             }
         });
 
         new ProfileTracker() {
             @Override
-            protected void onCurrentProfileChanged(
-                    final Profile oldProfile,
-                    final Profile currentProfile) {
+            protected void onCurrentProfileChanged(final Profile oldProfile, final Profile currentProfile) {
+                if(currentProfile!=null){
+                }
             }
         };
     }
@@ -179,10 +194,7 @@ public class Login extends AppCompatActivity implements PlayerView {
     }
 
     @Override
-    protected void onActivityResult(
-            final int requestCode,
-            final int resultCode,
-            final Intent data) {
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_PERMS_REQUEST) {
             if (resultCode == RESULT_OK) {

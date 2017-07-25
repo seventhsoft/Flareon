@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         JSONObject object = new JSONObject();
         object.
 
-        transaction.addToBackStack(null);
+        transaction.addToBackStack(null);2
 
         transaction.replace(R.id.main_container, heroeDetailFragment);
 

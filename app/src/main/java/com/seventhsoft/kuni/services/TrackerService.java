@@ -5,6 +5,9 @@ import com.seventhsoft.kuni.model.modelsrest.LoginRestResponse;
 import com.seventhsoft.kuni.model.modelsrest.SignUpRestRequest;
 
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import rx.Observable;
 
@@ -18,6 +21,7 @@ public interface TrackerService {
 
     /**
      * Crear una cuenta
+     *
      * @param signUpRestRequest
      * @return
      */
@@ -26,10 +30,13 @@ public interface TrackerService {
 
     /**
      * Iniciar sesión
-     * @param loginRestRequest
-     * @return
+     *
      */
-    @POST("/lfs/usuarios")
-    Observable<LoginRestResponse> logIn(@Body LoginRestRequest loginRestRequest);
+    @FormUrlEncoded
+    @POST("/lfs/oauth/token")
+    Observable<LoginRestResponse> logIn(@Field("username") String userName,
+                                        @Field("password") String password,
+                                        @Field("client_id") String clientId,
+                                        @Field("grant_type") String grandType);
 
 }
