@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.seventhsoft.kuni.R;
+import com.seventhsoft.kuni.model.UserBean;
 
 public class ForgotPasswordFragment extends Fragment implements PlayerView {
 
@@ -41,14 +42,14 @@ public class ForgotPasswordFragment extends Fragment implements PlayerView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         return inflater.inflate(R.layout.fragment_forgot_password, container, false);
     }
+
     @Override
     public void onActivityCreated(Bundle state) {
         txtEmail = (EditText) getActivity().findViewById(R.id.txtEmail);
         btnSend = (Button) getActivity().findViewById(R.id.btnSend);
-        playerPresenter = new PlayerPresenterImpl(this);
+        playerPresenter = new PlayerPresenterImpl(this, getContext());
         onClickSend();
         super.onActivityCreated(state);
     }
@@ -86,13 +87,14 @@ public class ForgotPasswordFragment extends Fragment implements PlayerView {
         txtEmail.setError(getString(R.string.error_correo_formato));
     }
 
-    public void setPasswordFormatError(){
+    public void setPasswordFormatError() {
     }
 
     public void setPasswordError() {
 
     }
-    public void setPasswordSuccess(){
+
+    public void setPasswordSuccess() {
 
     }
 
@@ -134,5 +136,8 @@ public class ForgotPasswordFragment extends Fragment implements PlayerView {
     }
 
     public void setSignUpSuccesss() {
+    }
+
+    public void setPlayer(final UserBean usuario) {
     }
 }

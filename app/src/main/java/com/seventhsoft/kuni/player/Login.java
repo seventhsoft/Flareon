@@ -26,6 +26,7 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.seventhsoft.kuni.game.MainActivity;
 import com.seventhsoft.kuni.R;
+import com.seventhsoft.kuni.model.UserBean;
 
 import org.json.JSONObject;
 
@@ -59,20 +60,21 @@ public class Login extends AppCompatActivity implements PlayerView {
     private Fragment newFragment;
     private FragmentTransaction transaction;
 
+    private SesionPreference sesionPreference;
+
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        playerPresenter = new PlayerPresenterImpl(this);
-
+        sesionPreference = SesionPreference.getInstance(this);
+        playerPresenter = new PlayerPresenterImpl(this, getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
         signUp = (TextView) findViewById(R.id.link_signup);
         forgotPassword = (TextView) findViewById(R.id.link_forgot);
 
         fbLoginButton = (LoginButton) findViewById(R.id.login_button);
-        if (isLoggedIn()) {
+        if (isLoggedIn() || sesionPreference.getData("statusSesion")) {
             setMainActivity();
         }
         txtEmail = (EditText) findViewById(R.id.txtEmail);
@@ -99,10 +101,12 @@ public class Login extends AppCompatActivity implements PlayerView {
                                 // Application code
                                 try {
                                     String email = object.getString("email");
-                                    String name = object.getString("name"); // 01/31/1980 format
-                                    playerPresenter.loginFacebook(name);
+                                    String name = object.getString("name");
+                                    String firstName = object.getString("firstname");
+                                    // 01/31/1980 format
+                                    playerPresenter.loginFacebook(name, email);
 
-                                }catch (Exception e){
+                                } catch (Exception e) {
                                     Log.e(TAG, "OSE| " + "Error email facebook" + e);
 
                                 }
@@ -130,7 +134,7 @@ public class Login extends AppCompatActivity implements PlayerView {
         new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(final Profile oldProfile, final Profile currentProfile) {
-                if(currentProfile!=null){
+                if (currentProfile != null) {
                 }
             }
         };
@@ -139,8 +143,7 @@ public class Login extends AppCompatActivity implements PlayerView {
     @Override
     protected void onResume() {
         super.onResume();
-
-        if (isLoggedIn()) {
+        if (isLoggedIn() || sesionPreference.getData("statusSesion")) {
             setMainActivity();
         } else {
             //splashScreen();
@@ -293,19 +296,20 @@ public class Login extends AppCompatActivity implements PlayerView {
     }
 
     public void setLoginSuccess() {
-        Login.this.runOnUiThread(new Runnable() {
-            public void run() {
-                Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.error_inicio_sesion), Toast.LENGTH_LONG);
-                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                if (v != null) v.setGravity(Gravity.CENTER);
-                toast.show();
-            }
-        });
+        setMainActivity();
     }
 
     public void setRecoverPasswordSuccess() {
     }
 
     public void setSignUpSuccesss() {
+    }
+
+    public void onBackPressed() {
+
+    }
+
+    public void setPlayer(final UserBean usuario) {
+
     }
 }

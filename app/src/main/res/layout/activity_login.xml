@@ -20,6 +20,16 @@
             android:textColor="@color/primary_dark"
             android:textSize="60sp" />
         <!-- Email Label -->
+
+
+        <!--<EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fab_label_background"
+            android:inputType="textPersonName"
+            android:hint="Name" />-->
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,7 +78,9 @@
         <com.facebook.login.widget.LoginButton
             android:id="@+id/login_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/btn_entrar"
+
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="30dp"
             android:layout_marginTop="30dp" />
@@ -76,7 +88,7 @@
         <TextView
             android:id="@+id/link_forgot"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginBottom="24dp"
             android:gravity="center"
             android:text="@string/lbl_no_password"

@@ -54,7 +54,7 @@ public class ToolbarFragment extends Fragment {
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         activity.getSupportActionBar().setHomeButtonEnabled(true);
         int bandera = getBandera();
-        switch (bandera){
+        switch (bandera) {
             case 0:
                 activity.getSupportActionBar().setHomeAsUpIndicator((activity.getDrawable(R.drawable.ic_menu_white_24dp)));
                 toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -62,6 +62,14 @@ public class ToolbarFragment extends Fragment {
                     public void onClick(View v) {
                         ((MainActivity) getActivity()).openDrawer();
                         Log.i("cek", "home selected");
+                    }
+                });
+                break;
+            case 1:
+                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getActivity().onBackPressed();
                     }
                 });
                 break;

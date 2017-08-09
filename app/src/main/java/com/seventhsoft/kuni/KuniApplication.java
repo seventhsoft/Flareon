@@ -1,9 +1,11 @@
 package com.seventhsoft.kuni;
 
 import android.app.Application;
+import android.content.Intent;
 
 import com.seventhsoft.kuni.model.modelsrealm.KuniFieldsModule;
 import com.seventhsoft.kuni.model.modelsrealm.MyMigration;
+import com.seventhsoft.kuni.utils.ConexionInternetService;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -16,10 +18,23 @@ public class KuniApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        /**
+         * Realm configuracion
+         */
+        Intent intent = new Intent(this, ConexionInternetService.class);
+        startService(intent);
+
+
+        /**
+         * Realm configuracion
+         */
+
+
         Realm.init(this);
 
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder()
-                .name("CodigaLocal.realm")
+                .name("Kuni.realm")
                 .schemaVersion(1) // Must be bumped when the schema changes
                 .migration(new MyMigration()) // Migration to run instead of throwing an exception
                 .modules(new KuniFieldsModule())

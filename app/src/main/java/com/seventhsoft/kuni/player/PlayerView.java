@@ -1,5 +1,7 @@
 package com.seventhsoft.kuni.player;
 
+import com.seventhsoft.kuni.model.UserBean;
+
 /**
  * Created by olibits on 4/07/17.
  */
@@ -16,7 +18,6 @@ public interface PlayerView {
 
     void setPasswordRepeatError();
 
-
     void setLoginError();
 
     void setSignUpError();
@@ -29,7 +30,6 @@ public interface PlayerView {
 
     void setFirstNameError();
 
-
     void setPasswordSuccess();
 
     void setLoginSuccess();
@@ -37,5 +37,7 @@ public interface PlayerView {
     void setRecoverPasswordSuccess();
 
     void setSignUpSuccesss();
+
+    void setPlayer(UserBean userBean);
 
 }

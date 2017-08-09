@@ -20,6 +20,15 @@ public interface PlayerInteractor {
 
     void signUp(String name, String firstName, String email, String password, Boolean facebook);
 
+    void getPlayer();
+
+    void updatePlayerName(UserBean userBean, String apellidos, String nombre);
+
+    void updatePlayerPassword(String contraseñaActual, String contraseñaNueva);
+
+
+    void closeSesion();
+
     /**
      * Repository to iteractor
      */

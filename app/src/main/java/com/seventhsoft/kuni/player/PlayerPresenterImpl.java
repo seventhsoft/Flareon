@@ -1,6 +1,13 @@
 package com.seventhsoft.kuni.player;
 
+import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
+
+import com.seventhsoft.kuni.game.MainView;
+import com.seventhsoft.kuni.model.UserBean;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by olibits on 4/07/17.
@@ -10,18 +17,25 @@ public class PlayerPresenterImpl implements PlayerPresenter {
 
     private PlayerView playerView;
     private PlayerInteractor playerInteractor;
+    private MainView mainView;
 
-    public PlayerPresenterImpl(PlayerView playerView) {
+    public PlayerPresenterImpl(PlayerView playerView, Context context) {
         this.playerView = playerView;
-        this.playerInteractor = new PlayerInteractorImpl(this);
+        this.playerInteractor = new PlayerInteractorImpl(this, context);
 
     }
-    public void loginFacebook(String name, String userName){
 
+    public PlayerPresenterImpl(MainView mainView, Context context) {
+        this.playerInteractor = new PlayerInteractorImpl(this, context);
+        this.mainView = mainView;
+    }
+
+    public void loginFacebook(String name, String email) {
+        playerInteractor.signUp(name, "", email, "", true);
     }
 
     public void validateCredentials(String email, String password) {
-        boolean error = false;
+        /*boolean error = false;
         if (playerView != null) {
             if (validateEmailFormat(email))
                 error = true;
@@ -29,15 +43,20 @@ public class PlayerPresenterImpl implements PlayerPresenter {
                 error = true;
                 playerView.setPasswordError();
             }
-            if (!error) {
-                playerInteractor.login(email, password);
-            }
-        }
+            if (!error) {*/
+        playerInteractor.login(email, password);
+        //}
+        //}
     }
 
     public void validateEmail(String email) {
-        if (validateEmailFormat(email)) {
+        if (!validateEmailFormat(email)) {
             playerInteractor.sendEmail(email);
+            Log.i(TAG, "OSE|" + "correo vaido");
+
+        } else {
+            Log.i(TAG, "OSE|" + "correo no valido");
+
         }
     }
 
@@ -90,28 +109,47 @@ public class PlayerPresenterImpl implements PlayerPresenter {
         }
     }
 
-    public void validatePassword(String contraseñaNueva, CharSequence contraseñaNuevaRepetida) {
+    public void validatePasswordUpdate(String password, String passwordNew, String passwordRepeat) {
 
         Boolean error = false;
-        if (TextUtils.isEmpty(contraseñaNueva)) {
+        if (TextUtils.isEmpty(password)) {
             error = true;
             playerView.setPasswordError();
-        } else if (contraseñaNueva.length() < 6 || contraseñaNueva.length() > 15) {
+        } else if (passwordNew.length() < 4 || passwordNew.length() > 20) {
             error = true;
             playerView.setPasswordError();
-        } else if (!contraseñaNueva.equals(contraseñaNuevaRepetida.toString())) {
+        } else if (!passwordNew.equals(passwordRepeat.toString())) {
             error = true;
             playerView.setPasswordRepeatError();
         }
         if (!error) {
-            playerView.setPasswordSuccess();
+            playerInteractor.updatePlayerPassword(password,passwordNew);
         }
 
     }
 
+    public void updatePlayerNames(UserBean userBean, String apellidos, String nombre){
+        boolean error = false;
+        if (playerView != null) {
+            if (nombre.isEmpty()) {
+                error = true;
+                playerView.setNameError();
+            }
+            if (apellidos.isEmpty()) {
+                error = true;
+                playerView.setFirstNameError();
+            }
+            if (!error) {
+                playerInteractor.updatePlayerName(userBean, apellidos, nombre);
+            }
+        }
+    }
+
 
     public void onLoginFaiure() {
-
+        if (playerView != null) {
+            playerView.setLoginError();
+        }
     }
 
     public void onSignUpFailure() {
@@ -127,11 +165,38 @@ public class PlayerPresenterImpl implements PlayerPresenter {
     }
 
     public void onLoginSuccess() {
+        if (playerView != null) {
+            playerView.setLoginSuccess();
+        }
     }
 
     public void onRecoverPasswordSuccess() {
     }
 
     public void onSignUpSuccesss() {
+        if (playerView != null) {
+            playerView.setSignUpSuccesss();
+        }
     }
+
+    public void closeSesion() {
+        playerInteractor.closeSesion();
+    }
+
+    public void onSesionClosed() {
+        if (mainView != null) {
+            mainView.onSesionClosed();
+        }
+    }
+
+    public void getPlayer() {
+        playerInteractor.getPlayer();
+    }
+
+    public void onGetPlayer(UserBean userBean) {
+        if (playerView != null) {
+            playerView.setPlayer(userBean);
+        }
+    }
+
 }

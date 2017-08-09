@@ -2,8 +2,11 @@
     <string name="app_name">Kuni</string>
 
     <!--facebook-->
-    <string name="facebook_app_id">1398609956898291</string>
-    <string name="fb_login_protocol_scheme">fb1398609956898291</string>
+    <!--<string name="facebook_app_id">1398609956898291</string>-->
+    <string name="facebook_app_id">302068633592091</string>
+    <!--<string name="fb_login_protocol_scheme">fb1398609956898291</string>-->
+    <string name="fb_login_protocol_scheme">fb302068633592091</string>
+
     <string name="success">SUCCESS</string>
     <string name="cancel">CANCEL</string>
     <string name="error">ERROR</string>
@@ -13,6 +16,24 @@
     <string name="btn_crear_cuenta">Crear cuenta</string>
     <string name="btn_enviar">Enviar</string>
     <string name="btn_continuar">Continuar</string>
+
+
+    <!-- Hints -->
+    <string name="contraseña">Contraseña</string>
+
+    <string name="contraseña_actual">Contraseña actual</string>
+    <string name="contraseña_nueva">Contraseña nueva</string>
+    <string name="contraseña_repetida">Contraseña nueva</string>
+
+    <string name="correo_electronico">Correo electrónico</string>
+    <string name="usuario">Nombre de usuario</string>
+    <string name="nombre">Nombre (s)</string>
+    <string name="apellidos">Apellido (s)</string>
+    <string name="pin_valuador">PIN de valuador</string>
+    <string name="empresa">Empresa</string>
+    <string name="celular">Teléfono celular</string>
+    <string name="contraseña_repetir">Captura nuevamente tu contraseña</string>
+    <string name="contraseña_actual_repetir">Captura tu contraseña actual</string>
 
 
     <!--labels-->
@@ -28,6 +49,8 @@
     <string name="lbl_series">Restan %d series</string>
     <string name="lbl_premios_disponibles">Aún hay %d premios</string>
     <string name="lbl_premios_agotados">Premios agotados</string>
+
+    <string name="lbl_cuenta">Mi cuenta</string>
 
     <string name="lbl_inicio">Inicio</string>
     <string name="lbl_premios">Premios</string>

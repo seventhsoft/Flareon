@@ -5,4 +5,6 @@ package com.seventhsoft.kuni.model;
  */
 
 public class Question {
+   
+
 }

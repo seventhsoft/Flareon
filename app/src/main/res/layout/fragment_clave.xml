@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/toolbar_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/mainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        android:paddingBottom="16dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingTop="8dp">
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:paddingTop="16dp">
+
+            <EditText
+                android:id="@+id/txtContraseñaActual"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/contraseña"
+                android:inputType="textPassword"
+                android:maxLength="15"
+                android:textColor="@color/monsoon" />
+        </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:id="@+id/lblContraseñaActual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:gravity="start"
+            android:paddingBottom="4dp"
+            android:paddingStart="8dp"
+            android:text="@string/contraseña_actual_repetir"
+            android:textColor="@color/monsoon"
+            android:textSize="12sp" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:paddingTop="8dp">
+
+            <EditText
+                android:id="@+id/txtContraseñaNueva"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/contraseña_nueva"
+                android:inputType="textPassword"
+                android:maxLength="15"
+                android:textColor="@color/monsoon" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:paddingTop="8dp">
+
+            <EditText
+                android:id="@+id/txtContraseñaRepetida"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/contraseña_nueva"
+                android:inputType="textPassword"
+                android:maxLength="15"
+                android:textColor="@color/monsoon" />
+        </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:id="@+id/lblContraseñaRepetida"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:gravity="start"
+            android:paddingBottom="4dp"
+            android:paddingLeft="8dp"
+            android:text="@string/contraseña_repetir"
+            android:textColor="@color/monsoon"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+
+</LinearLayout>

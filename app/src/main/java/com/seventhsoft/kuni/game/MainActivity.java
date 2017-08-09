@@ -3,8 +3,10 @@ package com.seventhsoft.kuni.game;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
+import android.support.transition.Transition;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +25,12 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.seventhsoft.kuni.R;
+import com.seventhsoft.kuni.player.CuentaFragment;
 import com.seventhsoft.kuni.player.Login;
+import com.seventhsoft.kuni.player.PlayerPresenter;
+import com.seventhsoft.kuni.player.PlayerPresenterImpl;
+import com.seventhsoft.kuni.player.SesionPreference;
+import com.seventhsoft.kuni.player.UserActivity;
 import com.seventhsoft.kuni.utils.ToolbarFragment;
 
 import org.json.JSONException;
@@ -31,8 +38,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 
 
-
-public class MainActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener {
+public class MainActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener, MainView {
 
 
     private DrawerLayout drawerLayout;
@@ -46,6 +52,12 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
     private TextView txtConcurso;
 
     MyRecyclerViewAdapter adapter;
+
+    private SesionPreference sesionPreference;
+
+    private PlayerPresenter playerPresenter;
+
+    private GamePresenter gamePresenter;
 
     public static String[] niveles = {
             "Nivel 1",
@@ -83,9 +95,21 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        playerPresenter = new PlayerPresenterImpl(this, getApplicationContext());
+        gamePresenter = new GamePresenterImpl(this, getApplicationContext());
         setDrawer();
         setToolbar();
+
         //gridView = (GridView) findViewById(R.id.gridView);
+
+        sesionPreference = SesionPreference.getInstance(context);
+
+        //gridView.setAdapter(new CustomAndroidGridViewAdapter(this, niveles, series, premios, gridViewImages));
+
+        setBottomNavigation();
+    }
+
+    public void setDashboard() {
         txtConcurso = (TextView) findViewById(R.id.txtConcurso);
         txtConcurso.setText("El concurso termina el 31/07/2017");
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.gridView);
@@ -93,8 +117,14 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         adapter = new MyRecyclerViewAdapter(this, niveles, series, premios, gridViewImages);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
-        //gridView.setAdapter(new CustomAndroidGridViewAdapter(this, niveles, series, premios, gridViewImages));
+    }
 
+    private void setBottomNavigation() {
+        Fragment fragment = new BottomNavigationFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment, "bottom_navegation");
+        transaction.addToBackStack("cuenta");
+        transaction.commit();
 
     }
 
@@ -225,6 +255,11 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
     }
 
     private void selectItem(String title) {
+        switch (title) {
+            case "Mi cuenta":
+                setCuenta();
+                break;
+        }
         if (("Salir").equals(title)) {
             cerrarSesion();
         }
@@ -258,10 +293,12 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
             public void onCompleted(GraphResponse response) {
                 try {
                     if (response.getError() != null) {
-                        Toast.makeText(
+                        playerPresenter.closeSesion();
+                        setLogin();
+                        /*Toast.makeText(
                                 MainActivity.this,
                                 R.string.error_exception,
-                                Toast.LENGTH_LONG).show();
+                                Toast.LENGTH_LONG).show();*/
                     } else if (response.getJSONObject().getBoolean(SUCCESS)) {
                         LoginManager.getInstance().logOut();
                         setLogin();
@@ -274,10 +311,6 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
                 GRAPH_PATH, new Bundle(), HttpMethod.DELETE, callback);
         request.executeAsync();
 
-        /*usuarioRepository.borrarUsuarios();
-        sesionPreference = SesionPreference.getInstance(this);
-        sesionPreference.saveData("statusSesion", false);
-        pantallaUsuario(1);*/
     }
 
     private void setLogin() {
@@ -285,9 +318,14 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         startActivity(intent);
     }
 
-    public void setCuenta(String cuenta, String correo) {
-        //txtCuenta.setText(cuenta);
-        //txtCorreo.setText(correo);
+    private void setCuenta() {
+        Intent intent = new Intent(this, UserActivity.class);
+        intent.putExtra("bandera", 2);
+        startActivity(intent);
+    }
+
+    public void onSesionClosed() {
+        setLogin();
     }
 
 

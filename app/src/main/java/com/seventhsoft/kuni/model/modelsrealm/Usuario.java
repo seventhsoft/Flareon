@@ -20,6 +20,8 @@ public class Usuario extends RealmObject {
     private String firstName;
     private int time;
     private Boolean facebook;
+    private String tokenAccess;
+    private String refreshToken;
 
     public int getIdUser() {
         return idUser;
@@ -75,5 +77,21 @@ public class Usuario extends RealmObject {
 
     public void setFacebook(Boolean facebook) {
         this.facebook = facebook;
+    }
+
+    public String getTokenAccess() {
+        return tokenAccess;
+    }
+
+    public void setTokenAccess(String tokenAccess) {
+        this.tokenAccess = tokenAccess;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }

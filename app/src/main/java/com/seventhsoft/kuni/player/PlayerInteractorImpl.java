@@ -1,10 +1,15 @@
 package com.seventhsoft.kuni.player;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.seventhsoft.kuni.model.UserBean;
 import com.seventhsoft.kuni.model.modelsrest.LoginRestRequest;
 import com.seventhsoft.kuni.model.modelsrest.LoginRestResponse;
+import com.seventhsoft.kuni.model.modelsrest.Persona;
+import com.seventhsoft.kuni.model.modelsrest.RestorePasswordRequest;
+import com.seventhsoft.kuni.model.modelsrest.UpdateUserRestRequest;
+import com.seventhsoft.kuni.model.modelsrest.UserRestResponse;
 import com.seventhsoft.kuni.model.modelsrest.SignUpRestRequest;
 import com.seventhsoft.kuni.services.RestServiceFactory;
 import com.seventhsoft.kuni.services.TrackerService;
@@ -25,9 +30,14 @@ public class PlayerInteractorImpl implements PlayerInteractor {
 
     private PlayerPresenter playerPresenter;
     private String token;
+    private PlayerRepository playerRepository;
+    private SesionPreference sesionPreference;
 
-    public PlayerInteractorImpl(PlayerPresenter playerPresenter) {
+
+    public PlayerInteractorImpl(PlayerPresenter playerPresenter, Context context) {
         this.playerPresenter = playerPresenter;
+        this.playerRepository = new PlayerRepositoryImpl(this);
+        sesionPreference = SesionPreference.getInstance(context);
     }
 
     public void login(String email, String password) {
@@ -53,26 +63,65 @@ public class PlayerInteractorImpl implements PlayerInteractor {
 
                     @Override
                     public void onError(Throwable e) {
+                        playerPresenter.onLoginFaiure();
                         Log.e(TAG, "OSE|" + e.getMessage() + "Error en el servicio iniciar sesion");
+                        sesionPreference.saveData("statusSesion", false);
+
                     }
 
                     @Override
                     public void onNext(LoginRestResponse response) {
+                        UserBean userBean = new UserBean();
+                        userBean.setTokenAccess(response.getAccessToken());
+                        userBean.setRefreshToken(response.getRefreshToken());
+                        sesionPreference.saveData("statusSesion", true);
+                        playerRepository.saveUser(userBean);
                         playerPresenter.onLoginSuccess();
                     }
                 });
     }
 
+
     public void sendEmail(String email) {
+        token = "Basic bW9iaWxlQ2xpZW50OnNlY3JldE1vYmlsZQ==";
+
+        RestorePasswordRequest restorePasswordRequest = new RestorePasswordRequest();
+        restorePasswordRequest.setUsuario(email);
+        TrackerService restService = RestServiceFactory.createRetrofitService(TrackerService.class,
+                TrackerService.SERVICE_ENDPOINT, token);
+        Scheduler scheduler = Schedulers.from(Executors.newSingleThreadExecutor());
+        restService.restorePassword(restorePasswordRequest)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(scheduler)
+                .subscribe(new Subscriber<Void>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        playerPresenter.onRecoverPasswordFailure();
+
+                        Log.e(TAG, "OSE|" + e.getMessage() + "Error en el servicio recuperar contaseña");
+                    }
+
+                    @Override
+                    public void onNext(Void response) {
+                        playerPresenter.onRecoverPasswordSuccess();
+                        Log.i(TAG, "OSE|" + "Servicio recuperar contaseña");
+
+                    }
+                });
     }
 
-    public void signUp(String name, String firstName, String email, String password, Boolean facebook) {
+    public void signUp(String name, String firstName, final String email, String password, final Boolean facebook) {
 
         SignUpRestRequest signUpRestRequest = new SignUpRestRequest();
-        if(facebook){
+        if (facebook) {
             signUpRestRequest.setActivo(true);
 
-        }else{
+        } else {
             signUpRestRequest.setActivo(false);
 
         }
@@ -100,13 +149,212 @@ public class PlayerInteractorImpl implements PlayerInteractor {
 
                     @Override
                     public void onError(Throwable e) {
+                        if (facebook) {
+                            login(email, "");
+                        } else {
+                            playerPresenter.onSignUpSuccesss();
+                        }
                         Log.e(TAG, "OSE|" + e.getMessage() + "Error en el servicio crear cuenta");
                     }
 
                     @Override
                     public void onNext(String response) {
+                        if (facebook) {
+                            login(email, "");
+                        } else {
+                            playerPresenter.onSignUpSuccesss();
+                        }
+                    }
+                });
+    }
 
-                        playerPresenter.onSignUpSuccesss();
+    public void closeSesion() {
+
+        token = playerRepository.getToken();
+
+        TrackerService restService = RestServiceFactory.createRetrofitService(TrackerService.class,
+                TrackerService.SERVICE_ENDPOINT, token);
+        Scheduler scheduler = Schedulers.from(Executors.newSingleThreadExecutor());
+        restService.closeSesionAccess(token)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(scheduler)
+                .subscribe(new Subscriber<Void>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Void response) {
+                        revoqueToken();
+                    }
+                });
+
+    }
+
+    public void revoqueToken() {
+
+        token = playerRepository.getRefreshToken();
+        TrackerService restService = RestServiceFactory.createRetrofitService(TrackerService.class,
+                TrackerService.SERVICE_ENDPOINT, token);
+        Scheduler scheduler = Schedulers.from(Executors.newSingleThreadExecutor());
+        restService.closeSesionRefresh(token)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(scheduler)
+                .subscribe(new Subscriber<Void>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Void response) {
+                        sesionPreference.saveData("statusSesion", false);
+                        playerRepository.deletePlayers();
+                        playerPresenter.onSesionClosed();
+
+                    }
+                });
+
+    }
+
+    public void refreshToken() {
+        token = "Basic bW9iaWxlQ2xpZW50OnNlY3JldE1vYmlsZQ==";
+
+        String tokenRefresh = playerRepository.getRefreshToken();
+        TrackerService restService = RestServiceFactory.createRetrofitService(TrackerService.class,
+                TrackerService.SERVICE_ENDPOINT, token);
+        Scheduler scheduler = Schedulers.from(Executors.newSingleThreadExecutor());
+        restService.refreshToken(tokenRefresh, "refresh_token")
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(scheduler)
+                .subscribe(new Subscriber<LoginRestResponse>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "OSE|" + e + "Error en el servicio refresh token");
+
+                    }
+
+                    @Override
+                    public void onNext(LoginRestResponse response) {
+
+                        playerRepository.updateToken(response.getAccessToken(),response.getRefreshToken());
+                    }
+                });
+    }
+
+    public void getPlayer() {
+
+        token = "bearer " + playerRepository.getToken();
+
+        TrackerService restService = RestServiceFactory.createRetrofitService(TrackerService.class,
+                TrackerService.SERVICE_ENDPOINT, token);
+        Scheduler scheduler = Schedulers.from(Executors.newSingleThreadExecutor());
+        restService.getPlayer()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(scheduler)
+                .subscribe(new Subscriber<UserRestResponse>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        Log.e(TAG, "OSE|" + e.getMessage() + "Error en el servicio obtener usuario");
+                    }
+
+                    @Override
+                    public void onNext(UserRestResponse response) {
+                        Persona persona = new Persona();
+                        persona = response.getPersona();
+                        UserBean userBean = new UserBean();
+                        userBean.setName(persona.getNombre());
+                        userBean.setEmail(persona.getCorreo());
+                        String[] parts = persona.getApaterno().split("null");
+                        String part = parts[0]; // 004
+
+                        userBean.setFirstName(part);
+                        //userBean.setPassword();
+                        //userBean.setEmail();
+
+                        playerPresenter.onGetPlayer(userBean);
+
+                    }
+                });
+    }
+
+    public void updatePlayerName(UserBean userBean, String apellidos, String nombre) {
+        UpdateUserRestRequest updateRestRequest = new UpdateUserRestRequest();
+        if (!userBean.getName().equals(nombre)) {
+            updateRestRequest.setNombre(nombre);
+        }
+        if (!userBean.getFirstName().equals(apellidos)) {
+            updateRestRequest.setApellidos(apellidos);
+        }
+        updatePlayer(updateRestRequest);
+
+    }
+
+    public void updatePlayerPassword(String contraseñaActual, String contraseñaNueva) {
+        UpdateUserRestRequest updateRestRequest = new UpdateUserRestRequest();
+        updateRestRequest.setPasswordAnterior(contraseñaActual);
+        updateRestRequest.setPassword(contraseñaNueva);
+        updatePlayer(updateRestRequest);
+    }
+
+    private void updatePlayer(UpdateUserRestRequest updateRestRequest) {
+        token = "bearer " + playerRepository.getToken();
+
+        TrackerService restService = RestServiceFactory.createRetrofitService(TrackerService.class,
+                TrackerService.SERVICE_ENDPOINT, token);
+        Scheduler scheduler = Schedulers.from(Executors.newSingleThreadExecutor());
+        restService.updatePlayer(updateRestRequest)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(scheduler)
+                .subscribe(new Subscriber<Void>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        Log.e(TAG, "OSE|" + e.getMessage() + "Error en el servicio actualizar usuario");
+                    }
+
+                    @Override
+                    public void onNext(Void response) {
+                        refreshToken();
+
+                        /*Persona persona = new Persona();
+                        persona = response.getPersona();
+                        UserBean userBeUserRestResponse responsean = new UserBean();
+                        userBean.setName(persona.getNombre());
+                        userBean.setEmail(persona.getCorreo());
+                        userBean.setFirstName(persona.getApaterno());
+                        //userBean.setPassword();
+                        //userBean.setEmail();
+*/
+                        //playerPresenter.onGetPlayer(userBean);
+
                     }
                 });
     }
@@ -115,13 +363,16 @@ public class PlayerInteractorImpl implements PlayerInteractor {
      * Repository to iteractor
      */
 
-    public void onSaveSuccess(){}
+    public void onSaveSuccess() {
+    }
 
-    public void onSaveError(){}
+    public void onSaveError() {
+    }
 
-    public void onGetError(){}
+    public void onGetError() {
+    }
 
-    public void setUser(UserBean userBean){
+    public void setUser(UserBean userBean) {
 
     }
 }

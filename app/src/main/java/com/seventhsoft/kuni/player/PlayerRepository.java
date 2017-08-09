@@ -11,4 +11,14 @@ public interface PlayerRepository {
     void saveUser(UserBean userBean);
 
     void getUser();
+
+    String getToken();
+
+    String getRefreshToken();
+
+    void deletePlayers();
+
+    void updateToken(String accessToken, String refreshToken);
+
+
 }

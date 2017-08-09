@@ -1,5 +1,7 @@
 package com.seventhsoft.kuni.player;
 
+import com.seventhsoft.kuni.model.UserBean;
+
 /**
  * Created by olibits on 4/07/17.
  */
@@ -14,7 +16,9 @@ public interface PlayerPresenter {
 
     void loginFacebook(String name, String userName);
 
-    void validatePassword(String password, CharSequence passwordRepeat);
+    void validatePasswordUpdate(String password, String nueva, String passwordRepeat);
+
+    void updatePlayerNames(UserBean userBean, String apellidos, String nombre);
 
     void onLoginFaiure();
 
@@ -29,4 +33,12 @@ public interface PlayerPresenter {
     void onRecoverPasswordSuccess();
 
     void onSignUpSuccesss();
+
+    void closeSesion();
+
+    void onSesionClosed();
+
+    void getPlayer();
+
+    void onGetPlayer(UserBean userBean);
 }

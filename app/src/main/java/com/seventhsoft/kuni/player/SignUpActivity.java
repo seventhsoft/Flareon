@@ -23,6 +23,7 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.seventhsoft.kuni.R;
 import com.seventhsoft.kuni.game.MainActivity;
+import com.seventhsoft.kuni.model.UserBean;
 
 import static android.content.ContentValues.TAG;
 
@@ -62,7 +63,7 @@ public class SignUpActivity extends AppCompatActivity implements PlayerView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         correctPassword = false;
-        playerPresenter = new PlayerPresenterImpl(this);
+        playerPresenter = new PlayerPresenterImpl(this, getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
         login = (TextView) findViewById(R.id.link_login);
         txtName = (EditText) findViewById(R.id.txtName);
@@ -119,7 +120,7 @@ public class SignUpActivity extends AppCompatActivity implements PlayerView {
             protected void onCurrentProfileChanged(
                     final Profile oldProfile,
                     final Profile currentProfile) {
-                if(currentProfile!=null) {
+                if (currentProfile != null) {
                     Log.i(TAG, "OSE|" + " facebook current profile " +
                             currentProfile.getFirstName() + " " +
                             currentProfile.getId());
@@ -170,13 +171,13 @@ public class SignUpActivity extends AppCompatActivity implements PlayerView {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    playerPresenter.validateSignUp(
-                            txtName.getText().toString(),
-                            txtFirstName.getText().toString(),
-                            txtEmail.getText().toString(),
-                            txtPassword.getText().toString(),
-                            txtPasswordRepeat.getText().toString(),
-                            false);
+                playerPresenter.validateSignUp(
+                        txtName.getText().toString(),
+                        txtFirstName.getText().toString(),
+                        txtEmail.getText().toString(),
+                        txtPassword.getText().toString(),
+                        txtPasswordRepeat.getText().toString(),
+                        false);
 
                 //txtPasswordRepeat);
             }
@@ -270,7 +271,7 @@ public class SignUpActivity extends AppCompatActivity implements PlayerView {
         txtPassword.setError(getString(R.string.error_contraseña));
     }
 
-    public void setPasswordFormatError(){
+    public void setPasswordFormatError() {
         txtPassword.setError(getString(R.string.error_contraseña_formato));
     }
 
@@ -312,6 +313,10 @@ public class SignUpActivity extends AppCompatActivity implements PlayerView {
     }
 
     public void setSignUpSuccesss() {
+        setLogin();
 
+    }
+
+    public void setPlayer(final UserBean usuario) {
     }
 }
