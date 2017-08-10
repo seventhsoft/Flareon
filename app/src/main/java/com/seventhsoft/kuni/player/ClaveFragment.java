@@ -1,14 +1,11 @@
 package com.seventhsoft.kuni.player;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,9 +15,9 @@ import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.seventhsoft.kuni.R;
-import com.seventhsoft.kuni.model.UserBean;
+import com.seventhsoft.kuni.models.UserBean;
 import com.seventhsoft.kuni.utils.ToolbarFragment;
 
 public class ClaveFragment extends Fragment implements PlayerView {

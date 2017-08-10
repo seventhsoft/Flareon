@@ -1,8 +1,7 @@
-package com.seventhsoft.kuni.model.modelsrest;
+package com.seventhsoft.kuni.models.modelsrest;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.seventhsoft.kuni.game.Concurso;
 
 import java.util.List;
 

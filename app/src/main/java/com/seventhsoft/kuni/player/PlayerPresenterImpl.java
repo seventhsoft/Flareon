@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.seventhsoft.kuni.game.MainView;
-import com.seventhsoft.kuni.model.UserBean;
+import com.seventhsoft.kuni.models.UserBean;
 
 import static android.content.ContentValues.TAG;
 

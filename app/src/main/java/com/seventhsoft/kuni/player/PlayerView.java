@@ -1,6 +1,6 @@
 package com.seventhsoft.kuni.player;
 
-import com.seventhsoft.kuni.model.UserBean;
+import com.seventhsoft.kuni.models.UserBean;
 
 /**
  * Created by olibits on 4/07/17.

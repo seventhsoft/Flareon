@@ -1,11 +1,11 @@
 package com.seventhsoft.kuni.services;
 
-import com.seventhsoft.kuni.model.modelsrest.LoginRestResponse;
-import com.seventhsoft.kuni.model.modelsrest.RefreshTokenRequest;
-import com.seventhsoft.kuni.model.modelsrest.RestorePasswordRequest;
-import com.seventhsoft.kuni.model.modelsrest.UpdateUserRestRequest;
-import com.seventhsoft.kuni.model.modelsrest.UserRestResponse;
-import com.seventhsoft.kuni.model.modelsrest.SignUpRestRequest;
+import com.seventhsoft.kuni.models.modelsrest.DashboardRestReponse;
+import com.seventhsoft.kuni.models.modelsrest.LoginRestResponse;
+import com.seventhsoft.kuni.models.modelsrest.RestorePasswordRequest;
+import com.seventhsoft.kuni.models.modelsrest.UpdateUserRestRequest;
+import com.seventhsoft.kuni.models.modelsrest.UserRestResponse;
+import com.seventhsoft.kuni.models.modelsrest.SignUpRestRequest;
 
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -64,7 +64,6 @@ public interface TrackerService {
     Observable<LoginRestResponse> refreshToken(@Field("refresh_token") String refreshToken,
                                                @Field("grant_type") String grandType);
 
-
     /**
      * Actualizar usuario
      */
@@ -80,5 +79,7 @@ public interface TrackerService {
     @POST("/lfs/tokens/revokeRefreshToken/{refresh_token}")
     Observable<Void> closeSesionRefresh(@Path("refresh_token") String refreshToken);
 
+    @GET("lfs/jugador/concurso")
+    Observable<DashboardRestReponse> getDashboard();
 
 }

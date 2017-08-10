@@ -3,8 +3,8 @@ package com.seventhsoft.kuni;
 import android.app.Application;
 import android.content.Intent;
 
-import com.seventhsoft.kuni.model.modelsrealm.KuniFieldsModule;
-import com.seventhsoft.kuni.model.modelsrealm.MyMigration;
+import com.seventhsoft.kuni.models.modelsrealm.KuniFieldsModule;
+import com.seventhsoft.kuni.models.modelsrealm.MyMigration;
 import com.seventhsoft.kuni.utils.ConexionInternetService;
 
 import io.realm.Realm;

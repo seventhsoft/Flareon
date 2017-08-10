@@ -1,4 +1,4 @@
-package com.seventhsoft.kuni.model.modelsrealm;
+package com.seventhsoft.kuni.models.modelsrealm;
 
 import io.realm.DynamicRealm;
 import io.realm.RealmMigration;

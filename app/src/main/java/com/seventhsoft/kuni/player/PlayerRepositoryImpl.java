@@ -2,8 +2,8 @@ package com.seventhsoft.kuni.player;
 
 import android.util.Log;
 
-import com.seventhsoft.kuni.model.UserBean;
-import com.seventhsoft.kuni.model.modelsrealm.Usuario;
+import com.seventhsoft.kuni.models.UserBean;
+import com.seventhsoft.kuni.models.modelsrealm.Usuario;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -15,14 +15,11 @@ import static android.content.ContentValues.TAG;
  * Created by olibits on 21/07/17.
  */
 
-public class PlayerRepositoryImpl implements PlayerRepository {
+public class PlayerRepositoryImpl  {
 
     private static Realm realm;
-    private PlayerInteractor playerInteractor;
 
-    public PlayerRepositoryImpl(PlayerInteractor playerInteractor) {
-        this.playerInteractor = playerInteractor;
-
+    public PlayerRepositoryImpl() {
 
     }
 

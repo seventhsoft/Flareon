@@ -26,7 +26,7 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.seventhsoft.kuni.game.MainActivity;
 import com.seventhsoft.kuni.R;
-import com.seventhsoft.kuni.model.UserBean;
+import com.seventhsoft.kuni.models.UserBean;
 
 import org.json.JSONObject;
 

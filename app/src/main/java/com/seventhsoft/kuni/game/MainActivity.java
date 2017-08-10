@@ -3,7 +3,6 @@ package com.seventhsoft.kuni.game;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
-import android.support.transition.Transition;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -17,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -25,7 +23,6 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.seventhsoft.kuni.R;
-import com.seventhsoft.kuni.player.CuentaFragment;
 import com.seventhsoft.kuni.player.Login;
 import com.seventhsoft.kuni.player.PlayerPresenter;
 import com.seventhsoft.kuni.player.PlayerPresenterImpl;
@@ -38,7 +35,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 
 
-public class MainActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener, MainView {
+public class MainActivity extends AppCompatActivity implements RecyclerViewAdapter.ItemClickListener, MainView {
 
 
     private DrawerLayout drawerLayout;
@@ -51,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
     private ArrayList arrayList;
     private TextView txtConcurso;
 
-    MyRecyclerViewAdapter adapter;
+    RecyclerViewAdapter adapter;
 
     private SesionPreference sesionPreference;
 
@@ -97,9 +94,10 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         setContentView(R.layout.activity_main);
         playerPresenter = new PlayerPresenterImpl(this, getApplicationContext());
         gamePresenter = new GamePresenterImpl(this, getApplicationContext());
+        gamePresenter.getDashboard();
         setDrawer();
         setToolbar();
-
+        setDashboard();
         //gridView = (GridView) findViewById(R.id.gridView);
 
         sesionPreference = SesionPreference.getInstance(context);
@@ -113,8 +111,8 @@ public class MainActivity extends AppCompatActivity implements MyRecyclerViewAda
         txtConcurso = (TextView) findViewById(R.id.txtConcurso);
         txtConcurso.setText("El concurso termina el 31/07/2017");
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.gridView);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        adapter = new MyRecyclerViewAdapter(this, niveles, series, premios, gridViewImages);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        adapter = new RecyclerViewAdapter(this, niveles, series, premios, gridViewImages);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
     }

@@ -1,6 +1,5 @@
 package com.seventhsoft.kuni.game;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +13,61 @@ import com.seventhsoft.kuni.R;
  * Created by olibits on 16/07/17.
  */
 
-public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RepositoryViewHolder> {
 
-    private String[] titulo;
+    private final GamePresenter gamePresenter;
+
+    public RecyclerViewAdapter (GamePresenter gamePresenter){
+        this.gamePresenter = gamePresenter;
+    }
+
+
+    @Override
+    public RepositoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new RepositoryViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.layout_grid_view, parent, false));
+    }
+
+    @Override
+    public void onBindViewHolder(RepositoryViewHolder holder, int position) {
+        gamePresenter.onBindRepositoryRowViewAtPosition(position, holder);
+
+    }
+
+    @Override
+    public int getItemCount() {
+
+        return 0;//gamePresenter.getRepositoriesRowsCount();
+    }
+
+
+
+    public class RepositoryViewHolder extends RecyclerView.ViewHolder implements RepositoryRowView {
+
+        public TextView txtTitulo;
+        public TextView txtSubTitulo;
+        public TextView txtSupportText;
+        public ImageView imageView;
+
+        public RepositoryViewHolder(View itemView) {
+            super(itemView);
+            txtTitulo = (TextView) itemView.findViewById(R.id.gridview_text_title);
+            txtSubTitulo = (TextView) itemView.findViewById(R.id.gridview_subText);
+            txtSupportText = (TextView) itemView.findViewById(R.id.gridview_support_text);
+            imageView = (ImageView) itemView.findViewById(R.id.gridview_image);
+        }
+
+        public void setTitle(String title){}
+
+        public void setSubTitle(String subTitle){}
+
+        public void setSupportText(String supportText){}
+
+        public void setImage(int resourse){}
+    }
+
+
+    /*private String[] titulo;
     private String[] subTitulo;
     private String[] supportText;
     private int[] Imageid;
@@ -24,7 +75,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     private ItemClickListener mClickListener;
 
     // data is passed into the constructor
-    public MyRecyclerViewAdapter(Context context, String[] titulo, String[] subTitulo,
+    public RecyclerViewAdapter(Context context, String[] titulo, String[] subTitulo,
                                  String[] supportText, int[] Imageid) {
         this.mInflater = LayoutInflater.from(context);
         this.Imageid = Imageid;
@@ -95,5 +146,6 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
+    */
 }
 

@@ -9,4 +9,8 @@ public interface GamePresenter {
     void getDashboard();
 
     void setDashboard();
+
+    void onBindRepositoryRowViewAtPosition(int position, RecyclerViewAdapter.RepositoryViewHolder holder);
+
+    void getRepositoriesRowsCount();
 }

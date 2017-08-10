@@ -1,4 +1,4 @@
-package com.seventhsoft.kuni.model;
+package com.seventhsoft.kuni.models;
 
 /**
  * Created by olibits on 24/07/17.

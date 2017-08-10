@@ -1,6 +1,4 @@
-package com.seventhsoft.kuni.model.modelsrealm;
-
-import java.util.Date;
+package com.seventhsoft.kuni.models.modelsrealm;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;

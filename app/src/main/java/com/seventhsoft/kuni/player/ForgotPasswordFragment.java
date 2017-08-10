@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.seventhsoft.kuni.R;
-import com.seventhsoft.kuni.model.UserBean;
+import com.seventhsoft.kuni.models.UserBean;
 
 public class ForgotPasswordFragment extends Fragment implements PlayerView {
 

@@ -1,4 +1,4 @@
-package com.seventhsoft.kuni.model.modelsrest;
+package com.seventhsoft.kuni.models.modelsrest;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -7,22 +7,17 @@ import com.google.gson.annotations.SerializedName;
  * Created by olibits on 20/07/17.
  */
 
-public class SignUpRestResponse {
+public class UserRestResponse {
+
     @SerializedName("idUsuario")
     @Expose
     private Integer idUsuario;
     @SerializedName("usuario")
     @Expose
     private String usuario;
-    @SerializedName("password")
-    @Expose
-    private Object password;
     @SerializedName("activo")
     @Expose
     private Boolean activo;
-    @SerializedName("fechaRegistro")
-    @Expose
-    private Object fechaRegistro;
     @SerializedName("persona")
     @Expose
     private Persona persona;
@@ -49,28 +44,12 @@ public class SignUpRestResponse {
         this.usuario = usuario;
     }
 
-    public Object getPassword() {
-        return password;
-    }
-
-    public void setPassword(Object password) {
-        this.password = password;
-    }
-
     public Boolean getActivo() {
         return activo;
     }
 
     public void setActivo(Boolean activo) {
         this.activo = activo;
-    }
-
-    public Object getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(Object fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
     }
 
     public Persona getPersona() {
@@ -96,4 +75,5 @@ public class SignUpRestResponse {
     public void setFacebook(Boolean facebook) {
         this.facebook = facebook;
     }
+
 }

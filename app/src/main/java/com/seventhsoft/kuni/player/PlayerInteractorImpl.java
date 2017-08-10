@@ -3,14 +3,14 @@ package com.seventhsoft.kuni.player;
 import android.content.Context;
 import android.util.Log;
 
-import com.seventhsoft.kuni.model.UserBean;
-import com.seventhsoft.kuni.model.modelsrest.LoginRestRequest;
-import com.seventhsoft.kuni.model.modelsrest.LoginRestResponse;
-import com.seventhsoft.kuni.model.modelsrest.Persona;
-import com.seventhsoft.kuni.model.modelsrest.RestorePasswordRequest;
-import com.seventhsoft.kuni.model.modelsrest.UpdateUserRestRequest;
-import com.seventhsoft.kuni.model.modelsrest.UserRestResponse;
-import com.seventhsoft.kuni.model.modelsrest.SignUpRestRequest;
+import com.seventhsoft.kuni.models.UserBean;
+import com.seventhsoft.kuni.models.modelsrest.LoginRestRequest;
+import com.seventhsoft.kuni.models.modelsrest.LoginRestResponse;
+import com.seventhsoft.kuni.models.modelsrest.Persona;
+import com.seventhsoft.kuni.models.modelsrest.RestorePasswordRequest;
+import com.seventhsoft.kuni.models.modelsrest.UpdateUserRestRequest;
+import com.seventhsoft.kuni.models.modelsrest.UserRestResponse;
+import com.seventhsoft.kuni.models.modelsrest.SignUpRestRequest;
 import com.seventhsoft.kuni.services.RestServiceFactory;
 import com.seventhsoft.kuni.services.TrackerService;
 
@@ -30,13 +30,13 @@ public class PlayerInteractorImpl implements PlayerInteractor {
 
     private PlayerPresenter playerPresenter;
     private String token;
-    private PlayerRepository playerRepository;
+    private PlayerRepositoryImpl playerRepository;
     private SesionPreference sesionPreference;
 
 
     public PlayerInteractorImpl(PlayerPresenter playerPresenter, Context context) {
         this.playerPresenter = playerPresenter;
-        this.playerRepository = new PlayerRepositoryImpl(this);
+        this.playerRepository = new PlayerRepositoryImpl();
         sesionPreference = SesionPreference.getInstance(context);
     }
 
