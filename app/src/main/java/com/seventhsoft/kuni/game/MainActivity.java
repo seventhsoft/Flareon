@@ -23,6 +23,8 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.seventhsoft.kuni.R;
+import com.seventhsoft.kuni.models.modelsrest.Concurso;
+import com.seventhsoft.kuni.models.modelsrest.DashboardRestReponse;
 import com.seventhsoft.kuni.player.Login;
 import com.seventhsoft.kuni.player.PlayerPresenter;
 import com.seventhsoft.kuni.player.PlayerPresenterImpl;
@@ -35,7 +37,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 
 
-public class MainActivity extends AppCompatActivity implements RecyclerViewAdapter.ItemClickListener, MainView {
+public class MainActivity extends AppCompatActivity implements MainView {
 
 
     private DrawerLayout drawerLayout;
@@ -97,7 +99,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         gamePresenter.getDashboard();
         setDrawer();
         setToolbar();
-        setDashboard();
         //gridView = (GridView) findViewById(R.id.gridView);
 
         sesionPreference = SesionPreference.getInstance(context);
@@ -107,13 +108,13 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         setBottomNavigation();
     }
 
-    public void setDashboard() {
+    public void setDashboard(String fecha) {
         txtConcurso = (TextView) findViewById(R.id.txtConcurso);
-        txtConcurso.setText("El concurso termina el 31/07/2017");
+        txtConcurso.setText(getString(R.string.dias_restantes, fecha));
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.gridView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        adapter = new RecyclerViewAdapter(this, niveles, series, premios, gridViewImages);
-        adapter.setClickListener(this);
+        adapter = new RecyclerViewAdapter(gamePresenter);
+        //adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -126,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
     }
 
-    @Override
+    // @Override
     public void onItemClick(View view, int position) {
         /*Log.i("OSE", "You clicked number " + adapter.getItem(position) + ", which is at cell position " + position);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

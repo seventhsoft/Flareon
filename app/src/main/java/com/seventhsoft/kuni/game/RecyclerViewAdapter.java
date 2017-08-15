@@ -17,7 +17,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private final GamePresenter gamePresenter;
 
-    public RecyclerViewAdapter (GamePresenter gamePresenter){
+    public RecyclerViewAdapter(GamePresenter gamePresenter) {
         this.gamePresenter = gamePresenter;
     }
 
@@ -37,9 +37,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public int getItemCount() {
 
-        return 0;//gamePresenter.getRepositoriesRowsCount();
+        return 5;//gamePresenter.getRepositoriesRowsCount();
     }
-
 
 
     public class RepositoryViewHolder extends RecyclerView.ViewHolder implements RepositoryRowView {
@@ -48,22 +47,31 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public TextView txtSubTitulo;
         public TextView txtSupportText;
         public ImageView imageView;
+        public ImageView imageRecompensa;
+
 
         public RepositoryViewHolder(View itemView) {
             super(itemView);
-            txtTitulo = (TextView) itemView.findViewById(R.id.gridview_text_title);
-            txtSubTitulo = (TextView) itemView.findViewById(R.id.gridview_subText);
-            txtSupportText = (TextView) itemView.findViewById(R.id.gridview_support_text);
-            imageView = (ImageView) itemView.findViewById(R.id.gridview_image);
+            txtTitulo = (TextView) itemView.findViewById(R.id.txtNivel);
+            txtSubTitulo = (TextView) itemView.findViewById(R.id.txtEstado);
+            txtSupportText = (TextView) itemView.findViewById(R.id.txtRecompensas);
+            imageView = (ImageView) itemView.findViewById(R.id.imageView);
+            imageRecompensa = (ImageView) itemView.findViewById(R.id.recompensa);
         }
 
-        public void setTitle(String title){}
+        public void setTitle(String title) {
+            txtTitulo.setText(title);
+        }
 
-        public void setSubTitle(String subTitle){}
+        public void setSubTitle(String subTitle) {
+        }
 
-        public void setSupportText(String supportText){}
+        public void setSupportText(String supportText) {
+        }
 
-        public void setImage(int resourse){}
+        public void setImage(int resourse) {
+
+        }
     }
 
 

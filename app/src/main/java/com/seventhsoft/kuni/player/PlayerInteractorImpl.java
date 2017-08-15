@@ -342,7 +342,7 @@ public class PlayerInteractorImpl implements PlayerInteractor {
 
                     @Override
                     public void onNext(Void response) {
-                        refreshToken();
+                        //refreshToken();
 
                         /*Persona persona = new Persona();
                         persona = response.getPersona();

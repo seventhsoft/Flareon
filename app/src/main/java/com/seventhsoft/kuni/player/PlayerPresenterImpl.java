@@ -180,6 +180,7 @@ public class PlayerPresenterImpl implements PlayerPresenter {
     }
 
     public void closeSesion() {
+
         playerInteractor.closeSesion();
     }
 

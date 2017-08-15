@@ -58,6 +58,7 @@
     <string name="lbl_ajustes">Ajustes</string>
     <string name="lbl_salir">Salir</string>
     <string name="password_repeat">La contraseña no coincide</string>
+    <string name="dias_restantes">Restan %s</string>
 
     <!--algo-->
     <string name="lbl_no_password">¿Olvidaste tu contraseña?</string>
