@@ -118,11 +118,25 @@ public class MainActivity extends AppCompatActivity implements MainView {
         recyclerView.setAdapter(adapter);
     }
 
+    /**
+     * Set the progress time
+     */
+    private void setProgressTime() {
+        FragmentManager fm = MainActivity.this.getSupportFragmentManager();
+        Fragment fragment;
+        //if (fragment == null) {
+        fragment = new ProgressTimeFragment();
+        fm.beginTransaction()
+                .add(R.id.toolbar_fragment, fragment)
+                .commit();
+        //}
+    }
+
     private void setBottomNavigation() {
         Fragment fragment = new BottomNavigationFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment, "bottom_navegation");
-        transaction.addToBackStack("cuenta");
+        transaction.addToBackStack("bottom_navegation");
         transaction.commit();
 
     }

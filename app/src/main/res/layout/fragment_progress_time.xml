@@ -1,0 +1,14 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.seventhsoft.kuni.game.ProgressTimeFragment">
+
+    <com.timqi.sectorprogressview.SectorProgressView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/spv"
+        app:bgColor="#e5e5e5"
+        app:fgColor="#ff765c"
+        app:percent="25"
+        app:startAngle="0" />
+
+</FrameLayout>
