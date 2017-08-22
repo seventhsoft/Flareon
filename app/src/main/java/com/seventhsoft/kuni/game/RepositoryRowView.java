@@ -6,11 +6,15 @@ package com.seventhsoft.kuni.game;
 
 public interface RepositoryRowView {
 
-    void setTitle(String title);
+    void setNivel(String nivel);
 
-    void setSubTitle(String subTitle);
+    void setEstadoNivel(String estadoNivel);
 
-    void setSupportText(String supportText);
+    void setPremiosDisponibles(String supportText);
+
+    void setSeries(int series, int serieActual);
+
+    void setPremiosGanados(boolean premiosGanados);
 
     void setImage(int starCount);
 }

@@ -1,31 +1,39 @@
-package com.seventhsoft.kuni.models.modelsrealm;
+package com.seventhsoft.kuni.models.modelsrest;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-import io.realm.RealmList;
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
-
 /**
- * Created by olibits on 12/08/17.
+ * Created by olibits on 22/08/17.
  */
 
-public class Pregunta extends RealmObject{
-
-    @PrimaryKey
-    private int idPregunta;
-
+public class PreguntaRest {
+    @SerializedName("idPregunta")
+    @Expose
+    private Integer idPregunta;
+    @SerializedName("descripcion")
+    @Expose
     private String descripcion;
+    @SerializedName("ruta")
+    @Expose
     private String ruta;
+    @SerializedName("clase")
+    @Expose
     private String clase;
+    @SerializedName("activo")
+    @Expose
     private Boolean activo;
-    private RealmList<Respuesta> respuestaList = null;
+    @SerializedName("respuestaList")
+    @Expose
+    private List<RespuestaRest> respuestaList = null;
 
-    public int getIdPregunta() {
+    public Integer getIdPregunta() {
         return idPregunta;
     }
 
-    public void setIdPregunta(int idPregunta) {
+    public void setIdPregunta(Integer idPregunta) {
         this.idPregunta = idPregunta;
     }
 
@@ -61,11 +69,11 @@ public class Pregunta extends RealmObject{
         this.activo = activo;
     }
 
-    public RealmList<Respuesta> getRespuestaList() {
+    public List<RespuestaRest> getRespuestaList() {
         return respuestaList;
     }
 
-    public void setRespuestaList(RealmList<Respuesta> respuestaList) {
+    public void setRespuestaList(List<RespuestaRest> respuestaList) {
         this.respuestaList = respuestaList;
     }
 }

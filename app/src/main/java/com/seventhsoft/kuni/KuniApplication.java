@@ -1,6 +1,7 @@
 package com.seventhsoft.kuni;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 
 import com.seventhsoft.kuni.models.modelsrealm.KuniFieldsModule;
@@ -15,9 +16,13 @@ import io.realm.RealmConfiguration;
  */
 
 public class KuniApplication extends Application {
+
+    private static Context context;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        context = getApplicationContext();
 
         /**
          * Realm configuracion
@@ -43,4 +48,9 @@ public class KuniApplication extends Application {
 
         Realm.setDefaultConfiguration(realmConfiguration);
     }
+
+    public static Context getContext() {
+        return context;
+    }
+
 }

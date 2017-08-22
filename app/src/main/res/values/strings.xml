@@ -17,7 +17,6 @@
     <string name="btn_enviar">Enviar</string>
     <string name="btn_continuar">Continuar</string>
 
-
     <!-- Hints -->
     <string name="contraseña">Contraseña</string>
 
@@ -35,23 +34,26 @@
     <string name="contraseña_repetir">Captura nuevamente tu contraseña</string>
     <string name="contraseña_actual_repetir">Captura tu contraseña actual</string>
 
-
-    <!--labels-->
+    <!--labels
+    <string name="lbl_series">%1d$/%2d$</string>
+    -->
     <string name="lbl_correo">Correo</string>
     <string name="lbl_contraseña">Contraseña</string>
     <string name="lbl_nombre">Nombre(s)</string>
 
     <string name="lbl_apellido">Apellido(s)</string>
     <string name="lbl_contraseña_confirmar">Confirmar contraseña</string>
+    <string name="lbl_series_progreso">%1$d/%2$d</string>
+
 
     <string name="lbl_concurso">El concurso finaliza el %s</string>
     <string name="lbl_nivel">Nivel %d</string>
-    <string name="lbl_series">Restan %d series</string>
-    <string name="lbl_premios_disponibles">Aún hay %d premios</string>
+
+    <string name="lbl_premios_disponibles">Hay %d premios disponibles</string>
     <string name="lbl_premios_agotados">Premios agotados</string>
-
+    <string name="lbl_estado_nivel_terminado">¡Terminado!</string>
+    <string name="lbl_estado_nivel_actual">Te encuentras aquí</string>
     <string name="lbl_cuenta">Mi cuenta</string>
-
     <string name="lbl_inicio">Inicio</string>
     <string name="lbl_premios">Premios</string>
     <string name="lbl_mis_premios">Mis premios</string>
@@ -79,9 +81,5 @@
     <string name="error_no_registrado">El correoUsuario electrónico no está registrado, favor de verificarlo</string>
     <string name="no_conexion">No cuenta con conexión a internet</string>
     <string name="error_exception">Algo salió mal, inténtelo más tarde</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
 
 </resources>

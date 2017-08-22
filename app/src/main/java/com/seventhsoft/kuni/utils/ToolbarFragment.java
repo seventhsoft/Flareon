@@ -53,6 +53,7 @@ public class ToolbarFragment extends Fragment {
         activity.getSupportActionBar().setTitle(getActivity().getTitle());
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         activity.getSupportActionBar().setHomeButtonEnabled(true);
+
         int bandera = getBandera();
         switch (bandera) {
             case 0:

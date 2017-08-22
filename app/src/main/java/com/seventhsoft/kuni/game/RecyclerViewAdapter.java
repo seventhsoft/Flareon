@@ -1,5 +1,6 @@
 package com.seventhsoft.kuni.game;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.seventhsoft.kuni.KuniApplication;
 import com.seventhsoft.kuni.R;
 
 /**
@@ -43,34 +46,54 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class RepositoryViewHolder extends RecyclerView.ViewHolder implements RepositoryRowView {
 
-        public TextView txtTitulo;
-        public TextView txtSubTitulo;
-        public TextView txtSupportText;
-        public ImageView imageView;
-        public ImageView imageRecompensa;
+        private TextView txtNivel;
+        private TextView txtEstado;
+        private TextView txtRecompensas;
+        private ImageView imageView;
+        private ImageView imageRecompensa;
+        private TextView txtSeries;
+        private CardView cardView;
 
 
         public RepositoryViewHolder(View itemView) {
             super(itemView);
-            txtTitulo = (TextView) itemView.findViewById(R.id.txtNivel);
-            txtSubTitulo = (TextView) itemView.findViewById(R.id.txtEstado);
-            txtSupportText = (TextView) itemView.findViewById(R.id.txtRecompensas);
+            txtNivel = (TextView) itemView.findViewById(R.id.txtNivel);
+            txtEstado = (TextView) itemView.findViewById(R.id.txtEstado);
+            txtRecompensas = (TextView) itemView.findViewById(R.id.txtRecompensas);
+            txtSeries = (TextView) itemView.findViewById(R.id.txtSeries);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
             imageRecompensa = (ImageView) itemView.findViewById(R.id.recompensa);
+            cardView = (CardView) itemView.findViewById(R.id.cardView);
+            int width = ((itemView.getResources().getDisplayMetrics().widthPixels) / 2) - 10;
+            cardView.setMinimumWidth(width);
         }
 
-        public void setTitle(String title) {
-            txtTitulo.setText(title);
+        public void setNivel(String title) {
+            txtNivel.setText(title);
         }
 
-        public void setSubTitle(String subTitle) {
+        public void setEstadoNivel(String subTitle) {
+            txtEstado.setText(subTitle);
         }
 
-        public void setSupportText(String supportText) {
+        public void setPremiosGanados(boolean premiosGanados) {
+            if (premiosGanados) {
+                imageRecompensa.setVisibility(View.VISIBLE);
+            } else {
+                imageRecompensa.setVisibility(View.GONE);
+            }
+        }
+
+        public void setPremiosDisponibles(String supportText) {
+            txtRecompensas.setText(supportText);
+        }
+
+        public void setSeries(int series, int serieActual) {
+            txtSeries.setText(String.format(KuniApplication.getContext().getString(R.string.lbl_series_progreso), serieActual, series));
         }
 
         public void setImage(int resourse) {
-
+            Glide.with(KuniApplication.getContext()).load(resourse).into(imageView);
         }
     }
 
@@ -103,9 +126,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // binds the data to the textview in each cell
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.txtTitulo.setText(titulo[position]);
-        holder.txtSubTitulo.setText(subTitulo[position]);
-        holder.txtSupportText.setText(supportText[position]);
+        holder.txtNivel.setText(titulo[position]);
+        holder.txtEstado.setText(subTitulo[position]);
+        holder.txtRecompensas.setText(supportText[position]);
         holder.imageView.setImageResource(Imageid[position]);
     }
 
@@ -119,17 +142,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public TextView txtTitulo;
-        public TextView txtSubTitulo;
-        public TextView txtSupportText;
+        public TextView txtNivel;
+        public TextView txtEstado;
+        public TextView txtRecompensas;
         public ImageView imageView;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
-            txtTitulo = (TextView) itemView.findViewById(R.id.gridview_text_title);
-            txtSubTitulo = (TextView) itemView.findViewById(R.id.gridview_subText);
-            txtSupportText = (TextView) itemView.findViewById(R.id.gridview_support_text);
+            txtNivel = (TextView) itemView.findViewById(R.id.gridview_text_title);
+            txtEstado = (TextView) itemView.findViewById(R.id.gridview_subText);
+            txtRecompensas = (TextView) itemView.findViewById(R.id.gridview_support_text);
             imageView = (ImageView) itemView.findViewById(R.id.gridview_image);
             itemView.setOnClickListener(this);
         }

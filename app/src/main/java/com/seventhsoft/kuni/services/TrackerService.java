@@ -79,7 +79,16 @@ public interface TrackerService {
     @POST("/lfs/tokens/revokeRefreshToken/{refresh_token}")
     Observable<Void> closeSesionRefresh(@Path("refresh_token") String refreshToken);
 
+    /**
+     * Get consurso
+     */
     @GET("lfs/jugador/concurso")
     Observable<DashboardRestReponse> getDashboard();
+
+    /**
+     * Get serie
+     */
+    @GET("/lfs/concurso/serie")
+    Observable<UserRestResponse> getSerie(int idJugadorNivel);
 
 }

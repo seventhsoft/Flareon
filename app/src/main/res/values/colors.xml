@@ -5,6 +5,11 @@
     <color name="primary_darker">#CC1D1D</color>
     <color name="accent">#FFFFFF</color>
 
+    <color name="accent_rosa">#D1308F</color>
+    <color name="verde">#8EBC3E</color>
+    <color name="bottom_navegation">#ECECEC</color>
+
+    <color name="background">#F1F5F6</color>
     <color name="black">#000000</color>
     <color name="jet">#222222</color>
     <color name="oil">#333333</color>

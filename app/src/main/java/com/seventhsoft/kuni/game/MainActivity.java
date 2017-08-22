@@ -2,6 +2,8 @@ package com.seventhsoft.kuni.game;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Rect;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,11 +14,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
-
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
@@ -30,6 +32,7 @@ import com.seventhsoft.kuni.player.PlayerPresenter;
 import com.seventhsoft.kuni.player.PlayerPresenterImpl;
 import com.seventhsoft.kuni.player.SesionPreference;
 import com.seventhsoft.kuni.player.UserActivity;
+import com.seventhsoft.kuni.utils.ItemOffsetDecoration;
 import com.seventhsoft.kuni.utils.ToolbarFragment;
 
 import org.json.JSONException;
@@ -58,37 +61,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     private GamePresenter gamePresenter;
 
-    public static String[] niveles = {
-            "Nivel 1",
-            "Nivel 2",
-            "Nivel 3",
-            "Nivel 4",
-            "Nivel 5",
-    };
-
-    public static String[] series = {
-            "0/10 series",
-            "10/25 series",
-            "50/50 series",
-            "80/80 series",
-            "120/120 series",
-    };
-
-    public static String[] premios = {
-            "Premios agotados",
-            "Restan 2 premios",
-            "Restan 30 premios",
-            "Restan 20 premios",
-            "Restan 5 premios",
-    };
-
-    public static int[] gridViewImages = {
-            R.drawable.ic_account_black_24dp,
-            R.drawable.ic_calendario_azul_24dp,
-            R.drawable.ic_comparable_agregar_black_24dp,
-            R.drawable.ic_comparable_filtro_azul_24dp,
-            R.drawable.ic_comparable_renta_azul_24dp,
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,14 +80,25 @@ public class MainActivity extends AppCompatActivity implements MainView {
         setBottomNavigation();
     }
 
-    public void setDashboard(String fecha) {
-        txtConcurso = (TextView) findViewById(R.id.txtConcurso);
-        txtConcurso.setText(getString(R.string.dias_restantes, fecha));
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.gridView);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        adapter = new RecyclerViewAdapter(gamePresenter);
-        //adapter.setClickListener(this);
-        recyclerView.setAdapter(adapter);
+    public void setDashboard(final String fecha) {
+        MainActivity.this.runOnUiThread(new Runnable() {
+            public void run() {
+                txtConcurso = (TextView) findViewById(R.id.txtConcurso);
+                txtConcurso.setText(getString(R.string.dias_restantes, fecha));
+                RecyclerView recyclerView = (RecyclerView) findViewById(R.id.gridView);
+                recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),
+                        2, //number of grid columns
+                        GridLayoutManager.VERTICAL,
+                        false));
+
+                recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+
+                adapter = new RecyclerViewAdapter(gamePresenter);
+
+                //adapter.setClickListener(this);
+                recyclerView.setAdapter(adapter);
+            }
+        });
     }
 
     /**
@@ -284,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     private void setDialog() {
         /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.cerrar_sesion);
+        builder.setNivel(R.string.cerrar_sesion);
         builder.setMessage(R.string.confirmacion_cerrar_sesion);
         builder.setPositiveButton(R.string.btn_aceptar, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
@@ -341,5 +324,49 @@ public class MainActivity extends AppCompatActivity implements MainView {
         setLogin();
     }
 
+    /**
+     * RecyclerView item decoration - give equal margin around grid item
+     */
+    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
+        private int spanCount;
+        private int spacing;
+        private boolean includeEdge;
+
+        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
+            this.spanCount = spanCount;
+            this.spacing = spacing;
+            this.includeEdge = includeEdge;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            int position = parent.getChildAdapterPosition(view); // item position
+            int column = position % spanCount; // item column
+
+            if (includeEdge) {
+                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
+                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
+
+                if (position < spanCount) { // top edge
+                    outRect.top = spacing;
+                }
+                outRect.bottom = spacing; // item bottom
+            } else {
+                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
+                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
+                if (position >= spanCount) {
+                    outRect.top = spacing; // item top
+                }
+            }
+        }
+    }
+
+    /**
+     * Converting dp to pixel
+     */
+    private int dpToPx(int dp) {
+        Resources r = getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
 }
