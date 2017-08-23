@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 
 import com.seventhsoft.kuni.R;
 
-import com.seventhsoft.kuni.models.Question;
-
 public class QuestionFragment extends Fragment {
 
 
@@ -18,18 +16,19 @@ public class QuestionFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static QuestionFragment newInstance(Question question) {
+    /*public static QuestionFragment newInstance(Question question) {
         QuestionFragment fragment = new QuestionFragment();
         Bundle args = new Bundle();
 
         fragment.setArguments(args);
         return fragment;
-    }
+    }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

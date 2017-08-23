@@ -1,9 +1,12 @@
 package com.seventhsoft.kuni.game;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.seventhsoft.kuni.R;
 import com.seventhsoft.kuni.models.modelsrest.DashboardRestReponse;
+
+import static android.content.ContentValues.TAG;
 
 
 /**
@@ -27,6 +30,7 @@ public class GamePresenterImpl implements GamePresenter {
     }
 
     public void getDashboard() {
+        Log.i(TAG, "OSE| presenter get dash ");
         gameInteractor.getDashboard();
     }
 
@@ -35,49 +39,54 @@ public class GamePresenterImpl implements GamePresenter {
     }
 
     public void setDashboard(DashboardRestReponse dashboardResponse, String fecha) {
+        Log.i(TAG, "OSE| Presenter set dash");
+
         this.dashboardRestReponse = dashboardResponse;
         mainView.setDashboard(fecha);
     }
 
     public void onBindRepositoryRowViewAtPosition(int position, RepositoryRowView rowView) {
-        //set nivel
-        rowView.setNivel(context.getString(R.string.lbl_nivel, dashboardRestReponse.getNiveles().get(position).getNivel()));
+        Log.i(TAG, "OSE| Presenter Blind");
+        if (dashboardRestReponse != null) {
+            //set nivel
+            rowView.setNivel(context.getString(R.string.lbl_nivel, dashboardRestReponse.getNiveles().get(position).getNivel()));
 
-        //set estado nivel y series
-        int nivel = dashboardRestReponse.getJugadorNivel().getNivel();
-        int serie = dashboardRestReponse.getJugadorNivel().getSerieActual();
+            //set estado nivel y series
+            int nivel = dashboardRestReponse.getJugadorNivel().getNivel();
+            int serie = dashboardRestReponse.getJugadorNivel().getSerieActual();
 
-        if (nivel == position + 1) {
-            rowView.setEstadoNivel(context.getString(R.string.lbl_estado_nivel_actual));
-            if (serie == 1 && dashboardRestReponse.getNiveles().get(position).getSeriesJugador() == 0) {
-                rowView.setSeries(dashboardRestReponse.getNiveles().get(position).getSeries(), 0);
+            if (nivel == position + 1) {
+                rowView.setEstadoNivel(context.getString(R.string.lbl_estado_nivel_actual));
+                if (serie == 1 && dashboardRestReponse.getNiveles().get(position).getSeriesJugador() == 0) {
+                    rowView.setSeries(dashboardRestReponse.getNiveles().get(position).getSeries(), 0);
+                } else {
+                    rowView.setSeries(dashboardRestReponse.getNiveles().get(position).getSeries(), serie);
+                }
+            } else if (position + 1 < nivel) {
+                rowView.setEstadoNivel(context.getString(R.string.lbl_estado_nivel_terminado));
+                rowView.setSeries(dashboardRestReponse.getNiveles().get(position).getSeries(),
+                        dashboardRestReponse.getNiveles().get(position).getSeries());
+
             } else {
-                rowView.setSeries(dashboardRestReponse.getNiveles().get(position).getSeries(), serie);
+                rowView.setSeries(dashboardRestReponse.getNiveles().get(position).getSeries(), 0);
+
             }
-        } else if (position + 1 < nivel) {
-            rowView.setEstadoNivel(context.getString(R.string.lbl_estado_nivel_terminado));
-            rowView.setSeries(dashboardRestReponse.getNiveles().get(position).getSeries(),
-                    dashboardRestReponse.getNiveles().get(position).getSeries());
+            //set imagen fondo
+            rowView.setImage(R.drawable.moon_flat);
 
-        } else {
-            rowView.setSeries(dashboardRestReponse.getNiveles().get(position).getSeries(), 0);
+            //set premios ganados
+            if (dashboardRestReponse.getNiveles().get(position).getTieneRecompensa()) {
+                rowView.setPremiosGanados(true);
+            } else {
+                rowView.setPremiosGanados(false);
 
-        }
-        //set imagen fondo
-        rowView.setImage(R.drawable.moon_flat);
+            }
 
-        //set premios ganados
-        if (dashboardRestReponse.getNiveles().get(position).getTieneRecompensa()) {
-            rowView.setPremiosGanados(true);
-        } else {
-            rowView.setPremiosGanados(false);
-
+            //set premios disponibles
+            rowView.setPremiosDisponibles(context.getString(R.string.lbl_premios_disponibles, dashboardRestReponse.getNiveles().get(position).getRecompensasDisponibles()));
+            //gameInteractor.getDashboard();}
         }
 
-        //set premios disponibles
-        rowView.setPremiosDisponibles(context.getString(R.string.lbl_premios_disponibles, dashboardRestReponse.getNiveles().get(position).getRecompensasDisponibles()));
-        //gameInteractor.getDashboard();
+
     }
-
-
 }

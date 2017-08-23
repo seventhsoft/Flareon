@@ -6,7 +6,7 @@ import android.util.Log;
 import com.seventhsoft.kuni.models.UserBean;
 import com.seventhsoft.kuni.models.modelsrest.LoginRestRequest;
 import com.seventhsoft.kuni.models.modelsrest.LoginRestResponse;
-import com.seventhsoft.kuni.models.modelsrest.Persona;
+import com.seventhsoft.kuni.models.modelsrest.PersonaRest;
 import com.seventhsoft.kuni.models.modelsrest.RestorePasswordRequest;
 import com.seventhsoft.kuni.models.modelsrest.UpdateUserRestRequest;
 import com.seventhsoft.kuni.models.modelsrest.UserRestResponse;
@@ -282,12 +282,12 @@ public class PlayerInteractorImpl implements PlayerInteractor {
 
                     @Override
                     public void onNext(UserRestResponse response) {
-                        Persona persona = new Persona();
-                        persona = response.getPersona();
+                        PersonaRest personaRest = new PersonaRest();
+                        personaRest = response.getPersonaRest();
                         UserBean userBean = new UserBean();
-                        userBean.setName(persona.getNombre());
-                        userBean.setEmail(persona.getCorreo());
-                        String[] parts = persona.getApaterno().split("null");
+                        userBean.setName(personaRest.getNombre());
+                        userBean.setEmail(personaRest.getCorreo());
+                        String[] parts = personaRest.getApaterno().split("null");
                         String part = parts[0]; // 004
 
                         userBean.setFirstName(part);
@@ -344,8 +344,8 @@ public class PlayerInteractorImpl implements PlayerInteractor {
                     public void onNext(Void response) {
                         //refreshToken();
 
-                        /*Persona persona = new Persona();
-                        persona = response.getPersona();
+                        /*PersonaRest persona = new PersonaRest();
+                        persona = response.getPersonaRest();
                         UserBean userBeUserRestResponse responsean = new UserBean();
                         userBean.setName(persona.getNombre());
                         userBean.setEmail(persona.getCorreo());

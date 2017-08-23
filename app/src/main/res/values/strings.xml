@@ -46,7 +46,7 @@
     <string name="lbl_series_progreso">%1$d/%2$d</string>
 
 
-    <string name="lbl_concurso">El concurso finaliza el %s</string>
+    <string name="lbl_concurso">El concursoRest finaliza el %s</string>
     <string name="lbl_nivel">Nivel %d</string>
 
     <string name="lbl_premios_disponibles">Hay %d premios disponibles</string>

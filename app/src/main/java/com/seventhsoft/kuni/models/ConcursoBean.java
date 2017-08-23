@@ -1,16 +1,12 @@
-package com.seventhsoft.kuni.models.modelsrealm;
-
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
+package com.seventhsoft.kuni.models;
 
 /**
  * Created by olibits on 22/08/17.
  */
 
-public class Concurso extends RealmObject {
+public class ConcursoBean {
 
-    @PrimaryKey
-    private int idConcurso;
+    private int idConsurso;
 
     private long fechaInicio;
     private long fechaFin;
@@ -19,12 +15,12 @@ public class Concurso extends RealmObject {
     private int serieActual;
     private int dNivel;
 
-    public int getIdConcurso() {
-        return idConcurso;
+    public int getIdConsurso() {
+        return idConsurso;
     }
 
-    public void setIdConcurso(int idConcurso) {
-        this.idConcurso = idConcurso;
+    public void setIdConsurso(int idConsurso) {
+        this.idConsurso = idConsurso;
     }
 
     public long getFechaInicio() {

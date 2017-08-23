@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by olibits on 8/08/17.
  */
 
-public class Nivel {
+public class NivelRest {
     @SerializedName("nivel")
     @Expose
     private Integer nivel;

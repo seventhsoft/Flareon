@@ -10,22 +10,22 @@ import java.util.List;
  */
 
 public class DashboardRestReponse {
-    @SerializedName("concurso")
+    @SerializedName("concursoRest")
     @Expose
-    private Concurso concurso;
+    private ConcursoRest concursoRest;
     @SerializedName("jugadorNivel")
     @Expose
     private JugadorNivel jugadorNivel;
     @SerializedName("niveles")
     @Expose
-    private List<Nivel> niveles = null;
+    private List<NivelRest> niveles = null;
 
-    public Concurso getConcurso() {
-        return concurso;
+    public ConcursoRest getConcursoRest() {
+        return concursoRest;
     }
 
-    public void setConcurso(Concurso concurso) {
-        this.concurso = concurso;
+    public void setConcursoRest(ConcursoRest concursoRest) {
+        this.concursoRest = concursoRest;
     }
 
     public JugadorNivel getJugadorNivel() {
@@ -36,11 +36,11 @@ public class DashboardRestReponse {
         this.jugadorNivel = jugadorNivel;
     }
 
-    public List<Nivel> getNiveles() {
+    public List<NivelRest> getNiveles() {
         return niveles;
     }
 
-    public void setNiveles(List<Nivel> niveles) {
+    public void setNiveles(List<NivelRest> niveles) {
         this.niveles = niveles;
     }
 

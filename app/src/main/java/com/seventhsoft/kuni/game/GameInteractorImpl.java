@@ -1,6 +1,7 @@
 package com.seventhsoft.kuni.game;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.seventhsoft.kuni.models.modelsrest.DashboardRestReponse;
 import com.seventhsoft.kuni.player.PlayerRepositoryImpl;
@@ -23,6 +24,8 @@ import java.util.concurrent.TimeUnit;
 import rx.Scheduler;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by olibits on 8/08/17.
@@ -62,7 +65,9 @@ public class GameInteractorImpl implements GameInteractor{
 
                     @Override
                     public void onNext(DashboardRestReponse response) {
-                        gamePresenter.setDashboard(response, getDias(response.getConcurso().getFechaInicio(), response.getConcurso().getFechaFin()));
+                        Log.i(TAG, "OSE| interactor set dash ");
+
+                        gamePresenter.setDashboard(response,"hola gola"); //getDias(response.getConcursoRest().getFechaInicio(), response.getConcursoRest().getFechaFin()));
                     }
                 });
     }

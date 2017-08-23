@@ -14,30 +14,31 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
+
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.seventhsoft.kuni.R;
-import com.seventhsoft.kuni.models.modelsrest.Concurso;
-import com.seventhsoft.kuni.models.modelsrest.DashboardRestReponse;
 import com.seventhsoft.kuni.player.Login;
 import com.seventhsoft.kuni.player.PlayerPresenter;
 import com.seventhsoft.kuni.player.PlayerPresenterImpl;
 import com.seventhsoft.kuni.player.SesionPreference;
 import com.seventhsoft.kuni.player.UserActivity;
-import com.seventhsoft.kuni.utils.ItemOffsetDecoration;
 import com.seventhsoft.kuni.utils.ToolbarFragment;
 
 import org.json.JSONException;
 
 import java.util.ArrayList;
+
+import static android.content.ContentValues.TAG;
 
 
 public class MainActivity extends AppCompatActivity implements MainView {
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private ArrayList arrayList;
     private TextView txtConcurso;
 
-    RecyclerViewAdapter adapter;
+    private RecyclerViewAdapter adapter;
 
     private SesionPreference sesionPreference;
 
@@ -61,16 +62,33 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     private GamePresenter gamePresenter;
 
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         playerPresenter = new PlayerPresenterImpl(this, getApplicationContext());
         gamePresenter = new GamePresenterImpl(this, getApplicationContext());
         gamePresenter.getDashboard();
         setDrawer();
         setToolbar();
+        recyclerView = (RecyclerView) findViewById(R.id.gridView);
+
+        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),
+                2, //number of grid columns
+                GridLayoutManager.VERTICAL,
+                false));
+
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+
+        if (adapter == null) {
+            Log.i(TAG, "OSE| Adapter null ");
+
+            adapter = new RecyclerViewAdapter(gamePresenter);
+        }
+        recyclerView.setAdapter(adapter);
         //gridView = (GridView) findViewById(R.id.gridView);
 
         sesionPreference = SesionPreference.getInstance(context);
@@ -83,20 +101,14 @@ public class MainActivity extends AppCompatActivity implements MainView {
     public void setDashboard(final String fecha) {
         MainActivity.this.runOnUiThread(new Runnable() {
             public void run() {
+                Log.i(TAG, "OSE| Run ");
                 txtConcurso = (TextView) findViewById(R.id.txtConcurso);
+
                 txtConcurso.setText(getString(R.string.dias_restantes, fecha));
-                RecyclerView recyclerView = (RecyclerView) findViewById(R.id.gridView);
-                recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),
-                        2, //number of grid columns
-                        GridLayoutManager.VERTICAL,
-                        false));
+                recyclerView.setAdapter(adapter);
 
-                recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
-
-                adapter = new RecyclerViewAdapter(gamePresenter);
 
                 //adapter.setClickListener(this);
-                recyclerView.setAdapter(adapter);
             }
         });
     }

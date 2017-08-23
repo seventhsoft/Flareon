@@ -23,9 +23,9 @@ public class SignUpRestResponse {
     @SerializedName("fechaRegistro")
     @Expose
     private Object fechaRegistro;
-    @SerializedName("persona")
+    @SerializedName("personaRest")
     @Expose
-    private Persona persona;
+    private PersonaRest personaRest;
     @SerializedName("idPerfil")
     @Expose
     private Integer idPerfil;
@@ -73,12 +73,12 @@ public class SignUpRestResponse {
         this.fechaRegistro = fechaRegistro;
     }
 
-    public Persona getPersona() {
-        return persona;
+    public PersonaRest getPersonaRest() {
+        return personaRest;
     }
 
-    public void setPersona(Persona persona) {
-        this.persona = persona;
+    public void setPersonaRest(PersonaRest personaRest) {
+        this.personaRest = personaRest;
     }
 
     public Integer getIdPerfil() {

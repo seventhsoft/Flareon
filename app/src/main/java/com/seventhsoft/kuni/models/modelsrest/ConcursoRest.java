@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by olibits on 9/08/17.
  */
 
-public class Concurso {
+public class ConcursoRest {
 
     @SerializedName("idConcurso")
     @Expose
