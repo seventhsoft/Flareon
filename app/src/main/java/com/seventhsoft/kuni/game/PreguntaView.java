@@ -8,5 +8,7 @@ import com.seventhsoft.kuni.models.PreguntaBean;
 
 public interface PreguntaView {
 
+
+
     void setPregunta(PreguntaBean pregunta);
 }
