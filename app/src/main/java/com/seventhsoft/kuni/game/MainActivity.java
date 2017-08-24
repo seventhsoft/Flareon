@@ -27,6 +27,7 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.seventhsoft.kuni.R;
+import com.seventhsoft.kuni.models.PreguntaBean;
 import com.seventhsoft.kuni.player.Login;
 import com.seventhsoft.kuni.player.PlayerPresenter;
 import com.seventhsoft.kuni.player.PlayerPresenterImpl;
@@ -41,7 +42,7 @@ import java.util.ArrayList;
 import static android.content.ContentValues.TAG;
 
 
-public class MainActivity extends AppCompatActivity implements MainView {
+public class MainActivity extends AppCompatActivity implements MainView , OnCompetitionClickListener{
 
 
     private DrawerLayout drawerLayout;
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         if (adapter == null) {
             Log.i(TAG, "OSE| Adapter null ");
 
-            adapter = new RecyclerViewAdapter(gamePresenter);
+            adapter = new RecyclerViewAdapter(gamePresenter, this);
         }
         recyclerView.setAdapter(adapter);
         //gridView = (GridView) findViewById(R.id.gridView);
@@ -134,6 +135,16 @@ public class MainActivity extends AppCompatActivity implements MainView {
         transaction.addToBackStack("bottom_navegation");
         transaction.commit();
 
+    }
+    public void onCompetitionClidked(int position) {
+        Log.i(TAG, "OSE| onCompetitionClidked " +position);
+
+        gamePresenter.getPregunta(position);
+    }
+
+    public void setFragmentPregunta(PreguntaBean preguntaBean){
+        Intent intent = new Intent(MainActivity.this, PreguntaActivity.class);
+        startActivity(intent);
     }
 
     // @Override

@@ -20,8 +20,10 @@ public class Serie extends RealmObject {
     private int idSerie;
 
     private Integer tiempoPregunta;
-    private String bannerSerie;
-    private RealmList<Pregunta> preguntas = null;
+    //private String bannerSerie;
+    public RealmList<Pregunta> preguntas = null;
+    private int contador;
+
 
     public int getIdSerie() {
         return idSerie;
@@ -39,19 +41,27 @@ public class Serie extends RealmObject {
         this.tiempoPregunta = tiempoPregunta;
     }
 
-    public String getBannerSerie() {
+    /*public String getBannerSerie() {
         return bannerSerie;
     }
 
     public void setBannerSerie(String bannerSerie) {
         this.bannerSerie = bannerSerie;
     }
-
+*/
     public RealmList<Pregunta> getPreguntas() {
         return preguntas;
     }
 
     public void setPreguntas(RealmList<Pregunta> preguntas) {
         this.preguntas = preguntas;
+    }
+
+    public int getContador() {
+        return contador;
+    }
+
+    public void setContador(int contador) {
+        this.contador = contador;
     }
 }

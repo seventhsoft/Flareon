@@ -17,6 +17,7 @@ public class SerieBean {
     private Integer tiempoPregunta;
     private String bannerSerie;
     private List<PreguntaBean> preguntas = null;
+    private int contador;
 
     public int getIdSerie() {
         return idSerie;
@@ -48,5 +49,13 @@ public class SerieBean {
 
     public void setPreguntas(List<PreguntaBean> preguntas) {
         this.preguntas = preguntas;
+    }
+
+    public int getContador() {
+        return contador;
+    }
+
+    public void setContador(int contador) {
+        this.contador = contador;
     }
 }

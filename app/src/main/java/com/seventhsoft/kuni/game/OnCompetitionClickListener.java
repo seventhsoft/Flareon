@@ -6,6 +6,6 @@ package com.seventhsoft.kuni.game;
 
 public interface OnCompetitionClickListener {
 
-    void onCompetitionClidked();
+    void onCompetitionClidked(int position);
 
 }

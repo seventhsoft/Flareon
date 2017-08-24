@@ -1,5 +1,6 @@
 package com.seventhsoft.kuni.game;
 
+import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,15 +23,17 @@ import static android.content.ContentValues.TAG;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RepositoryViewHolder> {
 
     private final GamePresenter gamePresenter;
+    private OnCompetitionClickListener onCompetitionClickListener;
 
-    public RecyclerViewAdapter(GamePresenter gamePresenter) {
+    public RecyclerViewAdapter(GamePresenter gamePresenter, OnCompetitionClickListener onCompetitionClickListener) {
         this.gamePresenter = gamePresenter;
+        this.onCompetitionClickListener=onCompetitionClickListener;
     }
 
 
     @Override
     public RepositoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.i(TAG, "OSE| Adapter create" );
+        Log.i(TAG, "OSE| Adapter create");
 
         return new RepositoryViewHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.layout_grid_view, parent, false));
@@ -38,7 +41,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(RepositoryViewHolder holder, int position) {
-        Log.i(TAG, "OSE| Adapter holder" );
+        Log.i(TAG, "OSE| Adapter holder");
         gamePresenter.onBindRepositoryRowViewAtPosition(position, holder);
 
     }
@@ -50,7 +53,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
 
-    public class RepositoryViewHolder extends RecyclerView.ViewHolder implements RepositoryRowView {
+    public class RepositoryViewHolder extends RecyclerView.ViewHolder implements RepositoryRowView, View.OnClickListener
+    {
 
         private TextView txtNivel;
         private TextView txtEstado;
@@ -59,6 +63,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         private ImageView imageRecompensa;
         private TextView txtSeries;
         private CardView cardView;
+        private Context context;
 
 
         public RepositoryViewHolder(View itemView) {
@@ -72,6 +77,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             cardView = (CardView) itemView.findViewById(R.id.cardView);
             int width = ((itemView.getResources().getDisplayMetrics().widthPixels) / 2) - 10;
             cardView.setMinimumWidth(width);
+            context = KuniApplication.getContext();
+            itemView.setOnClickListener(this);
+
         }
 
         public void setNivel(String title) {
@@ -95,11 +103,28 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
 
         public void setSeries(int series, int serieActual) {
-            txtSeries.setText(String.format(KuniApplication.getContext().getString(R.string.lbl_series_progreso), serieActual, series));
+            txtSeries.setText(String.format(context.getString(R.string.lbl_series_progreso), serieActual, series));
         }
 
         public void setImage(int resourse) {
-            Glide.with(KuniApplication.getContext()).load(resourse).into(imageView);
+            Glide.with(context).load(resourse).into(imageView);
+        }
+
+        public void setTextColor(boolean started) {
+            if (started) {
+                txtNivel.setTextColor(context.getResources().getColor(R.color.white));
+                txtEstado.setTextColor(context.getResources().getColor(R.color.white));
+                txtRecompensas.setTextColor(context.getResources().getColor(R.color.white));
+                txtSeries.setTextColor(context.getResources().getColor(R.color.white));
+            }
+        }
+
+        @Override
+        public void onClick(View view) {
+            Log.i(TAG, "OSE| click");
+
+            if (onCompetitionClickListener != null)
+                onCompetitionClickListener.onCompetitionClidked(getAdapterPosition());
         }
     }
 

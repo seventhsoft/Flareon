@@ -1,8 +1,37 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.seventhsoft.kuni.game.QuestionFragment">
 
 
-</FrameLayout>
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btnRespuestaUno"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="24dp"
+        android:padding="12dp"
+        android:text="@string/btn_entrar"
+        android:textColor="@color/white" />
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btnRespuestaDos"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="24dp"
+        android:padding="12dp"
+        android:text="@string/btn_entrar"
+        android:textColor="@color/white" />
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btnRespuestaTres"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="24dp"
+        android:padding="12dp"
+        android:text="@string/btn_entrar"
+        android:textColor="@color/white" />
+
+</LinearLayout>

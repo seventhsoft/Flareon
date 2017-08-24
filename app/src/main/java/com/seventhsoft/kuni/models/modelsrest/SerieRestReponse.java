@@ -15,7 +15,7 @@ public class SerieRestReponse {
     private Integer tiempoPregunta;
     @SerializedName("bannerSerie")
     @Expose
-    private Object bannerSerie;
+    private BannerSerieRest bannerSerie;
     @SerializedName("preguntas")
     @Expose
     private List<PreguntaRest> preguntas = null;
@@ -28,11 +28,11 @@ public class SerieRestReponse {
         this.tiempoPregunta = tiempoPregunta;
     }
 
-    public Object getBannerSerie() {
+    public BannerSerieRest getBannerSerie() {
         return bannerSerie;
     }
 
-    public void setBannerSerie(Object bannerSerie) {
+    public void setBannerSerie(BannerSerieRest bannerSerie) {
         this.bannerSerie = bannerSerie;
     }
 

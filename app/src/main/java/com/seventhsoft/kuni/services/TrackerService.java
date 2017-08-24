@@ -3,6 +3,7 @@ package com.seventhsoft.kuni.services;
 import com.seventhsoft.kuni.models.modelsrest.DashboardRestReponse;
 import com.seventhsoft.kuni.models.modelsrest.LoginRestResponse;
 import com.seventhsoft.kuni.models.modelsrest.RestorePasswordRequest;
+import com.seventhsoft.kuni.models.modelsrest.SerieRestReponse;
 import com.seventhsoft.kuni.models.modelsrest.UpdateUserRestRequest;
 import com.seventhsoft.kuni.models.modelsrest.UserRestResponse;
 import com.seventhsoft.kuni.models.modelsrest.SignUpRestRequest;
@@ -13,7 +14,9 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -23,7 +26,6 @@ import rx.Observable;
 public interface TrackerService {
 
     String SERVICE_ENDPOINT = "http://api.juegakuni.com.mx";
-
 
     /**
      * Crear una cuenta
@@ -89,6 +91,6 @@ public interface TrackerService {
      * Get serie
      */
     @GET("/lfs/concurso/serie")
-    Observable<UserRestResponse> getSerie(int idJugadorNivel);
+    Observable<SerieRestReponse> getSerie(@Query("idJugadorNivel") int idJugadorNivel);
 
 }

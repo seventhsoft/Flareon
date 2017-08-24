@@ -19,7 +19,7 @@ public class Pregunta extends RealmObject{
     private String ruta;
     private String clase;
     private Boolean activo;
-    private RealmList<Respuesta> respuestaList = null;
+    public RealmList<Respuesta> respuestaList = null;
 
     public int getIdPregunta() {
         return idPregunta;

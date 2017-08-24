@@ -12,6 +12,7 @@ public class Respuesta extends RealmObject {
     @PrimaryKey
     private Integer idRespuesta;
 
+    private Integer idRespuestaRest;
     private String descripcion;
     private Integer orden;
     private Boolean correcta;

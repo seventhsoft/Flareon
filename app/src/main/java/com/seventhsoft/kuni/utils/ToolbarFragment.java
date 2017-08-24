@@ -57,7 +57,7 @@ public class ToolbarFragment extends Fragment {
         int bandera = getBandera();
         switch (bandera) {
             case 0:
-                activity.getSupportActionBar().setHomeAsUpIndicator((activity.getDrawable(R.drawable.ic_menu_white_24dp)));
+                activity.getSupportActionBar().setHomeAsUpIndicator((activity.getDrawable(R.drawable.menu)));
                 toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

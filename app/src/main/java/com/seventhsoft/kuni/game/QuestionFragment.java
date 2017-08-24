@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.seventhsoft.kuni.R;
+import com.seventhsoft.kuni.models.PreguntaBean;
 
 public class QuestionFragment extends Fragment {
 
@@ -16,13 +17,13 @@ public class QuestionFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /*public static QuestionFragment newInstance(Question question) {
+    public static QuestionFragment newInstance(PreguntaBean preguntaBean) {
         QuestionFragment fragment = new QuestionFragment();
         Bundle args = new Bundle();
 
         fragment.setArguments(args);
         return fragment;
-    }*/
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

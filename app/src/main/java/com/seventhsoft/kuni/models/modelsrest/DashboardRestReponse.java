@@ -10,7 +10,7 @@ import java.util.List;
  */
 
 public class DashboardRestReponse {
-    @SerializedName("concursoRest")
+    @SerializedName("concurso")
     @Expose
     private ConcursoRest concursoRest;
     @SerializedName("jugadorNivel")
