@@ -15,5 +15,5 @@ public interface GameInteractor {
 
     void getPregunta();
 
-
+    void evaluarPregunta(int idRespuesta, final boolean correcta);
 }

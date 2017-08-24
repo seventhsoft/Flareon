@@ -12,6 +12,7 @@ public class Concurso extends RealmObject {
     @PrimaryKey
     private int idConcurso;
 
+    private int idConcursoRest;
     private long fechaInicio;
     private long fechaFin;
     private boolean activo;
@@ -25,6 +26,14 @@ public class Concurso extends RealmObject {
 
     public void setIdConcurso(int idConcurso) {
         this.idConcurso = idConcurso;
+    }
+
+    public int getIdConcursoRest() {
+        return idConcursoRest;
+    }
+
+    public void setIdConcursoRest(int idConcursoRest) {
+        this.idConcursoRest = idConcursoRest;
     }
 
     public long getFechaInicio() {

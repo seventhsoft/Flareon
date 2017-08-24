@@ -8,6 +8,8 @@ import com.seventhsoft.kuni.models.PreguntaBean;
 import com.seventhsoft.kuni.models.RespuestaBean;
 import com.seventhsoft.kuni.models.SerieBean;
 import com.seventhsoft.kuni.models.modelsrest.DashboardRestReponse;
+import com.seventhsoft.kuni.models.modelsrest.RespuestaPreguntaRequest;
+import com.seventhsoft.kuni.models.modelsrest.RespuestaPreguntaRestResponse;
 import com.seventhsoft.kuni.models.modelsrest.RespuestaRest;
 import com.seventhsoft.kuni.models.modelsrest.SerieRestReponse;
 import com.seventhsoft.kuni.player.PlayerRepositoryImpl;
@@ -85,6 +87,10 @@ public class GameInteractorImpl implements GameInteractor {
                 });
     }
 
+    public void saveDashBoard(final DashboardRestReponse dashboardRestReponse) {
+
+    }
+
     public void getSerie(final DashboardRestReponse dashboardRestReponse) {
         Log.i(TAG, "OSE| getserie " + dashboardRestReponse);
 
@@ -134,11 +140,12 @@ public class GameInteractorImpl implements GameInteractor {
                             preguntaBean.setClase(response.getPreguntas().get(i).getClase());
 
                             List<RespuestaRest> respuestasRest = response.getPreguntas().get(i).getRespuestaList();
-                            Log.i(TAG, "OSE| size respuestas " + respuestasRest.size()+ i);
+                            Log.i(TAG, "OSE| size respuestas " + respuestasRest.size() + i);
 
                             List<RespuestaBean> respuestas = new ArrayList<RespuestaBean>();
                             for (int j = 0; j < respuestasRest.size(); j++) {
                                 RespuestaBean respuestaBean = new RespuestaBean();
+                                respuestaBean.setIdRespuesta(respuestasRest.get(j).getIdRespuesta());
                                 respuestaBean.setActivo(respuestasRest.get(j).getActivo());
                                 respuestaBean.setDescripcion(respuestasRest.get(j).getDescripcion());
                                 respuestaBean.setCorrecta(respuestasRest.get(j).getCorrecta());
@@ -163,9 +170,115 @@ public class GameInteractorImpl implements GameInteractor {
                     }
                 });
     }
-    public void getPregunta(){
-        PreguntaBean preguntaBean=concursoRepository.getPregunta();
-        gamePresenter.setPregunta(preguntaBean);
+
+    public void actualizarSerie() {
+        int idJugadorNivel = concursoRepository.getIdJugadorNivel();
+        concursoRepository.deleteSerie();
+        token = "bearer " + playerRepository.getToken();
+        TrackerService restService = RestServiceFactory.createRetrofitService(TrackerService.class,
+                TrackerService.SERVICE_ENDPOINT, token);
+        Scheduler scheduler = Schedulers.from(Executors.newSingleThreadExecutor());
+        restService.getSerie(idJugadorNivel)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(scheduler)
+                .subscribe(new Subscriber<SerieRestReponse>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "OSE| getserie  error" + e);
+
+                    }
+
+                    @Override
+                    public void onNext(SerieRestReponse response) {
+
+                        SerieBean serieBean = new SerieBean();
+                        serieBean.setTiempoPregunta(response.getTiempoPregunta());
+                        //serieBean.setBannerSerie(response.getBannerSerie());
+                        List<PreguntaBean> preguntas = new ArrayList<PreguntaBean>();
+
+                        for (int i = 0; i < response.getPreguntas().size(); i++) {
+                            PreguntaBean preguntaBean = new PreguntaBean();
+                            preguntaBean.setActivo(response.getPreguntas().get(i).getActivo());
+                            preguntaBean.setDescripcion(response.getPreguntas().get(i).getDescripcion());
+                            preguntaBean.setRuta(response.getPreguntas().get(i).getRuta());
+                            preguntaBean.setClase(response.getPreguntas().get(i).getClase());
+
+                            List<RespuestaRest> respuestasRest = response.getPreguntas().get(i).getRespuestaList();
+                            Log.i(TAG, "OSE| size respuestas " + respuestasRest.size() + i);
+
+                            List<RespuestaBean> respuestas = new ArrayList<RespuestaBean>();
+                            for (int j = 0; j < respuestasRest.size(); j++) {
+                                RespuestaBean respuestaBean = new RespuestaBean();
+                                respuestaBean.setIdRespuesta(respuestasRest.get(j).getIdRespuesta());
+                                respuestaBean.setActivo(respuestasRest.get(j).getActivo());
+                                respuestaBean.setDescripcion(respuestasRest.get(j).getDescripcion());
+                                respuestaBean.setCorrecta(respuestasRest.get(j).getCorrecta());
+                                respuestaBean.setOrden(respuestasRest.get(j).getOrden());
+                                Log.i(TAG, "OSE|  for j" + j);
+
+                                respuestas.add(j, respuestaBean);
+                            }
+                            Log.i(TAG, "OSE| despues for j" + i);
+
+                            preguntaBean.setRespuestaList(respuestas);
+                            preguntas.add(i, preguntaBean);
+
+                        }
+
+                        serieBean.setPreguntas(preguntas);
+                        Log.i(TAG, "OSE| concursobean " + serieBean);
+
+                        concursoRepository.saveSerie(serieBean);
+
+                    }
+                });
+
+    }
+
+    public void evaluarPregunta(int idRespuesta, final boolean correcta) {
+
+        final RespuestaPreguntaRequest respuestaPreguntaRequest = concursoRepository.getRespuestaPregunta(idRespuesta);
+        token = "bearer " + playerRepository.getToken();
+        TrackerService restService = RestServiceFactory.createRetrofitService(TrackerService.class,
+                TrackerService.SERVICE_ENDPOINT, token);
+        Scheduler scheduler = Schedulers.from(Executors.newSingleThreadExecutor());
+        restService.respuestaPregunta(respuestaPreguntaRequest)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(scheduler)
+                .subscribe(new Subscriber<RespuestaPreguntaRestResponse>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (correcta && respuestaPreguntaRequest.getPerfecta() == 1) {
+                            actualizarSerie();
+                        } else {
+                            actualizarSerie();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(RespuestaPreguntaRestResponse response) {
+                        if (correcta) {
+                            getPregunta();
+                        } else {
+                        }
+                    }
+                });
+    }
+
+    public void getPregunta() {
+        PreguntaBean preguntaBean = concursoRepository.getPregunta();
+        if (preguntaBean != null)
+            gamePresenter.setPregunta(preguntaBean);
     }
 
     private String getDias(long inicio, long fin) {

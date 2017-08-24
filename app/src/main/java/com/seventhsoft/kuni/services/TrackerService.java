@@ -2,6 +2,8 @@ package com.seventhsoft.kuni.services;
 
 import com.seventhsoft.kuni.models.modelsrest.DashboardRestReponse;
 import com.seventhsoft.kuni.models.modelsrest.LoginRestResponse;
+import com.seventhsoft.kuni.models.modelsrest.RespuestaPreguntaRequest;
+import com.seventhsoft.kuni.models.modelsrest.RespuestaPreguntaRestResponse;
 import com.seventhsoft.kuni.models.modelsrest.RestorePasswordRequest;
 import com.seventhsoft.kuni.models.modelsrest.SerieRestReponse;
 import com.seventhsoft.kuni.models.modelsrest.UpdateUserRestRequest;
@@ -93,4 +95,9 @@ public interface TrackerService {
     @GET("/lfs/concurso/serie")
     Observable<SerieRestReponse> getSerie(@Query("idJugadorNivel") int idJugadorNivel);
 
+    /**
+     * respuesta pregunta
+     */
+    @POST("/lfs/concurso/serie/preguntarespuesta")
+    Observable<RespuestaPreguntaRestResponse> respuestaPregunta(@Body RespuestaPreguntaRequest respuestaPreguntaRequest);
 }

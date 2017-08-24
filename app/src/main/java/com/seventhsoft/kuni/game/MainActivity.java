@@ -42,7 +42,7 @@ import java.util.ArrayList;
 import static android.content.ContentValues.TAG;
 
 
-public class MainActivity extends AppCompatActivity implements MainView , OnCompetitionClickListener{
+public class MainActivity extends AppCompatActivity implements MainView, OnCompetitionClickListener {
 
 
     private DrawerLayout drawerLayout;
@@ -136,14 +136,16 @@ public class MainActivity extends AppCompatActivity implements MainView , OnComp
         transaction.commit();
 
     }
-    public void onCompetitionClidked(int position) {
-        Log.i(TAG, "OSE| onCompetitionClidked " +position);
 
-        gamePresenter.getPregunta(position);
+    public void onCompetitionClidked(int position) {
+        Log.i(TAG, "OSE| onCompetitionClidked " + position);
+
+        gamePresenter.setPreguntaView(position);
     }
 
-    public void setFragmentPregunta(PreguntaBean preguntaBean){
+    public void setFragmentPregunta(int position) {
         Intent intent = new Intent(MainActivity.this, PreguntaActivity.class);
+        intent.putExtra("position", position);
         startActivity(intent);
     }
 

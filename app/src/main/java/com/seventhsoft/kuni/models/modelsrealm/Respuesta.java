@@ -26,6 +26,14 @@ public class Respuesta extends RealmObject {
         this.idRespuesta = idRespuesta;
     }
 
+    public Integer getIdRespuestaRest() {
+        return idRespuestaRest;
+    }
+
+    public void setIdRespuestaRest(Integer idRespuestaRest) {
+        this.idRespuestaRest = idRespuestaRest;
+    }
+
     public String getDescripcion() {
         return descripcion;
     }

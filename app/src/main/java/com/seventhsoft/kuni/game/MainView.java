@@ -12,6 +12,6 @@ public interface MainView {
 
     void setDashboard(String fecha);
 
-    void setFragmentPregunta();
+    void setFragmentPregunta(int position);
 
 }

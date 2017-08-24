@@ -8,7 +8,11 @@ import com.seventhsoft.kuni.models.PreguntaBean;
 
 public interface PreguntaView {
 
-
-
     void setPregunta(PreguntaBean pregunta);
+    void changeColorButton(int position, boolean bien);
+    void setClase(boolean bien);
+    void setCorrecta();
+    void setIncorrecta();
+    void setNivelUp();
+    void setSerieUp();
 }

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.seventhsoft.kuni.R;
 import com.seventhsoft.kuni.models.PreguntaBean;
+import com.seventhsoft.kuni.models.RespuestaBean;
 import com.seventhsoft.kuni.models.modelsrealm.Pregunta;
 import com.seventhsoft.kuni.models.modelsrest.DashboardRestReponse;
 
@@ -18,6 +19,7 @@ import static android.content.ContentValues.TAG;
 public class GamePresenterImpl implements GamePresenter {
 
     private MainView mainView;
+    private PreguntaView preguntaView;
     private GameInteractor gameInteractor;
     private RecyclerViewAdapter.RepositoryViewHolder holder;
     private DashboardRestReponse dashboardRestReponse;
@@ -42,6 +44,13 @@ public class GamePresenterImpl implements GamePresenter {
 
     public GamePresenterImpl(MainView mainView, Context context) {
         this.mainView = mainView;
+        this.gameInteractor = new GameInteractorImpl(this, context);
+        this.context = context;
+
+    }
+
+    public GamePresenterImpl(PreguntaView preguntaView, Context context) {
+        this.preguntaView = preguntaView;
         this.gameInteractor = new GameInteractorImpl(this, context);
         this.context = context;
 
@@ -107,22 +116,56 @@ public class GamePresenterImpl implements GamePresenter {
             if (position == 0) {
                 gameInteractor.getSerie(dashboardRestReponse);
             }
-
-
         }
+    }
+
+    public void actualizarSerie(){
 
     }
 
-    public void getPregunta(int position) {
+    public void setSuccessSerie(){
+        preguntaView.setClase(boolean bien);
 
-        if (position +1 == dashboardRestReponse.getJugadorNivel().getNivel()) {
-            mainView.setFragmentPregunta();
-            gameInteractor.getPregunta();
+    }
+    public void setSuccessPregunta(){
+        preguntaView.setClase(true);
+
+
+    }
+
+    public void setFail(){
+        preguntaView.setClase(boolean bien);
+
+
+    }
+    public void setPreguntaView(int position) {
+        if (position + 1 == dashboardRestReponse.getJugadorNivel().getNivel()) {
+            mainView.setFragmentPregunta(position);
+
         }
+    }
+
+    public void getPregunta() {
+        gameInteractor.getPregunta();
     }
 
     public void setPregunta(PreguntaBean pregunta) {
-        //mainView.setFragmentPregunta(pregunta);
+        if (preguntaView != null && pregunta != null)
+            preguntaView.setPregunta(pregunta);
+    }
+
+    public void evaluatePregunta(RespuestaBean respuesta, int position) {
+        if (respuesta != null && preguntaView != null) {
+            if (respuesta.getCorrecta()) {
+                gameInteractor.evaluarPregunta(respuesta.getIdRespuesta(), true);
+                //preguntaView.changeColorButton(position, true);
+            }else {
+                gameInteractor.evaluarPregunta(respuesta.getIdRespuesta(), false);
+                //preguntaView.changeColorButton(position, false);
+            }
+            //preguntaView.setClase();
+        }
+
     }
 
 }
