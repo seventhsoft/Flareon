@@ -27,7 +27,7 @@
         <item name="colorControlHighlight">@color/primary_dark</item>
         <item name="android:textColorHint">@color/monsoon</item>
 
-        <item name="colorButtonNormal">@color/primary_darker</item>
+        <item name="colorButtonNormal">@color/accent_rosa</item>
         <item name="android:colorButtonNormal">@color/primary_darker</item>
     </style>
 

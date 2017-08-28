@@ -46,7 +46,7 @@ public class ConcursoRepository {
                     concurso.setIdJugadorNivel(concursoBean.getIdJugadorNivel());
                     concurso.setSerieActual(concursoBean.getSerieActual());
                     concurso.setdNivel(concursoBean.getdNivel());
-                    Log.e(TAG, "OSE| Save concurso idJugadorNivel: " + concurso.getIdJugadorNivel() + " serie actual: " + concurso.getSerieActual() + " nivelActual: " + concurso.getdNivel());
+                    Log.e(TAG, "OSE| Save concurso idConcurso: "+ concurso.getIdConcursoRest() +"idJugadorNivel: " + concurso.getIdJugadorNivel() + " serie actual: " + concurso.getSerieActual() + " nivelActual: " + concurso.getdNivel());
 
                     //Log.i(TAG, "OSE| Usuario Realm: " + user.getName() + " " + user.getEmail() + " " + user.getTokenAccess() + " " + user.getRefreshToken());
                 }
@@ -215,7 +215,7 @@ public class ConcursoRepository {
             realm = Realm.getDefaultInstance();
             Concurso concurso = realm.where(Concurso.class)
                     .equalTo("idConcurso", setIdConcurso() - 1).findFirst();
-            respuestaPreguntaRequest.setIdConcurso(concurso.getIdConcurso());
+            respuestaPreguntaRequest.setIdConcurso(concurso.getIdConcursoRest());
             respuestaPreguntaRequest.setIdJugadorNivel(concurso.getIdJugadorNivel());
             respuestaPreguntaRequest.setIdRespuesta(idRespuesta);
             respuestaPreguntaRequest.setSerie(concurso.getSerieActual());

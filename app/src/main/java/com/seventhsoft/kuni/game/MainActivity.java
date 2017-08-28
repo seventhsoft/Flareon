@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
@@ -77,7 +78,11 @@ public class MainActivity extends AppCompatActivity implements MainView, OnCompe
         setDrawer();
         setToolbar();
         recyclerView = (RecyclerView) findViewById(R.id.gridView);
-        recyclerView.getLayoutParams().height = 100;
+        int height = this.getResources().getDisplayMetrics().heightPixels;
+        int alturaRecycle = height - 494;
+        recyclerView.getLayoutParams().height = alturaRecycle;//(int) convertPixelsToDp(alturaRecycle, this);
+        Log.i(TAG, "OSE| height recycle "+ recyclerView.getHeight());
+
         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),
                 2, //number of grid columns
                 GridLayoutManager.VERTICAL,
@@ -393,5 +398,12 @@ public class MainActivity extends AppCompatActivity implements MainView, OnCompe
     private int dpToPx(int dp) {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
+
+    public static float convertPixelsToDp(float px, Context context) {
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float dp = px / ((float) metrics.densityDpi / metrics.DENSITY_DEFAULT);
+        return dp;
     }
 }

@@ -116,6 +116,7 @@ public class GameInteractorImpl implements GameInteractor {
                     public void onNext(SerieRestReponse response) {
 
                         ConcursoBean concursoBean = new ConcursoBean();
+                        concursoBean.setIdConsurso(dashboardRestReponse.getConcursoRest().getIdConcurso());
                         concursoBean.setFechaInicio(dashboardRestReponse.getConcursoRest().getFechaInicio());
                         concursoBean.setFechaFin(dashboardRestReponse.getConcursoRest().getFechaFin());
                         concursoBean.setActivo(dashboardRestReponse.getConcursoRest().getActivo());
@@ -275,7 +276,7 @@ public class GameInteractorImpl implements GameInteractor {
                             descripcionRecompensa = response.getRecompensa().getDescripcion();
                         }
                         if (respuestaBean.getCorrecta()) {
-                            if (respuestaPreguntaRequest.getPerfecta() == 1 && respuestaPreguntaRequest.getNivelActual() != response.getJugadorNivel().getNivel()) {
+                            if (respuestaPreguntaRequest.getPerfecta() == 1 && respuestaPreguntaRequest.getNivelActual() != response.getJugadorNivel().getNivel() ) {
                                 Log.i(TAG, "OSE| nivel up ");
 
                                 concursoRepository.updateConcurso(response);
