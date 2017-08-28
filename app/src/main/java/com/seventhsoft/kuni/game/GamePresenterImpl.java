@@ -25,20 +25,22 @@ public class GamePresenterImpl implements GamePresenter {
     private DashboardRestReponse dashboardRestReponse;
     private Context context;
 
-    public static int[] gridViewImagesStarted = {
-            R.drawable.bg_lv1_started,
-            R.drawable.bg_lv2_started,
-            R.drawable.bg_lv3_started,
-            R.drawable.bg_lv4_started,
-            R.drawable.bg_lv5_started,
+    public static String[] gridViewImagesStarted = {
+            "http://images.juegakuni.com.mx/images/bg_lv1_started.png",
+            "http://images.juegakuni.com.mx/images/bg_lv2_started.png",
+            "http://images.juegakuni.com.mx/images/bg_lv3_started.png",
+            "http://images.juegakuni.com.mx/images/bg_lv4_started.png",
+            "http://images.juegakuni.com.mx/images/bg_lv5_started.png",
+            "http://images.juegakuni.com.mx/images/bg_lv6_started.png"
     };
 
-    public static int[] gridViewImagesUnstarted = {
-            R.drawable.bg_lv1_unstarted,
-            R.drawable.bg_lv2_unstarted,
-            R.drawable.bg_lv3_unstarted,
-            R.drawable.bg_lv4_unstarted,
-            R.drawable.bg_lv5_unstarted,
+    public static String[] gridViewImagesUnstarted = {
+            "http://images.juegakuni.com.mx/images/bg_lv1_unstarted.png",
+            "http://images.juegakuni.com.mx/images/bg_lv2_unstarted.png",
+            "http://images.juegakuni.com.mx/images/bg_lv3_unstarted.png",
+            "http://images.juegakuni.com.mx/images/bg_lv4_unstarted.png",
+            "http://images.juegakuni.com.mx/images/bg_lv5_unstarted.png",
+            "http://images.juegakuni.com.mx/images/bg_lv6_unstarted.png"
     };
 
 
@@ -119,25 +121,27 @@ public class GamePresenterImpl implements GamePresenter {
         }
     }
 
-    public void actualizarSerie(){
+    public void actualizarSerie() {
 
     }
 
-    public void setSuccessSerie(){
-        preguntaView.setClase(boolean bien);
-
-    }
-    public void setSuccessPregunta(){
-        preguntaView.setClase(true);
-
+    public void setSuccessSerie() {
+        preguntaView.setSerieUp();
 
     }
 
-    public void setFail(){
-        preguntaView.setClase(boolean bien);
+    public void setSuccessPregunta(PreguntaBean pregunta, RespuestaBean respuestaBean) {
+        //preguntaView.setClase(pregunta, respuestaBean);
+        //preguntaView.setClase(pregunta, respuestaBean);
+        getPregunta();
+    }
+
+    public void setFail() {
+        //preguntaView.setClase(boolean bien);
 
 
     }
+
     public void setPreguntaView(int position) {
         if (position + 1 == dashboardRestReponse.getJugadorNivel().getNivel()) {
             mainView.setFragmentPregunta(position);
@@ -154,18 +158,16 @@ public class GamePresenterImpl implements GamePresenter {
             preguntaView.setPregunta(pregunta);
     }
 
-    public void evaluatePregunta(RespuestaBean respuesta, int position) {
-        if (respuesta != null && preguntaView != null) {
-            if (respuesta.getCorrecta()) {
-                gameInteractor.evaluarPregunta(respuesta.getIdRespuesta(), true);
-                //preguntaView.changeColorButton(position, true);
-            }else {
-                gameInteractor.evaluarPregunta(respuesta.getIdRespuesta(), false);
-                //preguntaView.changeColorButton(position, false);
-            }
-            //preguntaView.setClase();
-        }
+    public void evaluatePregunta(PreguntaBean preguntaBean, int position) {
 
+        if (preguntaBean != null && preguntaView != null) {
+            gameInteractor.evaluarPregunta(preguntaBean, position);
+        }
     }
+
+    public void setClase(PreguntaBean pregunta, RespuestaBean respuestaBean, boolean nivel, boolean serie, boolean premio, String desripcionPremio){
+        preguntaView.setClase(pregunta, respuestaBean, nivel, serie, premio, desripcionPremio);
+    }
+
 
 }

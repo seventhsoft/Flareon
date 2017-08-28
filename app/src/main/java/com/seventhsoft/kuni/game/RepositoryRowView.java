@@ -16,7 +16,7 @@ public interface RepositoryRowView {
 
     void setPremiosGanados(boolean premiosGanados);
 
-    void setImage(int starCount);
+    void setImage(String resourse);
 
     void setTextColor(boolean started);
 }

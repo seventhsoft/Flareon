@@ -26,6 +26,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
+import com.seventhsoft.kuni.KuniApplication;
 import com.seventhsoft.kuni.R;
 import com.seventhsoft.kuni.models.PreguntaBean;
 import com.seventhsoft.kuni.player.Login;
@@ -69,19 +70,18 @@ public class MainActivity extends AppCompatActivity implements MainView, OnCompe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        context = KuniApplication.getContext();
         playerPresenter = new PlayerPresenterImpl(this, getApplicationContext());
         gamePresenter = new GamePresenterImpl(this, getApplicationContext());
         gamePresenter.getDashboard();
         setDrawer();
         setToolbar();
         recyclerView = (RecyclerView) findViewById(R.id.gridView);
-
+        recyclerView.getLayoutParams().height = 100;
         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),
                 2, //number of grid columns
                 GridLayoutManager.VERTICAL,
                 false));
-
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
 
         if (adapter == null) {

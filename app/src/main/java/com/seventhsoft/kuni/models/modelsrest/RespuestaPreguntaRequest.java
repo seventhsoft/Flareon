@@ -24,6 +24,16 @@ public class RespuestaPreguntaRequest {
     @Expose
     private Integer idConcurso;
 
+    private int nivelActual;
+
+    public int getNivelActual() {
+        return nivelActual;
+    }
+
+    public void setNivelActual(int nivelActual) {
+        this.nivelActual = nivelActual;
+    }
+
     public Integer getIdJugadorNivel() {
         return idJugadorNivel;
     }

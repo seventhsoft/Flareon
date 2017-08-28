@@ -106,7 +106,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             txtSeries.setText(String.format(context.getString(R.string.lbl_series_progreso), serieActual, series));
         }
 
-        public void setImage(int resourse) {
+        public void setImage(String resourse) {
             Glide.with(context).load(resourse).into(imageView);
         }
 

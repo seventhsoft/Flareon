@@ -1,73 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/transicion"
+    <FrameLayout
+        android:id="@+id/toolbar_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:visibility="gone">
 
-        android:visibility="gone"></LinearLayout>
+    </FrameLayout>
 
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@drawable/degradado">
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/txtDescripcion"
+        <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cardPregunta"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical|center_horizontal"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
-    </LinearLayout>
 
+            android:layout_height="150dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:elevation="2dp"
+            android:minWidth="100dp"
+            app:cardCornerRadius="4dp">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPregunta"
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp">
+                android:scaleType="centerCrop" />
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btnRespuestaUno"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/fab_label_background"
-            android:padding="12dp"
-            android:textColor="@color/monsoon" />
+            <TextView
+                android:id="@+id/txtDescripcion"
+                android:layout_gravity="bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|center_horizontal"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </FrameLayout>
+        </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btnRespuestaDos"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/fab_label_background"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp">
 
-            android:padding="12dp"
-            android:textColor="@color/monsoon" />
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btnRespuestaUno"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/fab_label_background"
+                android:padding="12dp"
+                android:textColor="@color/monsoon" />
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btnRespuestaTres"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/fab_label_background"
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btnRespuestaDos"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/fab_label_background"
+                android:padding="12dp"
+                android:textColor="@color/monsoon" />
 
-            android:padding="12dp"
-            android:textColor="@color/monsoon" />
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btnRespuestaTres"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/fab_label_background"
+                android:padding="12dp"
+                android:textColor="@color/monsoon" />
+
+            <TextView
+                android:id="@+id/txtClase"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|center_horizontal"
+                android:textColor="@color/monsoon"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btnSiguientePregunta"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="24dp"
+                android:background="@color/verde"
+                android:padding="12dp"
+                android:text="Siguiente pregunta"
+                android:textColor="@color/white"
+                android:visibility="gone" />
+        </LinearLayout>
     </LinearLayout>
 
 

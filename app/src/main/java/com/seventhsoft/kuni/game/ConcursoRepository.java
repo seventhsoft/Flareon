@@ -11,6 +11,7 @@ import com.seventhsoft.kuni.models.modelsrealm.Pregunta;
 import com.seventhsoft.kuni.models.modelsrealm.Respuesta;
 import com.seventhsoft.kuni.models.modelsrealm.Serie;
 import com.seventhsoft.kuni.models.modelsrest.RespuestaPreguntaRequest;
+import com.seventhsoft.kuni.models.modelsrest.RespuestaPreguntaRestResponse;
 import com.seventhsoft.kuni.models.modelsrest.RespuestaRest;
 
 import java.util.ArrayList;
@@ -38,7 +39,6 @@ public class ConcursoRepository {
                 @Override
                 public void execute(Realm realm) {
                     Concurso concurso = realm.createObject(Concurso.class, setIdConcurso());
-
                     concurso.setIdConcursoRest(concursoBean.getIdConsurso());
                     concurso.setFechaInicio(concursoBean.getFechaInicio());
                     concurso.setFechaFin(concursoBean.getFechaFin());
@@ -46,6 +46,7 @@ public class ConcursoRepository {
                     concurso.setIdJugadorNivel(concursoBean.getIdJugadorNivel());
                     concurso.setSerieActual(concursoBean.getSerieActual());
                     concurso.setdNivel(concursoBean.getdNivel());
+                    Log.e(TAG, "OSE| Save concurso idJugadorNivel: " + concurso.getIdJugadorNivel() + " serie actual: " + concurso.getSerieActual() + " nivelActual: " + concurso.getdNivel());
 
                     //Log.i(TAG, "OSE| Usuario Realm: " + user.getName() + " " + user.getEmail() + " " + user.getTokenAccess() + " " + user.getRefreshToken());
                 }
@@ -63,8 +64,9 @@ public class ConcursoRepository {
             realm = Realm.getDefaultInstance();
 
             Concurso concurso = realm.where(Concurso.class)
-                    .findFirst();
+                    .equalTo("idConcurso", setIdConcurso() - 1).findFirst();
             idJugadorNivel = concurso.getIdJugadorNivel();
+            Log.i(TAG, "OSE| get id jugador: " + concurso.getIdJugadorNivel());
 
             realm.close(); // Remember to close Realm when done.
         } catch (Exception e) {
@@ -75,8 +77,26 @@ public class ConcursoRepository {
 
     }
 
-    public void updateConcurso() {
+    public void updateConcurso(final RespuestaPreguntaRestResponse response) {
+        try {
+            realm = Realm.getDefaultInstance();
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    Concurso concurso = realm.where(Concurso.class)
+                            .equalTo("idConcurso", setIdConcurso() - 1).findFirst();
+                    concurso.setIdJugadorNivel(response.getJugadorNivel().getIdJugadorNivel());
+                    concurso.setSerieActual(response.getJugadorNivel().getSerieActual());
+                    concurso.setdNivel(response.getJugadorNivel().getNivel());
 
+                    Log.i(TAG, "OSE| Actualizar concurso: " + concurso.getIdJugadorNivel() + " serie acrual: " + concurso.getSerieActual() + " nivel actual: " + concurso.getdNivel());
+                }
+            });
+            realm.close(); // Remember to close Realm when done.
+        } catch (Exception e) {
+            Log.e(TAG, "OSE| Error guardar concurso" + e);
+
+        }
 
     }
 
@@ -153,7 +173,9 @@ public class ConcursoRepository {
                 @Override
                 public void execute(Realm realm) {
                     Serie serie = realm.where(Serie.class)
-                            .findFirst();
+                            .equalTo("idSerie", setIdSerie() - 1).findFirst();
+                    Log.i(TAG, "OSE| id serie" + serie.getIdSerie());
+
                     if (serie.getContador() < 6) {
                         Pregunta pregunta = serie.getPreguntas().get(serie.getContador());
                         int contador = serie.getContador();
@@ -191,26 +213,22 @@ public class ConcursoRepository {
         final RespuestaPreguntaRequest respuestaPreguntaRequest = new RespuestaPreguntaRequest();
         try {
             realm = Realm.getDefaultInstance();
-            realm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    Concurso concurso = realm.where(Concurso.class).findFirst();
+            Concurso concurso = realm.where(Concurso.class)
+                    .equalTo("idConcurso", setIdConcurso() - 1).findFirst();
+            respuestaPreguntaRequest.setIdConcurso(concurso.getIdConcurso());
+            respuestaPreguntaRequest.setIdJugadorNivel(concurso.getIdJugadorNivel());
+            respuestaPreguntaRequest.setIdRespuesta(idRespuesta);
+            respuestaPreguntaRequest.setSerie(concurso.getSerieActual());
+            respuestaPreguntaRequest.setNivelActual(concurso.getdNivel());
+            Serie serie = realm.where(Serie.class).equalTo("idSerie", setIdSerie() - 1).findFirst();
+            if (serie.getContador() == 6) {
+                respuestaPreguntaRequest.setPerfecta(1);
+            } else {
+                respuestaPreguntaRequest.setPerfecta(0);
 
-                    respuestaPreguntaRequest.setIdConcurso(concurso.getIdConcurso());
-                    respuestaPreguntaRequest.setIdJugadorNivel(concurso.getIdJugadorNivel());
-                    respuestaPreguntaRequest.setIdRespuesta(idRespuesta);
-                    respuestaPreguntaRequest.setSerie(concurso.getSerieActual());
+            }
+            Log.e(TAG, "OSE| Respuesta concurso idJugadorNivel: " + concurso.getIdJugadorNivel() + " serie actual: " + concurso.getSerieActual() + " nivelActual: " + concurso.getdNivel());
 
-                    Serie serie = realm.where(Serie.class).findFirst();
-                    if (serie.getContador() == 6) {
-                        respuestaPreguntaRequest.setPerfecta(1);
-                    } else {
-                        respuestaPreguntaRequest.setPerfecta(0);
-
-                    }
-
-                }
-            });
             realm.close(); // Remember to close Realm when done.
         } catch (Exception e) {
             Log.e(TAG, "OSE| Error traer pregunta " + e);

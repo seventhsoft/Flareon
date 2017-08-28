@@ -18,7 +18,7 @@ public class UserRestResponse {
     @SerializedName("activo")
     @Expose
     private Boolean activo;
-    @SerializedName("personaRest")
+    @SerializedName("persona")
     @Expose
     private PersonaRest personaRest;
     @SerializedName("idPerfil")
