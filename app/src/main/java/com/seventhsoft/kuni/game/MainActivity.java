@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements MainView , OnComp
         gamePresenter.getPregunta(position);
     }
 
-    public void setFragmentPregunta(PreguntaBean preguntaBean){
+    public void setFragmentPregunta(){
         Intent intent = new Intent(MainActivity.this, PreguntaActivity.class);
         startActivity(intent);
     }
