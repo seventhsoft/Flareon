@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.seventhsoft.kuni.R;
 import com.seventhsoft.kuni.models.PreguntaBean;
+import com.seventhsoft.kuni.models.RespuestaBean;
 import com.seventhsoft.kuni.models.modelsrealm.Pregunta;
 import com.seventhsoft.kuni.models.modelsrest.DashboardRestReponse;
 
@@ -18,30 +19,40 @@ import static android.content.ContentValues.TAG;
 public class GamePresenterImpl implements GamePresenter {
 
     private MainView mainView;
+    private PreguntaView preguntaView;
     private GameInteractor gameInteractor;
     private RecyclerViewAdapter.RepositoryViewHolder holder;
     private DashboardRestReponse dashboardRestReponse;
     private Context context;
 
-    public static int[] gridViewImagesStarted = {
-            R.drawable.bg_lv1_started,
-            R.drawable.bg_lv2_started,
-            R.drawable.bg_lv3_started,
-            R.drawable.bg_lv4_started,
-            R.drawable.bg_lv5_started,
+    public static String[] gridViewImagesStarted = {
+            "http://images.juegakuni.com.mx/images/bg_lv1_started.png",
+            "http://images.juegakuni.com.mx/images/bg_lv2_started.png",
+            "http://images.juegakuni.com.mx/images/bg_lv3_started.png",
+            "http://images.juegakuni.com.mx/images/bg_lv4_started.png",
+            "http://images.juegakuni.com.mx/images/bg_lv5_started.png",
+            "http://images.juegakuni.com.mx/images/bg_lv6_started.png"
     };
 
-    public static int[] gridViewImagesUnstarted = {
-            R.drawable.bg_lv1_unstarted,
-            R.drawable.bg_lv2_unstarted,
-            R.drawable.bg_lv3_unstarted,
-            R.drawable.bg_lv4_unstarted,
-            R.drawable.bg_lv5_unstarted,
+    public static String[] gridViewImagesUnstarted = {
+            "http://images.juegakuni.com.mx/images/bg_lv1_unstarted.png",
+            "http://images.juegakuni.com.mx/images/bg_lv2_unstarted.png",
+            "http://images.juegakuni.com.mx/images/bg_lv3_unstarted.png",
+            "http://images.juegakuni.com.mx/images/bg_lv4_unstarted.png",
+            "http://images.juegakuni.com.mx/images/bg_lv5_unstarted.png",
+            "http://images.juegakuni.com.mx/images/bg_lv6_unstarted.png"
     };
 
 
     public GamePresenterImpl(MainView mainView, Context context) {
         this.mainView = mainView;
+        this.gameInteractor = new GameInteractorImpl(this, context);
+        this.context = context;
+
+    }
+
+    public GamePresenterImpl(PreguntaView preguntaView, Context context) {
+        this.preguntaView = preguntaView;
         this.gameInteractor = new GameInteractorImpl(this, context);
         this.context = context;
 
@@ -107,22 +118,56 @@ public class GamePresenterImpl implements GamePresenter {
             if (position == 0) {
                 gameInteractor.getSerie(dashboardRestReponse);
             }
-
-
         }
+    }
+
+    public void actualizarSerie() {
 
     }
 
-    public void getPregunta(int position) {
+    public void setSuccessSerie() {
+        preguntaView.setSerieUp();
 
-        if (position +1 == dashboardRestReponse.getJugadorNivel().getNivel()) {
-            mainView.setFragmentPregunta();
-            gameInteractor.getPregunta();
+    }
+
+    public void setSuccessPregunta(PreguntaBean pregunta, RespuestaBean respuestaBean) {
+        //preguntaView.setClase(pregunta, respuestaBean);
+        //preguntaView.setClase(pregunta, respuestaBean);
+        getPregunta();
+    }
+
+    public void setFail() {
+        //preguntaView.setClase(boolean bien);
+
+
+    }
+
+    public void setPreguntaView(int position) {
+        if (position + 1 == dashboardRestReponse.getJugadorNivel().getNivel()) {
+            mainView.setFragmentPregunta(position);
+
         }
+    }
+
+    public void getPregunta() {
+        gameInteractor.getPregunta();
     }
 
     public void setPregunta(PreguntaBean pregunta) {
-        //mainView.setFragmentPregunta(pregunta);
+        if (preguntaView != null && pregunta != null)
+            preguntaView.setPregunta(pregunta);
     }
+
+    public void evaluatePregunta(PreguntaBean preguntaBean, int position) {
+
+        if (preguntaBean != null && preguntaView != null) {
+            gameInteractor.evaluarPregunta(preguntaBean, position);
+        }
+    }
+
+    public void setClase(PreguntaBean pregunta, RespuestaBean respuestaBean, boolean nivel, boolean serie, boolean premio, String desripcionPremio){
+        preguntaView.setClase(pregunta, respuestaBean, nivel, serie, premio, desripcionPremio);
+    }
+
 
 }

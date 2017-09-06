@@ -10,6 +10,8 @@ import com.seventhsoft.kuni.models.modelsrealm.Concurso;
 import com.seventhsoft.kuni.models.modelsrealm.Pregunta;
 import com.seventhsoft.kuni.models.modelsrealm.Respuesta;
 import com.seventhsoft.kuni.models.modelsrealm.Serie;
+import com.seventhsoft.kuni.models.modelsrest.RespuestaPreguntaRequest;
+import com.seventhsoft.kuni.models.modelsrest.RespuestaPreguntaRestResponse;
 import com.seventhsoft.kuni.models.modelsrest.RespuestaRest;
 
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmList;
+import io.realm.RealmResults;
 
 import static android.content.ContentValues.TAG;
 
@@ -36,13 +39,14 @@ public class ConcursoRepository {
                 @Override
                 public void execute(Realm realm) {
                     Concurso concurso = realm.createObject(Concurso.class, setIdConcurso());
-
+                    concurso.setIdConcursoRest(concursoBean.getIdConsurso());
                     concurso.setFechaInicio(concursoBean.getFechaInicio());
                     concurso.setFechaFin(concursoBean.getFechaFin());
                     concurso.setActivo(concursoBean.isActivo());
                     concurso.setIdJugadorNivel(concursoBean.getIdJugadorNivel());
                     concurso.setSerieActual(concursoBean.getSerieActual());
                     concurso.setdNivel(concursoBean.getdNivel());
+                    Log.e(TAG, "OSE| Save concurso idConcurso: "+ concurso.getIdConcursoRest() +"idJugadorNivel: " + concurso.getIdJugadorNivel() + " serie actual: " + concurso.getSerieActual() + " nivelActual: " + concurso.getdNivel());
 
                     //Log.i(TAG, "OSE| Usuario Realm: " + user.getName() + " " + user.getEmail() + " " + user.getTokenAccess() + " " + user.getRefreshToken());
                 }
@@ -54,7 +58,45 @@ public class ConcursoRepository {
         }
     }
 
-    public void updateConcurso() {
+    public int getIdJugadorNivel() {
+        int idJugadorNivel = 0;
+        try {
+            realm = Realm.getDefaultInstance();
+
+            Concurso concurso = realm.where(Concurso.class)
+                    .equalTo("idConcurso", setIdConcurso() - 1).findFirst();
+            idJugadorNivel = concurso.getIdJugadorNivel();
+            Log.i(TAG, "OSE| get id jugador: " + concurso.getIdJugadorNivel());
+
+            realm.close(); // Remember to close Realm when done.
+        } catch (Exception e) {
+            Log.e(TAG, "OSE| Error traer pregunta " + e);
+        }
+        return idJugadorNivel;
+
+
+    }
+
+    public void updateConcurso(final RespuestaPreguntaRestResponse response) {
+        try {
+            realm = Realm.getDefaultInstance();
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    Concurso concurso = realm.where(Concurso.class)
+                            .equalTo("idConcurso", setIdConcurso() - 1).findFirst();
+                    concurso.setIdJugadorNivel(response.getJugadorNivel().getIdJugadorNivel());
+                    concurso.setSerieActual(response.getJugadorNivel().getSerieActual());
+                    concurso.setdNivel(response.getJugadorNivel().getNivel());
+
+                    Log.i(TAG, "OSE| Actualizar concurso: " + concurso.getIdJugadorNivel() + " serie acrual: " + concurso.getSerieActual() + " nivel actual: " + concurso.getdNivel());
+                }
+            });
+            realm.close(); // Remember to close Realm when done.
+        } catch (Exception e) {
+            Log.e(TAG, "OSE| Error guardar concurso" + e);
+
+        }
 
     }
 
@@ -70,6 +112,7 @@ public class ConcursoRepository {
                     serie.setContador(0);
                     for (int i = 0; i < serieBean.getPreguntas().size(); i++) {
                         Pregunta pregunta = realm.createObject(Pregunta.class, setIdPregunta());
+
                         pregunta.setActivo(serieBean.getPreguntas().get(i).getActivo());
                         pregunta.setDescripcion(serieBean.getPreguntas().get(i).getDescripcion());
                         pregunta.setRuta(serieBean.getPreguntas().get(i).getRuta());
@@ -78,16 +121,17 @@ public class ConcursoRepository {
 
                         for (int j = 0; j < respuestasBean.size(); j++) {
                             Respuesta respuesta = realm.createObject(Respuesta.class, setIdRespuesta());
+                            Log.i(TAG, "OSE| respuesta id " + respuestasBean.get(j).getIdRespuesta());
+
+                            respuesta.setIdRespuestaRest(respuestasBean.get(j).getIdRespuesta());
                             respuesta.setActivo(respuestasBean.get(j).getActivo());
                             respuesta.setDescripcion(respuestasBean.get(j).getDescripcion());
                             respuesta.setCorrecta(respuestasBean.get(j).getCorrecta());
                             respuesta.setOrden(respuestasBean.get(j).getOrden());
-                            Log.i(TAG, "OSE|  for j" + j);
                             pregunta.respuestaList.add(j, respuesta);
                         }
-                        Log.i(TAG, "OSE| despues for j" + i);
 
-                        serie.preguntas.add(i,pregunta);
+                        serie.preguntas.add(i, pregunta);
 
 
                     }
@@ -101,33 +145,61 @@ public class ConcursoRepository {
     }
 
     public void deleteSerie() {
+        try {
+            realm = Realm.getDefaultInstance();
+            final RealmResults<Serie> results = realm.where(Serie.class).findAll();
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    results.deleteAllFromRealm();
+                    //realm.delete(Usuario.class);
+                }
 
+            });
+            realm.close(); // Remember to close Realm when done.
+
+        } catch (Exception e) {
+            Log.e(TAG, "OSE | Error realm" + e);
+
+        }
     }
 
     public PreguntaBean getPregunta() {
-        PreguntaBean preguntaBean = new PreguntaBean();
+        final PreguntaBean preguntaBean = new PreguntaBean();
 
         try {
             realm = Realm.getDefaultInstance();
-            Serie serie= realm.where(Serie.class)
-                    .findFirst();
-            Pregunta pregunta = serie.getPreguntas().get(serie.getContador());
-            preguntaBean.setClase(pregunta.getClase());
-            preguntaBean.setDescripcion(pregunta.getDescripcion());
-            preguntaBean.setRuta(pregunta.getRuta());
-            RealmList<Respuesta> respuestas = pregunta.getRespuestaList();
-            List<RespuestaBean> respuestasBeen = new ArrayList<>();
-            for(int i=0;i<respuestas.size();i++){
-                RespuestaBean respuestaBean = new RespuestaBean();
-                respuestaBean.setActivo(respuestas.get(i).getActivo());
-                respuestaBean.setDescripcion(respuestas.get(i).getDescripcion());
-                respuestaBean.setCorrecta(respuestas.get(i).getCorrecta());
-                respuestaBean.setOrden(respuestas.get(i).getOrden());
-                respuestasBeen.add(i, respuestaBean);
-            }
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    Serie serie = realm.where(Serie.class)
+                            .equalTo("idSerie", setIdSerie() - 1).findFirst();
+                    Log.i(TAG, "OSE| id serie" + serie.getIdSerie());
 
-            preguntaBean.setRespuestaList(respuestasBeen);
+                    if (serie.getContador() < 6) {
+                        Pregunta pregunta = serie.getPreguntas().get(serie.getContador());
+                        int contador = serie.getContador();
+                        Log.i(TAG, "OSE| contador serie" + contador);
 
+                        serie.setContador(contador + 1);
+                        preguntaBean.setClase(pregunta.getClase());
+                        preguntaBean.setDescripcion(pregunta.getDescripcion());
+                        preguntaBean.setRuta(pregunta.getRuta());
+                        RealmList<Respuesta> respuestas = pregunta.getRespuestaList();
+                        List<RespuestaBean> respuestasBeen = new ArrayList<>();
+                        for (int i = 0; i < respuestas.size(); i++) {
+                            RespuestaBean respuestaBean = new RespuestaBean();
+                            respuestaBean.setIdRespuesta(respuestas.get(i).getIdRespuestaRest());
+                            respuestaBean.setActivo(respuestas.get(i).getActivo());
+                            respuestaBean.setDescripcion(respuestas.get(i).getDescripcion());
+                            respuestaBean.setCorrecta(respuestas.get(i).getCorrecta());
+                            respuestaBean.setOrden(respuestas.get(i).getOrden());
+                            respuestasBeen.add(i, respuestaBean);
+                        }
+                        preguntaBean.setRespuestaList(respuestasBeen);
+                    }
+                }
+            });
             realm.close(); // Remember to close Realm when done.
         } catch (Exception e) {
             Log.e(TAG, "OSE| Error traer pregunta " + e);
@@ -135,6 +207,34 @@ public class ConcursoRepository {
         }
         return preguntaBean;
 
+    }
+
+    public RespuestaPreguntaRequest getRespuestaPregunta(final int idRespuesta) {
+        final RespuestaPreguntaRequest respuestaPreguntaRequest = new RespuestaPreguntaRequest();
+        try {
+            realm = Realm.getDefaultInstance();
+            Concurso concurso = realm.where(Concurso.class)
+                    .equalTo("idConcurso", setIdConcurso() - 1).findFirst();
+            respuestaPreguntaRequest.setIdConcurso(concurso.getIdConcursoRest());
+            respuestaPreguntaRequest.setIdJugadorNivel(concurso.getIdJugadorNivel());
+            respuestaPreguntaRequest.setIdRespuesta(idRespuesta);
+            respuestaPreguntaRequest.setSerie(concurso.getSerieActual());
+            respuestaPreguntaRequest.setNivelActual(concurso.getdNivel());
+            Serie serie = realm.where(Serie.class).equalTo("idSerie", setIdSerie() - 1).findFirst();
+            if (serie.getContador() == 6) {
+                respuestaPreguntaRequest.setPerfecta(1);
+            } else {
+                respuestaPreguntaRequest.setPerfecta(0);
+
+            }
+            Log.e(TAG, "OSE| Respuesta concurso idJugadorNivel: " + concurso.getIdJugadorNivel() + " serie actual: " + concurso.getSerieActual() + " nivelActual: " + concurso.getdNivel());
+
+            realm.close(); // Remember to close Realm when done.
+        } catch (Exception e) {
+            Log.e(TAG, "OSE| Error traer pregunta " + e);
+
+        }
+        return respuestaPreguntaRequest;
     }
 
     private int setIdConcurso() {

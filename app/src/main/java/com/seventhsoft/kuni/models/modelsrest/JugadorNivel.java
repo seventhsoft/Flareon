@@ -17,6 +17,10 @@ public class JugadorNivel {
     @SerializedName("idJugadorNivel")
     @Expose
     private Integer idJugadorNivel;
+    @SerializedName("recompensaGanada")
+    @Expose
+    private String recompensaGanada;
+
 
     public Integer getNivel() {
         return nivel;
@@ -42,4 +46,11 @@ public class JugadorNivel {
         this.idJugadorNivel = idJugadorNivel;
     }
 
+    public String getRecompensaGanada() {
+        return recompensaGanada;
+    }
+
+    public void setRecompensaGanada(String recompensaGanada) {
+        this.recompensaGanada = recompensaGanada;
+    }
 }

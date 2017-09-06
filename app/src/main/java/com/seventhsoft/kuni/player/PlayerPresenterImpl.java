@@ -35,7 +35,7 @@ public class PlayerPresenterImpl implements PlayerPresenter {
     }
 
     public void validateCredentials(String email, String password) {
-        /*boolean error = false;
+        boolean error = false;
         if (playerView != null) {
             if (validateEmailFormat(email))
                 error = true;
@@ -43,10 +43,10 @@ public class PlayerPresenterImpl implements PlayerPresenter {
                 error = true;
                 playerView.setPasswordError();
             }
-            if (!error) {*/
-        playerInteractor.login(email, password);
-        //}
-        //}
+            if (!error) {
+                playerInteractor.login(email, password);
+            }
+        }
     }
 
     public void validateEmail(String email) {
@@ -123,12 +123,12 @@ public class PlayerPresenterImpl implements PlayerPresenter {
             playerView.setPasswordRepeatError();
         }
         if (!error) {
-            playerInteractor.updatePlayerPassword(password,passwordNew);
+            playerInteractor.updatePlayerPassword(password, passwordNew);
         }
 
     }
 
-    public void updatePlayerNames(UserBean userBean, String apellidos, String nombre){
+    public void updatePlayerNames(UserBean userBean, String apellidos, String nombre) {
         boolean error = false;
         if (playerView != null) {
             if (nombre.isEmpty()) {

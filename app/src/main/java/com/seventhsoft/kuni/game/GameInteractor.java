@@ -1,6 +1,7 @@
 package com.seventhsoft.kuni.game;
 
 import com.seventhsoft.kuni.models.PreguntaBean;
+import com.seventhsoft.kuni.models.modelsrealm.Pregunta;
 import com.seventhsoft.kuni.models.modelsrest.DashboardRestReponse;
 
 /**
@@ -15,5 +16,5 @@ public interface GameInteractor {
 
     void getPregunta();
 
-
+    void evaluarPregunta(PreguntaBean pregunta, int position);
 }

@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
+import com.seventhsoft.kuni.KuniApplication;
 import com.seventhsoft.kuni.R;
 import com.seventhsoft.kuni.models.PreguntaBean;
 import com.seventhsoft.kuni.player.Login;
@@ -42,7 +44,7 @@ import java.util.ArrayList;
 import static android.content.ContentValues.TAG;
 
 
-public class MainActivity extends AppCompatActivity implements MainView , OnCompetitionClickListener{
+public class MainActivity extends AppCompatActivity implements MainView, OnCompetitionClickListener {
 
 
     private DrawerLayout drawerLayout;
@@ -69,19 +71,22 @@ public class MainActivity extends AppCompatActivity implements MainView , OnComp
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        context = KuniApplication.getContext();
         playerPresenter = new PlayerPresenterImpl(this, getApplicationContext());
         gamePresenter = new GamePresenterImpl(this, getApplicationContext());
         gamePresenter.getDashboard();
         setDrawer();
         setToolbar();
         recyclerView = (RecyclerView) findViewById(R.id.gridView);
+        int height = this.getResources().getDisplayMetrics().heightPixels;
+        int alturaRecycle = height - 494;
+        recyclerView.getLayoutParams().height = alturaRecycle;//(int) convertPixelsToDp(alturaRecycle, this);
+        Log.i(TAG, "OSE| height recycle "+ recyclerView.getHeight());
 
         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),
                 2, //number of grid columns
                 GridLayoutManager.VERTICAL,
                 false));
-
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
 
         if (adapter == null) {
@@ -136,14 +141,16 @@ public class MainActivity extends AppCompatActivity implements MainView , OnComp
         transaction.commit();
 
     }
-    public void onCompetitionClidked(int position) {
-        Log.i(TAG, "OSE| onCompetitionClidked " +position);
 
-        gamePresenter.getPregunta(position);
+    public void onCompetitionClidked(int position) {
+        Log.i(TAG, "OSE| onCompetitionClidked " + position);
+
+        gamePresenter.setPreguntaView(position);
     }
 
-    public void setFragmentPregunta(){
+    public void setFragmentPregunta(int position) {
         Intent intent = new Intent(MainActivity.this, PreguntaActivity.class);
+        intent.putExtra("position", position);
         startActivity(intent);
     }
 
@@ -391,5 +398,12 @@ public class MainActivity extends AppCompatActivity implements MainView , OnComp
     private int dpToPx(int dp) {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
+
+    public static float convertPixelsToDp(float px, Context context) {
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float dp = px / ((float) metrics.densityDpi / metrics.DENSITY_DEFAULT);
+        return dp;
     }
 }

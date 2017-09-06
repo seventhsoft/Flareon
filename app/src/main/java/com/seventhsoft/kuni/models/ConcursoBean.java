@@ -7,7 +7,6 @@ package com.seventhsoft.kuni.models;
 public class ConcursoBean {
 
     private int idConsurso;
-
     private long fechaInicio;
     private long fechaFin;
     private boolean activo;
