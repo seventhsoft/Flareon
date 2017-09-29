@@ -2,6 +2,7 @@ package com.seventhsoft.kuni.services;
 
 import com.seventhsoft.kuni.models.modelsrest.DashboardRestReponse;
 import com.seventhsoft.kuni.models.modelsrest.LoginRestResponse;
+import com.seventhsoft.kuni.models.modelsrest.RecompensasJugadorRestResponse;
 import com.seventhsoft.kuni.models.modelsrest.RespuestaPreguntaRequest;
 import com.seventhsoft.kuni.models.modelsrest.RespuestaPreguntaRestResponse;
 import com.seventhsoft.kuni.models.modelsrest.RestorePasswordRequest;
@@ -9,6 +10,8 @@ import com.seventhsoft.kuni.models.modelsrest.SerieRestReponse;
 import com.seventhsoft.kuni.models.modelsrest.UpdateUserRestRequest;
 import com.seventhsoft.kuni.models.modelsrest.UserRestResponse;
 import com.seventhsoft.kuni.models.modelsrest.SignUpRestRequest;
+
+import java.util.List;
 
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -100,4 +103,16 @@ public interface TrackerService {
      */
     @POST("/lfs/concurso/serie/preguntarespuesta")
     Observable<RespuestaPreguntaRestResponse> respuestaPregunta(@Body RespuestaPreguntaRequest respuestaPreguntaRequest);
+
+    /**
+     * Get recompensas jugador
+     */
+    @GET("/lfs/recompensa/jugador")
+    Observable<List<RecompensasJugadorRestResponse>> getRecompensasJugador();
+
+    /**
+     * Get recompensas concurso
+     */
+    @GET("/lfs/recompensa/concurso/{idConcurso}")
+    Observable<List<RecompensasJugadorRestResponse>> getRecompensasConcurso(@Path("idConcurso") int idConcurso);
 }

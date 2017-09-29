@@ -21,7 +21,6 @@ public interface GamePresenter {
 
     void setPreguntaView(int position);
 
-
     void setPregunta(PreguntaBean pregunta);
 
     void evaluatePregunta(PreguntaBean pregunta, int position);
@@ -36,4 +35,7 @@ public interface GamePresenter {
                   boolean premio, String desripcionPremio);
 
     void setFail();
+
+    void setChangeColorsResponse(int position, boolean correcta);
+
 }

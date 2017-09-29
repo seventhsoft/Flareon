@@ -24,6 +24,8 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.DefaultAudience;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.seventhsoft.kuni.game.InicioActivity;
+import com.seventhsoft.kuni.game.InstruccionesActivity;
 import com.seventhsoft.kuni.game.MainActivity;
 import com.seventhsoft.kuni.R;
 import com.seventhsoft.kuni.models.UserBean;
@@ -296,7 +298,9 @@ public class Login extends AppCompatActivity implements PlayerView {
     }
 
     public void setLoginSuccess() {
-        setMainActivity();
+        Intent intent = new Intent(getApplicationContext(), InstruccionesActivity.class);
+        startActivity(intent);
+        //setMainActivity();
     }
 
     public void setRecoverPasswordSuccess() {

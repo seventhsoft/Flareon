@@ -16,6 +16,9 @@
     <string name="btn_crear_cuenta">Crear cuenta</string>
     <string name="btn_enviar">Enviar</string>
     <string name="btn_continuar">Continuar</string>
+    <string name="btn_ver_codigo">Ver código</string>
+    <string name="btn_ok">OK</string>
+
 
     <!-- Hints -->
     <string name="contraseña">Contraseña</string>
@@ -45,6 +48,7 @@
     <string name="lbl_contraseña_confirmar">Confirmar contraseña</string>
     <string name="lbl_series_progreso">%1$d/%2$d</string>
 
+    <string name="lbl_comenzar">Comenzar</string>
 
     <string name="lbl_concurso">El concursoRest finaliza el %s</string>
     <string name="lbl_nivel">Nivel %d</string>
@@ -56,11 +60,19 @@
     <string name="lbl_cuenta">Mi cuenta</string>
     <string name="lbl_inicio">Inicio</string>
     <string name="lbl_premios">Premios</string>
+    <string name="lbl_legales">Legales</string>
+
     <string name="lbl_mis_premios">Mis premios</string>
     <string name="lbl_ajustes">Ajustes</string>
     <string name="lbl_salir">Salir</string>
     <string name="password_repeat">La contraseña no coincide</string>
     <string name="dias_restantes">Restan %s</string>
+
+    <string name="lbl_patrocinador">Presentate en cualquier sucursal de %s y presenta este código.</string>
+    <string name="lbl_vigencia">Vigencia: %s</string>
+    <string name="lbl_dialogo">¿Qué esperas? Sigue participando, mientras más juegues más premios podrás ganar.</string>
+    <string name="lbl_dialogo_instrucciones">Para canjearlo deberás presentar este código y una identificación oficial.</string>
+
 
     <!--algo-->
     <string name="lbl_no_password">¿Olvidaste tu contraseña?</string>
@@ -82,7 +94,5 @@
     <string name="no_conexion">No cuenta con conexión a internet</string>
     <string name="error_exception">Algo salió mal, inténtelo más tarde</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

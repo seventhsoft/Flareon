@@ -18,23 +18,17 @@
 
         <activity
             android:name=".game.MainActivity"
-            android:theme="@style/AppTheme.Light"></activity>
+            android:theme="@style/AppTheme.Light" />
         <activity
             android:name=".player.Login"
-            android:theme="@style/AppTheme.Light">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppTheme.Light" />
         <activity
             android:name=".player.UserActivity"
             android:theme="@style/AppTheme.Light" />
         <activity
             android:name=".facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name" />
         <activity
             android:name=".facebook.CustomTabActivity"
             android:exported="true">
@@ -49,8 +43,18 @@
         </activity>
         <activity
             android:name=".player.SignUpActivity"
-            android:theme="@style/AppTheme.Light"></activity>
-        <activity android:name=".game.PreguntaActivity"></activity>
+            android:theme="@style/AppTheme.Light" />
+        <activity android:name=".game.PreguntaActivity" />
+        <activity android:name=".recompensas.RecompensasActivity" />
+        <activity android:name=".game.InicioActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".game.PresentacionActivity" />
+        <activity android:name=".game.InstruccionesActivity"></activity>
     </application>
 
 </manifest>

@@ -74,6 +74,14 @@ public class PlayerInteractorImpl implements PlayerInteractor {
                         UserBean userBean = new UserBean();
                         userBean.setTokenAccess(response.getAccessToken());
                         userBean.setRefreshToken(response.getRefreshToken());
+                        Log.i(TAG, "OSE| Access token " + response.getAccessToken());
+                        Log.i(TAG, "OSE| Refresh token " + response.getRefreshToken());
+
+                        /*
+                         * Access token 04046649-ad32-44d4-b454-e9ff5b329616
+                         * Refresh token 10cb13d5-67e7-424e-987b-73dcbb1a6e85
+                         */
+
                         sesionPreference.saveData("statusSesion", true);
                         playerRepository.saveUser(userBean);
                         playerPresenter.onLoginSuccess();

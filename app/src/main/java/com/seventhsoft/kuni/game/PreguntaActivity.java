@@ -126,8 +126,6 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
 
     }
 
-
-
     public void clickListener() {
         btnRespuestaUno.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,25 +154,25 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
         if (bien) {
             switch (position) {
                 case 0:
-                    btnRespuestaUno.setBackgroundColor(getResources().getColor(R.color.verde));
+                    btnRespuestaUno.setTextColor(getResources().getColor(R.color.verde));
                     break;
                 case 1:
-                    btnRespuestaDos.setBackgroundColor(getResources().getColor(R.color.verde));
+                    btnRespuestaDos.setTextColor(getResources().getColor(R.color.verde));
                     break;
                 case 2:
-                    btnRespuestaTres.setBackgroundColor(getResources().getColor(R.color.verde));
+                    btnRespuestaTres.setTextColor(getResources().getColor(R.color.verde));
                     break;
             }
         } else {
             switch (position) {
                 case 0:
-                    btnRespuestaUno.setBackgroundColor(getResources().getColor(R.color.primary_dark));
+                    btnRespuestaUno.setTextColor(getResources().getColor(R.color.primary_dark));
                     break;
                 case 1:
-                    btnRespuestaDos.setBackgroundColor(getResources().getColor(R.color.primary_dark));
+                    btnRespuestaDos.setTextColor(getResources().getColor(R.color.primary_dark));
                     break;
                 case 2:
-                    btnRespuestaTres.setBackgroundColor(getResources().getColor(R.color.primary_dark));
+                    btnRespuestaTres.setTextColor(getResources().getColor(R.color.primary_dark));
                     break;
             }
         }

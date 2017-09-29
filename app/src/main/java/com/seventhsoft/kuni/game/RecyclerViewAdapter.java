@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -27,23 +28,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public RecyclerViewAdapter(GamePresenter gamePresenter, OnCompetitionClickListener onCompetitionClickListener) {
         this.gamePresenter = gamePresenter;
-        this.onCompetitionClickListener=onCompetitionClickListener;
+        this.onCompetitionClickListener = onCompetitionClickListener;
     }
-
 
     @Override
     public RepositoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.i(TAG, "OSE| Adapter create");
-
         return new RepositoryViewHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.layout_grid_view, parent, false));
     }
 
     @Override
     public void onBindViewHolder(RepositoryViewHolder holder, int position) {
-        Log.i(TAG, "OSE| Adapter holder");
         gamePresenter.onBindRepositoryRowViewAtPosition(position, holder);
-
     }
 
     @Override
@@ -52,9 +48,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return 5;//gamePresenter.getRepositoriesRowsCount();
     }
 
-
-    public class RepositoryViewHolder extends RecyclerView.ViewHolder implements RepositoryRowView, View.OnClickListener
-    {
+    public class RepositoryViewHolder extends RecyclerView.ViewHolder implements RepositoryRowView, View.OnClickListener {
 
         private TextView txtNivel;
         private TextView txtEstado;
@@ -64,7 +58,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         private TextView txtSeries;
         private CardView cardView;
         private Context context;
-
+        private ProgressBar progressBar;
 
         public RepositoryViewHolder(View itemView) {
             super(itemView);
@@ -74,16 +68,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             txtSeries = (TextView) itemView.findViewById(R.id.txtSeries);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
             imageRecompensa = (ImageView) itemView.findViewById(R.id.recompensa);
+            imageRecompensa.setVisibility(View.GONE);
+            progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
             cardView = (CardView) itemView.findViewById(R.id.cardView);
             int width = ((itemView.getResources().getDisplayMetrics().widthPixels) / 2) - 10;
             cardView.setMinimumWidth(width);
             context = KuniApplication.getContext();
             itemView.setOnClickListener(this);
-
         }
 
         public void setNivel(String title) {
             txtNivel.setText(title);
+            progressBar.setVisibility(View.GONE);
+
         }
 
         public void setEstadoNivel(String subTitle) {
@@ -122,13 +119,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         @Override
         public void onClick(View view) {
             Log.i(TAG, "OSE| click");
-
             if (onCompetitionClickListener != null)
                 onCompetitionClickListener.onCompetitionClidked(getAdapterPosition());
         }
     }
 
-
+}
     /*private String[] titulo;
     private String[] subTitulo;
     private String[] supportText;
@@ -209,5 +205,5 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         void onItemClick(View view, int position);
     }
     */
-}
+
 

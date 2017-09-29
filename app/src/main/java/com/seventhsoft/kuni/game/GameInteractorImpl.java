@@ -140,7 +140,6 @@ public class GameInteractorImpl implements GameInteractor {
                             preguntaBean.setClase(response.getPreguntas().get(i).getClase());
 
                             List<RespuestaRest> respuestasRest = response.getPreguntas().get(i).getRespuestaList();
-                            //Log.i(TAG, "OSE| size respuestas " + respuestasRest.size() + i);
 
                             List<RespuestaBean> respuestas = new ArrayList<RespuestaBean>();
                             for (int j = 0; j < respuestasRest.size(); j++) {
@@ -150,7 +149,6 @@ public class GameInteractorImpl implements GameInteractor {
                                 respuestaBean.setDescripcion(respuestasRest.get(j).getDescripcion());
                                 respuestaBean.setCorrecta(respuestasRest.get(j).getCorrecta());
                                 respuestaBean.setOrden(respuestasRest.get(j).getOrden());
-                                Log.i(TAG, "OSE|  for j" + j);
 
                                 respuestas.add(j, respuestaBean);
                             }
@@ -221,7 +219,7 @@ public class GameInteractorImpl implements GameInteractor {
                                 respuestaBean.setDescripcion(respuestasRest.get(j).getDescripcion());
                                 respuestaBean.setCorrecta(respuestasRest.get(j).getCorrecta());
                                 respuestaBean.setOrden(respuestasRest.get(j).getOrden());
-                               // Log.i(TAG, "OSE|  for j" + j);
+                                // Log.i(TAG, "OSE|  for j" + j);
 
                                 respuestas.add(j, respuestaBean);
                             }
@@ -276,7 +274,7 @@ public class GameInteractorImpl implements GameInteractor {
                             descripcionRecompensa = response.getRecompensa().getDescripcion();
                         }
                         if (respuestaBean.getCorrecta()) {
-                            if (respuestaPreguntaRequest.getPerfecta() == 1 && respuestaPreguntaRequest.getNivelActual() != response.getJugadorNivel().getNivel() ) {
+                            if (respuestaPreguntaRequest.getPerfecta() == 1 && respuestaPreguntaRequest.getNivelActual() != response.getJugadorNivel().getNivel()) {
                                 Log.i(TAG, "OSE| nivel up ");
 
                                 concursoRepository.updateConcurso(response);

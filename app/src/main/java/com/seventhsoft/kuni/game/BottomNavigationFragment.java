@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.seventhsoft.kuni.R;
 import com.seventhsoft.kuni.player.UserActivity;
+import com.seventhsoft.kuni.recompensas.RecompensasActivity;
 
 
 public class BottomNavigationFragment extends Fragment {
@@ -70,6 +71,7 @@ public class BottomNavigationFragment extends Fragment {
                                 break;
 
                             case R.id.action_premios:
+                                setRecompensas();
                                 break;
 
                             case R.id.action_perfil:
@@ -85,6 +87,11 @@ public class BottomNavigationFragment extends Fragment {
     private void setCuenta() {
         Intent intent = new Intent(getContext(), UserActivity.class);
         intent.putExtra("bandera", 2);
+        startActivity(intent);
+    }
+
+    private void setRecompensas() {
+        Intent intent = new Intent(getContext(), RecompensasActivity.class);
         startActivity(intent);
     }
 

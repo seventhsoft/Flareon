@@ -112,9 +112,6 @@ public class MainActivity extends AppCompatActivity implements MainView, OnCompe
 
                 txtConcurso.setText(getString(R.string.dias_restantes, fecha));
                 recyclerView.setAdapter(adapter);
-
-
-                //adapter.setClickListener(this);
             }
         });
     }
@@ -144,7 +141,6 @@ public class MainActivity extends AppCompatActivity implements MainView, OnCompe
 
     public void onCompetitionClidked(int position) {
         Log.i(TAG, "OSE| onCompetitionClidked " + position);
-
         gamePresenter.setPreguntaView(position);
     }
 

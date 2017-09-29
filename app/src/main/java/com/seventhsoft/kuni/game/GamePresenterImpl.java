@@ -74,7 +74,7 @@ public class GamePresenterImpl implements GamePresenter {
     }
 
     public void onBindRepositoryRowViewAtPosition(int position, RepositoryRowView rowView) {
-        Log.i(TAG, "OSE| Presenter Blind");
+        //Log.i(TAG, "OSE| Presenter Blind");
         if (dashboardRestReponse != null) {
             //set nivel
             rowView.setNivel(context.getString(R.string.lbl_nivel, dashboardRestReponse.getNiveles().get(position).getNivel()));
@@ -169,5 +169,8 @@ public class GamePresenterImpl implements GamePresenter {
         preguntaView.setClase(pregunta, respuestaBean, nivel, serie, premio, desripcionPremio);
     }
 
-
+    @Override
+    public void setChangeColorsResponse(int position, boolean correcta) {
+        preguntaView.changeColorButton(position, correcta);
+    }
 }

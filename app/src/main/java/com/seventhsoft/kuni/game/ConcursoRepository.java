@@ -46,7 +46,7 @@ public class ConcursoRepository {
                     concurso.setIdJugadorNivel(concursoBean.getIdJugadorNivel());
                     concurso.setSerieActual(concursoBean.getSerieActual());
                     concurso.setdNivel(concursoBean.getdNivel());
-                    Log.e(TAG, "OSE| Save concurso idConcurso: "+ concurso.getIdConcursoRest() +"idJugadorNivel: " + concurso.getIdJugadorNivel() + " serie actual: " + concurso.getSerieActual() + " nivelActual: " + concurso.getdNivel());
+                    Log.e(TAG, "OSE| Save concurso idConcurso: " + concurso.getIdConcursoRest() + "idJugadorNivel: " + concurso.getIdJugadorNivel() + " serie actual: " + concurso.getSerieActual() + " nivelActual: " + concurso.getdNivel());
 
                     //Log.i(TAG, "OSE| Usuario Realm: " + user.getName() + " " + user.getEmail() + " " + user.getTokenAccess() + " " + user.getRefreshToken());
                 }
@@ -235,6 +235,21 @@ public class ConcursoRepository {
 
         }
         return respuestaPreguntaRequest;
+    }
+
+    public int getIdConcurso() {
+        int idConcurso = 0;
+        try {
+            realm = Realm.getDefaultInstance();
+            Concurso concurso = realm.where(Concurso.class)
+                    .equalTo("idConcurso", setIdConcurso() - 1).findFirst();
+            idConcurso = concurso.getIdConcursoRest();
+            Log.i(TAG, "OSE| idConcurso: " + concurso.getIdConcursoRest());
+            realm.close(); // Remember to close Realm when done.
+        } catch (Exception e) {
+            Log.e(TAG, "OSE| Error traer idConcurso " + e);
+        }
+        return idConcurso;
     }
 
     private int setIdConcurso() {

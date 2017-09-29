@@ -10,14 +10,8 @@
             android:id="@+id/nav_inicio"
             android:title="@string/lbl_inicio" />
         <item
-            android:id="@+id/nav_cuenta"
-            android:title="@string/lbl_cuenta" />
-        <item
-            android:id="@+id/nav_premios"
-            android:title="@string/lbl_premios" />
-        <item
-            android:id="@+id/nav_mis_premios"
-            android:title="@string/lbl_mis_premios" />
+            android:id="@+id/nav_legales"
+            android:title="@string/lbl_legales" />
         <item
             android:id="@+id/nav_ajustes"
             android:title="@string/lbl_ajustes" />
