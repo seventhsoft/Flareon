@@ -3,6 +3,7 @@ package com.seventhsoft.kuni.player;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.seventhsoft.kuni.R;
 import com.seventhsoft.kuni.models.UserBean;
+import com.seventhsoft.kuni.utils.ToolbarFragment;
 
 public class ForgotPasswordFragment extends Fragment implements PlayerView {
 
@@ -50,6 +52,8 @@ public class ForgotPasswordFragment extends Fragment implements PlayerView {
         txtEmail = (EditText) getActivity().findViewById(R.id.txtEmail);
         btnSend = (Button) getActivity().findViewById(R.id.btnSend);
         playerPresenter = new PlayerPresenterImpl(this, getContext());
+        getActivity().setTitle("Restablecer contraseña");
+        setToolbar();
         onClickSend();
         super.onActivityCreated(state);
     }
@@ -139,5 +143,19 @@ public class ForgotPasswordFragment extends Fragment implements PlayerView {
     }
 
     public void setPlayer(final UserBean usuario) {
+    }
+
+    /**
+     * Set the toolbar for the activity
+     */
+    private void setToolbar() {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        Fragment fragment;
+        //if (fragment == null) {
+        fragment = ToolbarFragment.newInstance(2);
+        fm.beginTransaction()
+                .add(R.id.toolbar_fragment, fragment)
+                .commit();
+        //}
     }
 }

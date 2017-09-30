@@ -16,16 +16,16 @@
     </style>
 
     <style name="AppTheme.Light" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimary">@color/accent_rosa</item>
         <item name="colorPrimaryDark">@color/monsoon</item>
-        <item name="colorAccent">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent_rosa</item>
         <item name="android:textColorPrimaryInverse">@color/accent_rosa</item>
 
         <item name="android:windowBackground">@color/background</item>
 
         <item name="colorControlNormal">@color/monsoon</item>
-        <item name="colorControlActivated">@color/primary_dark</item>
-        <item name="colorControlHighlight">@color/primary_dark</item>
+        <item name="colorControlActivated">@color/accent_rosa</item>
+        <item name="colorControlHighlight">@color/accent_rosa</item>
         <item name="android:textColorHint">@color/monsoon</item>
 
         <item name="colorButtonNormal">@color/accent_rosa</item>
@@ -36,6 +36,12 @@
         <item name="android:textColorPrimary">@color/accent_rosa</item>
         <item name="android:textColorSecondary">@color/accent_rosa</item>
         <item name="actionMenuTextColor">@color/accent_rosa</item>
+
+    </style>
+    <style name="AppTheme.Toolbar.Prelogin" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="actionMenuTextColor">@color/white</item>
 
     </style>
 

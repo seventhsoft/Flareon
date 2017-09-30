@@ -24,8 +24,8 @@
     <string name="contraseña">Contraseña</string>
 
     <string name="contraseña_actual">Contraseña actual</string>
-    <string name="contraseña_nueva">Contraseña nueva</string>
-    <string name="contraseña_repetida">Contraseña nueva</string>
+    <string name="contraseña_nueva">Nueva contraseña</string>
+    <string name="contraseña_repetida">Repite tu nueva contraseña</string>
 
     <string name="correo_electronico">Correo electrónico</string>
     <string name="usuario">Nombre de usuario</string>
@@ -48,7 +48,12 @@
     <string name="lbl_contraseña_confirmar">Confirmar contraseña</string>
     <string name="lbl_series_progreso">%1$d/%2$d</string>
 
+    <string name="lbl_etiqueta_pregunta">Nivel %1$d/Serie %2$d \nPregunta %3$d</string>
+
     <string name="lbl_comenzar">Comenzar</string>
+    <string name="lbl_condiciones">Al crear tu cuenta aceptas las condiciones de uso y políticas de privacidad</string>
+    <string name="lbl_instrucciones_recuperar_password">Para restablecer la contraseña ingresa tu correo electrónico con el que te registraste y te enviaremos un enlace</string>
+    <string name="hint_ingresa_correo">Ingresa tu correo</string>
 
     <string name="lbl_concurso">El concursoRest finaliza el %s</string>
     <string name="lbl_nivel">Nivel %d</string>
@@ -61,12 +66,13 @@
     <string name="lbl_inicio">Inicio</string>
     <string name="lbl_premios">Premios</string>
     <string name="lbl_legales">Legales</string>
+    <string name="lbl_respuesta_correcta">Respuesta correcta:</string>
 
     <string name="lbl_mis_premios">Mis premios</string>
     <string name="lbl_ajustes">Ajustes</string>
     <string name="lbl_salir">Salir</string>
     <string name="password_repeat">La contraseña no coincide</string>
-    <string name="dias_restantes">Restan %s</string>
+    <string name="dias_restantes">!Vamos! Aún quedan %s días</string>
 
     <string name="lbl_patrocinador">Presentate en cualquier sucursal de %s y presenta este código.</string>
     <string name="lbl_vigencia">Vigencia: %s</string>

@@ -10,12 +10,21 @@ import com.seventhsoft.kuni.models.RespuestaBean;
 public interface PreguntaView {
 
     void setPregunta(PreguntaBean pregunta);
-    void changeColorButton(int position, boolean bien);
 
-    void setClase(final PreguntaBean pregunta, final RespuestaBean respuestaBean,
-                  final boolean nivel, final boolean serie, final  boolean premio, final String descripcionPremio);
+    //void changeColorButton(int bien, int pressed, boolean correcta);
+
+    void setClase(PreguntaBean pregunta, RespuestaBean respuestaBean, boolean nivel, boolean serie,
+                  boolean premio, String desripcionPremio);
+
+    void setResultado(PreguntaBean pregunta, RespuestaBean respuestaBean, int pressed, int correcta,
+                      RespuestaBean respuestaBien, boolean bien, boolean nivel, boolean serie,
+                      boolean premio, String desripcionPremio);
+
     void setCorrecta();
+
     void setIncorrecta();
+
     void setNivelUp();
+
     void setSerieUp();
 }

@@ -1,6 +1,7 @@
 package com.seventhsoft.kuni.utils;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -67,6 +68,24 @@ public class ToolbarFragment extends Fragment {
                 });
                 break;
             case 1:
+                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getActivity().onBackPressed();
+                    }
+                });
+                break;
+            case 2:
+                view = inflater.inflate(R.layout.toolbar_prelogin, container, false);
+                toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+                //set toolbar appearance
+                //for crate home button
+                activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getActivity().getResources().getColor(R.color.toolbar_prelogin)));
+
+                activity.setSupportActionBar(toolbar);
+                activity.getSupportActionBar().setTitle(getActivity().getTitle());
+                activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                activity.getSupportActionBar().setHomeButtonEnabled(true);
                 toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

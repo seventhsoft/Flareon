@@ -8,7 +8,6 @@
         android:id="@+id/toolbar_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
     </FrameLayout>
 
     <LinearLayout
@@ -23,22 +22,18 @@
         android:paddingRight="24dp"
         android:paddingTop="8dp">
 
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/txtContraseñaActual"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="4dp"
-            android:paddingTop="16dp">
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/fab_label_background"
+            android:hint="@string/contraseña"
+            android:inputType="textPassword"
+            android:maxLength="15"
+            android:textColor="@color/monsoon" />
 
-            <EditText
-                android:id="@+id/txtContraseñaActual"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/contraseña"
-                android:inputType="textPassword"
-                android:maxLength="15"
-                android:textColor="@color/monsoon" />
-        </android.support.design.widget.TextInputLayout>
 
         <TextView
             android:id="@+id/lblContraseñaActual"
@@ -52,38 +47,31 @@
             android:textColor="@color/monsoon"
             android:textSize="12sp" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/txtContraseñaNueva"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="4dp"
-            android:paddingTop="8dp">
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/fab_label_background"
+            android:hint="@string/contraseña_nueva"
+            android:inputType="textPassword"
+            android:maxLength="15"
+            android:textColor="@color/monsoon" />
 
-            <EditText
-                android:id="@+id/txtContraseñaNueva"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/contraseña_nueva"
-                android:inputType="textPassword"
-                android:maxLength="15"
-                android:textColor="@color/monsoon" />
 
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/txtContraseñaRepetida"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="4dp"
-            android:paddingTop="8dp">
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/fab_label_background"
+            android:hint="@string/contraseña_nueva"
+            android:inputType="textPassword"
+            android:maxLength="15"
+            android:textColor="@color/monsoon" />
 
-            <EditText
-                android:id="@+id/txtContraseñaRepetida"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/contraseña_nueva"
-                android:inputType="textPassword"
-                android:maxLength="15"
-                android:textColor="@color/monsoon" />
-        </android.support.design.widget.TextInputLayout>
 
         <TextView
             android:id="@+id/lblContraseñaRepetida"

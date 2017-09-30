@@ -121,7 +121,7 @@ public class ConcursoRepository {
 
                         for (int j = 0; j < respuestasBean.size(); j++) {
                             Respuesta respuesta = realm.createObject(Respuesta.class, setIdRespuesta());
-                            Log.i(TAG, "OSE| respuesta id " + respuestasBean.get(j).getIdRespuesta());
+                            //Log.i(TAG, "OSE| respuesta id " + respuestasBean.get(j).getIdRespuesta());
 
                             respuesta.setIdRespuestaRest(respuestasBean.get(j).getIdRespuesta());
                             respuesta.setActivo(respuestasBean.get(j).getActivo());
@@ -180,7 +180,12 @@ public class ConcursoRepository {
                         Pregunta pregunta = serie.getPreguntas().get(serie.getContador());
                         int contador = serie.getContador();
                         Log.i(TAG, "OSE| contador serie" + contador);
-
+                        Concurso concurso = realm.where(Concurso.class)
+                                .equalTo("idConcurso", setIdConcurso() - 1).findFirst();
+                        preguntaBean.setTiempo(serie.getTiempoPregunta());
+                        preguntaBean.setNivelActual(concurso.getdNivel());
+                        preguntaBean.setSerieActual(concurso.getSerieActual());
+                        preguntaBean.setNumeroPregunta(serie.getContador()+1);
                         serie.setContador(contador + 1);
                         preguntaBean.setClase(pregunta.getClase());
                         preguntaBean.setDescripcion(pregunta.getDescripcion());
@@ -227,7 +232,7 @@ public class ConcursoRepository {
                 respuestaPreguntaRequest.setPerfecta(0);
 
             }
-            Log.e(TAG, "OSE| Respuesta concurso idJugadorNivel: " + concurso.getIdJugadorNivel() + " serie actual: " + concurso.getSerieActual() + " nivelActual: " + concurso.getdNivel());
+            Log.i(TAG, "OSE| Respuesta concurso idJugadorNivel: " + concurso.getIdJugadorNivel() + " serie actual: " + concurso.getSerieActual() + " nivelActual: " + concurso.getdNivel());
 
             realm.close(); // Remember to close Realm when done.
         } catch (Exception e) {

@@ -13,7 +13,7 @@ public interface GamePresenter {
 
     void getDashboard();
 
-    void setDashboard(DashboardRestReponse dashboardResponse, String fecha);
+    void setDashboard(DashboardRestReponse dashboardResponse, long fin, long inicio);
 
     void onBindRepositoryRowViewAtPosition(int position, RepositoryRowView repositoryRowView);
 
@@ -33,6 +33,10 @@ public interface GamePresenter {
 
     void setClase(PreguntaBean pregunta, RespuestaBean respuestaBean, boolean nivel, boolean serie,
                   boolean premio, String desripcionPremio);
+
+    void setResultado(PreguntaBean pregunta, RespuestaBean respuestaBean, int pressed, int correcta,
+                      RespuestaBean respuestaBien, boolean bien, boolean nivel, boolean serie,
+                      boolean premio, String desripcionPremio);
 
     void setFail();
 

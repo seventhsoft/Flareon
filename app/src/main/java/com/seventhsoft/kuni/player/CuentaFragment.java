@@ -249,7 +249,7 @@ public class CuentaFragment extends Fragment implements PlayerView {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         Fragment fragment;
         //if (fragment == null) {
-        fragment = ToolbarFragment.newInstance(1);
+        fragment = ToolbarFragment.newInstance(2);
         fm.beginTransaction()
                 .add(R.id.toolbar_fragment, fragment)
                 .commit();

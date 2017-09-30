@@ -7,8 +7,7 @@
     <FrameLayout
         android:id="@+id/toolbar_fragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </FrameLayout>
+        android:layout_height="wrap_content"></FrameLayout>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
@@ -36,76 +35,61 @@
                 android:paddingBottom="8dp"
                 android:paddingTop="16dp"
                 android:text="@string/lbl_cuenta"
-                android:textColor="@color/primary_darker"
+                android:textColor="@color/accent_rosa"
                 android:textSize="16sp" />
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
+            <EditText
+                android:id="@+id/txtCorreo"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp">
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/fab_label_background"
+                android:hint="@string/correo_electronico"
+                android:inputType="textEmailAddress"
+                android:maxLength="50"
+                android:textColor="@color/monsoon" />
 
-                <EditText
-                    android:id="@+id/txtCorreo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/correo_electronico"
-                    android:inputType="textEmailAddress"
-                    android:maxLength="50"
-                    android:textColor="@color/monsoon" />
-            </android.support.design.widget.TextInputLayout>
+            <EditText
+                android:id="@+id/txtNombre"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/fab_label_background"
+                android:hint="@string/nombre"
+                android:inputType="textPersonName|textCapWords"
+                android:maxLength="50"
+                android:textColor="@color/monsoon" />
 
             <!-- Email Label -->
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
+
+            <EditText
+                android:id="@+id/txtApellidos"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp">
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/fab_label_background"
+                android:hint="@string/apellidos"
+                android:inputType="textPersonName|textCapWords"
+                android:maxLength="50"
+                android:textColor="@color/monsoon" />
 
-                <EditText
-                    android:id="@+id/txtNombre"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/nombre"
-                    android:inputType="textPersonName|textCapWords"
-                    android:maxLength="50"
-                    android:textColor="@color/monsoon" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp">
-
-                <EditText
-                    android:id="@+id/txtApellidos"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/apellidos"
-                    android:inputType="textPersonName|textCapWords"
-
-                    android:maxLength="50"
-                    android:textColor="@color/monsoon" />
-            </android.support.design.widget.TextInputLayout>
 
             <!-- Password Label -->
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
+            <EditText
+                android:id="@+id/txtContraseñaActual"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
-                android:paddingTop="8dp">
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/fab_label_background"
+                android:hint="@string/contraseña"
+                android:inputType="textPassword"
+                android:maxLength="15"
+                android:textColor="@color/monsoon" />
 
-                <EditText
-                    android:id="@+id/txtContraseñaActual"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/contraseña"
-                    android:inputType="textPassword"
-                    android:maxLength="15"
-                    android:textColor="@color/monsoon" />
-            </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
 

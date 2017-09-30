@@ -1,6 +1,9 @@
 package com.seventhsoft.kuni.player;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +25,7 @@ import com.facebook.login.widget.LoginButton;
 import com.seventhsoft.kuni.R;
 import com.seventhsoft.kuni.game.MainActivity;
 import com.seventhsoft.kuni.models.UserBean;
+import com.seventhsoft.kuni.utils.ToolbarFragment;
 
 public class SignUpActivity extends AppCompatActivity implements PlayerView {
 
@@ -67,9 +71,10 @@ public class SignUpActivity extends AppCompatActivity implements PlayerView {
         txtEmail = (EditText) findViewById(R.id.txtEmail);
         txtPassword = (EditText) findViewById(R.id.txtPassword);
         txtPasswordRepeat = (EditText) findViewById(R.id.txtPasswordRepeat);
-
+        setTitle("Registro");
         btnSignUp = (Button) findViewById(R.id.btnSignUp);
         fbLoginButton = (LoginButton) findViewById(R.id.login_button);
+        setToolbar();
         if (isLoggedIn()) {
             setMainActivity();
         }
@@ -151,7 +156,9 @@ public class SignUpActivity extends AppCompatActivity implements PlayerView {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setLogin();
+                Uri uri = Uri.parse("http://about.juegakuni.mx/privacidad.html");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
             }
         });
     }
@@ -314,5 +321,21 @@ public class SignUpActivity extends AppCompatActivity implements PlayerView {
     }
 
     public void setPlayer(final UserBean usuario) {
+    }
+    /**
+     * Set the toolbar for the activity
+     */
+    private void setToolbar() {
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment;
+        //if (fragment == null) {
+        fragment = ToolbarFragment.newInstance(2);
+        fm.beginTransaction()
+                .add(R.id.toolbar_fragment, fragment)
+                .commit();
+        //}
+    }
+    public void onBackPressed(){
+        setLogin();
     }
 }

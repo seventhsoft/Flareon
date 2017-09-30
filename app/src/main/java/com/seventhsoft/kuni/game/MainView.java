@@ -10,7 +10,7 @@ public interface MainView {
 
     void onSesionClosed();
 
-    void setDashboard(String fecha);
+    void setDashboard(long fin, long inicio);
 
     void setFragmentPregunta(int position);
 

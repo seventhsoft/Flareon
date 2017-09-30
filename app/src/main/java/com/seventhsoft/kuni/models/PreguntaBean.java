@@ -19,7 +19,10 @@ public class PreguntaBean {
     private String clase;
     private Boolean activo;
     private List<RespuestaBean> respuestaList = null;
-
+    private int serieActual;
+    private int nivelActual;
+    private int numeroPregunta;
+    private int tiempo;
 
     public int getIdPregunta() {
         return idPregunta;
@@ -67,5 +70,37 @@ public class PreguntaBean {
 
     public void setRespuestaList(List<RespuestaBean> respuestaList) {
         this.respuestaList = respuestaList;
+    }
+
+    public int getSerieActual() {
+        return serieActual;
+    }
+
+    public void setSerieActual(int serieActual) {
+        this.serieActual = serieActual;
+    }
+
+    public int getNivelActual() {
+        return nivelActual;
+    }
+
+    public void setNivelActual(int nivelActual) {
+        this.nivelActual = nivelActual;
+    }
+
+    public int getNumeroPregunta() {
+        return numeroPregunta;
+    }
+
+    public void setNumeroPregunta(int numeroPregunta) {
+        this.numeroPregunta = numeroPregunta;
+    }
+
+    public int getTiempo() {
+        return tiempo;
+    }
+
+    public void setTiempo(int tiempo) {
+        this.tiempo = tiempo;
     }
 }

@@ -39,7 +39,17 @@ import com.seventhsoft.kuni.utils.ToolbarFragment;
 
 import org.json.JSONException;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.EnumSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static android.content.ContentValues.TAG;
 
@@ -104,13 +114,13 @@ public class MainActivity extends AppCompatActivity implements MainView, OnCompe
         setBottomNavigation();
     }
 
-    public void setDashboard(final String fecha) {
+    public void setDashboard(final long fecha, final long inicio) {
         MainActivity.this.runOnUiThread(new Runnable() {
             public void run() {
                 Log.i(TAG, "OSE| Run ");
                 txtConcurso = (TextView) findViewById(R.id.txtConcurso);
 
-                txtConcurso.setText(getString(R.string.dias_restantes, fecha));
+                txtConcurso.setText(getString(R.string.dias_restantes, getDias(inicio, fecha)));
                 recyclerView.setAdapter(adapter);
             }
         });
@@ -130,6 +140,60 @@ public class MainActivity extends AppCompatActivity implements MainView, OnCompe
         //}
     }
 
+    private String getDias(long inicio, long fin) {
+        // write your code here
+        //long inicio = Long.parseLong(start);
+        //long fin = Long.parseLong("1501545599000");
+
+        try {
+            DateFormat df = DateFormat.getDateInstance(DateFormat.LONG, new Locale("es", "MX"));
+
+            Date date = new Date();
+
+            String fechaInicio = String.valueOf(df.format(date));
+            String fechaFin = String.valueOf(df.format(fin));
+            System.out.println(fechaInicio);
+            System.out.println(fechaFin);
+            try {
+                Date dateInicio = df.parse(fechaInicio);
+                System.out.println("Parsed date: " + dateInicio.toString());
+                Date dateFin = df.parse(fechaFin);
+                System.out.println("Parsed date: " + dateFin.toString());
+
+                Map<TimeUnit, Long> dias = computeDiff(dateInicio, dateFin);
+                System.out.println(dias);
+
+                System.out.println(dias.get(TimeUnit.DAYS));
+                return String.valueOf(dias.get(TimeUnit.DAYS));
+            } catch (ParseException pe) {
+                System.out.println("ERROR: could not parse date in string ");
+                return null;
+
+            }
+
+            //Date date = DateFormat.getDateInstance(DateFormat.DEFAULT).parse(String.valueOf(1498885201));
+            //System.out.println(date);
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
+
+    }
+
+    private static Map<TimeUnit, Long> computeDiff(Date date1, Date date2) {
+        long diffInMillies = date2.getTime() - date1.getTime();
+        List<TimeUnit> units = new ArrayList<TimeUnit>(EnumSet.allOf(TimeUnit.class));
+        Collections.reverse(units);
+        Map<TimeUnit, Long> result = new LinkedHashMap<TimeUnit, Long>();
+        long milliesRest = diffInMillies;
+        for (TimeUnit unit : units) {
+            long diff = unit.convert(milliesRest, TimeUnit.MILLISECONDS);
+            long diffInMilliesForUnit = unit.toMillis(diff);
+            milliesRest = milliesRest - diffInMilliesForUnit;
+            result.put(unit, diff);
+        }
+        return result;
+    }
     private void setBottomNavigation() {
         Fragment fragment = new BottomNavigationFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

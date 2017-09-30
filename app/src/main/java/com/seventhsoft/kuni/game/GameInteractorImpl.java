@@ -79,7 +79,8 @@ public class GameInteractorImpl implements GameInteractor {
                         Log.i(TAG, "OSE| interactor set dash ");
                         String fecha = "8 días";//getDias(response.getConcursoRest().getFechaInicio(),
                         //response.getConcursoRest().getFechaFin());
-                        gamePresenter.setDashboard(response, fecha);
+                        gamePresenter.setDashboard(response, response.getConcursoRest().getFechaFin(),
+                                response.getConcursoRest().getFechaInicio());
                     }
                 });
     }
@@ -91,6 +92,7 @@ public class GameInteractorImpl implements GameInteractor {
 
     public void getSerie(final DashboardRestReponse dashboardRestReponse) {
         Log.i(TAG, "OSE| getserie " + dashboardRestReponse);
+
         Log.i(TAG, "OSE| jugador id " + dashboardRestReponse.getJugadorNivel().getIdJugadorNivel());
 
         token = "bearer " + playerRepository.getToken();
@@ -209,7 +211,7 @@ public class GameInteractorImpl implements GameInteractor {
                             preguntaBean.setClase(response.getPreguntas().get(i).getClase());
 
                             List<RespuestaRest> respuestasRest = response.getPreguntas().get(i).getRespuestaList();
-                            Log.i(TAG, "OSE| size respuestas " + respuestasRest.size() + i);
+                            //Log.i(TAG, "OSE| size respuestas " + respuestasRest.size() + i);
 
                             List<RespuestaBean> respuestas = new ArrayList<RespuestaBean>();
                             for (int j = 0; j < respuestasRest.size(); j++) {
@@ -269,6 +271,7 @@ public class GameInteractorImpl implements GameInteractor {
                         boolean serie = false;
                         boolean recompensa = false;
                         String descripcionRecompensa = "";
+
                         if (response.getJugadorNivel().getRecompensaGanada() != null && !response.getJugadorNivel().getRecompensaGanada().isEmpty()) {
                             recompensa = true;
                             descripcionRecompensa = response.getRecompensa().getDescripcion();
@@ -288,12 +291,28 @@ public class GameInteractorImpl implements GameInteractor {
                                 actualizarSerie();
                                 serie = true;
                             }
+                            gamePresenter.setResultado(pregunta, pregunta.getRespuestaList().get(position), position, position,
+                                    pregunta.getRespuestaList().get(position), true, nivel, serie, recompensa,
+                                    descripcionRecompensa);
+
+                            //gamePresenter.setClase(pregunta, pregunta.getRespuestaList().get(position), pregunta.getRespuestaList().get(position), nivel, serie, recompensa, descripcionRecompensa);
                         } else {
                             Log.i(TAG, "OSE| mal");
+                            RespuestaBean respuestaBien = new RespuestaBean();
+                            int buena = 0;
+                            for (int i = 0; i < pregunta.getRespuestaList().size(); i++) {
+                                if (pregunta.getRespuestaList().get(i).getCorrecta()) {
+                                    respuestaBien = pregunta.getRespuestaList().get(i);
+                                    buena = i;
+                                }
+                            }
+                            //gamePresenter.setClase(pregunta, pregunta.getRespuestaList().get(position), respuestaBien, nivel, serie, recompensa, descripcionRecompensa);
+                            gamePresenter.setResultado(pregunta, pregunta.getRespuestaList().get(position), position, buena,
+                                    respuestaBien, false, nivel, serie, recompensa,
+                                    descripcionRecompensa);
                             actualizarSerie();
                         }
-                        gamePresenter.setClase(pregunta, pregunta.getRespuestaList().get(position),
-                                nivel, serie, recompensa, descripcionRecompensa);
+                        //gamePresenter.setClase(pregunta, pregunta.getRespuestaList().get(position), nivel, serie, recompensa, descripcionRecompensa);
 
                     }
                 });

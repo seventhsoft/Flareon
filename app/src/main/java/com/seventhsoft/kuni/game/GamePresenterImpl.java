@@ -67,10 +67,10 @@ public class GamePresenterImpl implements GamePresenter {
 
     }
 
-    public void setDashboard(DashboardRestReponse dashboardResponse, String fecha) {
+    public void setDashboard(DashboardRestReponse dashboardResponse, long fin, long inicio) {
         Log.i(TAG, "OSE| Presenter set dash");
         this.dashboardRestReponse = dashboardResponse;
-        mainView.setDashboard(fecha);
+        mainView.setDashboard(fin, inicio);
     }
 
     public void onBindRepositoryRowViewAtPosition(int position, RepositoryRowView rowView) {
@@ -159,18 +159,27 @@ public class GamePresenterImpl implements GamePresenter {
     }
 
     public void evaluatePregunta(PreguntaBean preguntaBean, int position) {
-
         if (preguntaBean != null && preguntaView != null) {
             gameInteractor.evaluarPregunta(preguntaBean, position);
         }
     }
 
-    public void setClase(PreguntaBean pregunta, RespuestaBean respuestaBean, boolean nivel, boolean serie, boolean premio, String desripcionPremio){
+    public void setClase(PreguntaBean pregunta, RespuestaBean respuestaBean, boolean nivel,
+                         boolean serie, boolean premio, String desripcionPremio) {
         preguntaView.setClase(pregunta, respuestaBean, nivel, serie, premio, desripcionPremio);
+    }
+
+    public void setResultado(PreguntaBean pregunta, RespuestaBean respuestaBean, int pressed, int correcta,
+                             RespuestaBean respuestaBien, boolean bien, boolean nivel, boolean serie,
+                             boolean premio, String desripcionPremio) {
+        preguntaView.setResultado(pregunta, respuestaBean, pressed, correcta, respuestaBien, bien,
+                nivel, serie, premio, desripcionPremio);
+        //preguntaView.changeColorButton(correcta, pressed, bien);
+
     }
 
     @Override
     public void setChangeColorsResponse(int position, boolean correcta) {
-        preguntaView.changeColorButton(position, correcta);
+        //preguntaView.changeColorButton(position, correcta);
     }
 }
