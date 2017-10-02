@@ -98,8 +98,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:layout_marginTop="24dp"
+                android:textAllCaps="false"
                 android:padding="12dp"
-                android:text="@string/btn_entrar"
+                android:text="@string/btn_iniciar_sesion"
                 android:textColor="@color/white" />
 
             <com.facebook.login.widget.LoginButton
@@ -115,7 +116,7 @@
                 android:id="@+id/link_forgot"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="8dp"
                 android:gravity="center"
                 android:text="@string/lbl_no_password"
                 android:textColor="@color/monsoon"
@@ -125,10 +126,31 @@
                 android:id="@+id/link_signup"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="48dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="8dp"
                 android:gravity="center|bottom"
                 android:text="@string/lbl_no_account"
+                android:textColor="@color/monsoon"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/txtBases"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center|bottom"
+                android:text="@string/lbl_bases"
+                android:textColor="@color/monsoon"
+                android:textSize="16sp" />
+            <TextView
+                android:id="@+id/txtPrivacidad"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="4dp"
+                android:gravity="center|bottom"
+                android:text="@string/lbl_privacidad"
                 android:textColor="@color/monsoon"
                 android:textSize="16sp" />
         </LinearLayout>

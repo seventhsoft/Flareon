@@ -20,15 +20,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabBackground="@color/background"
-            app:tabSelectedTextColor="@color/accent_rosa"
-            app:tabTextColor="@color/monsoon"
+            app:tabGravity="fill"
             app:tabMode="fixed"
-            app:tabGravity="fill"/>
+            app:tabSelectedTextColor="@color/accent_rosa"
+            app:tabTextColor="@color/monsoon" />
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"  />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </FrameLayout>
 </android.support.design.widget.CoordinatorLayout>

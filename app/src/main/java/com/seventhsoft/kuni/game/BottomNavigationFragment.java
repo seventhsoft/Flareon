@@ -26,21 +26,18 @@ public class BottomNavigationFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BottomNavigationFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static BottomNavigationFragment newInstance(String param1, String param2) {
+
+    public static BottomNavigationFragment newInstance(int menu) {
         BottomNavigationFragment fragment = new BottomNavigationFragment();
         Bundle args = new Bundle();
+        args.putInt("menu", menu);
 
         fragment.setArguments(args);
         return fragment;
+    }
+
+    private int menu() {
+        return getArguments().getInt("menu");
     }
 
     @Override
@@ -61,13 +58,26 @@ public class BottomNavigationFragment extends Fragment {
         super.onActivityCreated(state);
         BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 getActivity().findViewById(R.id.bottom_navigation);
+        switch (menu()) {
+            case 1:
+                bottomNavigationView.getMenu().findItem(R.id.action_home).setChecked(true);
+                break;
 
+            case 2:
+                bottomNavigationView.getMenu().findItem(R.id.action_premios).setChecked(true);
+                break;
+
+            case 3:
+                bottomNavigationView.getMenu().findItem(R.id.action_perfil).setChecked(true);
+                break;
+        }
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.action_home:
+                                setMainActivity();
                                 break;
 
                             case R.id.action_premios:
@@ -92,6 +102,11 @@ public class BottomNavigationFragment extends Fragment {
 
     private void setRecompensas() {
         Intent intent = new Intent(getContext(), RecompensasActivity.class);
+        startActivity(intent);
+    }
+
+    private void setMainActivity() {
+        Intent intent = new Intent(getContext(), MainActivity.class);
         startActivity(intent);
     }
 

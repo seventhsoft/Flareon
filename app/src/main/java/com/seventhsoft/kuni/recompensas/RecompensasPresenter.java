@@ -27,4 +27,6 @@ public interface RecompensasPresenter {
     int setSizeConcurso();
 
     void getRecompensa(int position);
+
+    void setRecompensasEmpty();
 }

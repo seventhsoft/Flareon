@@ -16,7 +16,7 @@ public class PresentacionActivity extends AppCompatActivity {
 
     CarouselView carouselView;
     private TextView btnComenzar;
-    int[] sampleImages = {R.drawable.onboarding, R.drawable.onboarding_dos, R.drawable.onboarding_tres};
+    int[] sampleImages = {R.drawable.onboarding_uno, R.drawable.onboarding_dos};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

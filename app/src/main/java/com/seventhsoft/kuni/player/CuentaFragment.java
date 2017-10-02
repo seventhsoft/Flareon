@@ -1,6 +1,7 @@
 package com.seventhsoft.kuni.player;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,8 +15,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.seventhsoft.kuni.R;
+import com.seventhsoft.kuni.game.BottomNavigationFragment;
+import com.seventhsoft.kuni.game.MainActivity;
 import com.seventhsoft.kuni.models.UserBean;
 import com.seventhsoft.kuni.utils.ToolbarFragment;
 
@@ -59,6 +63,7 @@ public class CuentaFragment extends Fragment implements PlayerView {
     public void onActivityCreated(Bundle state) {
         super.onActivityCreated(state);
         setToolbar();
+        setBottomNavigation();
         userBean = new UserBean();
         userBean.setApellidoEditado(false);
         editar = false;
@@ -167,6 +172,28 @@ public class CuentaFragment extends Fragment implements PlayerView {
 
     }
 
+    /**
+     * Set the toolbar for the activity
+     */
+    private void setToolbar() {
+        getActivity().setTitle("Mi cuenta");
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        Fragment fragment;
+        fragment = ToolbarFragment.newInstance(2);
+        fm.beginTransaction()
+                .add(R.id.toolbar_fragment, fragment)
+                .commit();
+
+    }
+
+    private void setBottomNavigation() {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+
+        Fragment fragment;
+        fragment = BottomNavigationFragment.newInstance(3);
+        fm.beginTransaction()
+                .add(R.id.fragment_container, fragment, "bottom_navegation").commit();
+    }
 
     /**
      * Overrides playerview
@@ -197,6 +224,14 @@ public class CuentaFragment extends Fragment implements PlayerView {
     }
 
     public void setError() {
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                Toast.makeText(getContext(), "Algo salió mal, intentálo más tarde",
+                        Toast.LENGTH_LONG).show();
+                guardarMenuItem.setVisible(false);
+                setMainActivity();
+            }
+        });
     }
 
     public void setNameError() {
@@ -217,6 +252,23 @@ public class CuentaFragment extends Fragment implements PlayerView {
     public void setSignUpSuccesss() {
     }
 
+    @Override
+    public void onUpdateSuccess() {
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                Toast.makeText(getContext(), "Se ha actualizado tu información",
+                        Toast.LENGTH_LONG).show();
+                guardarMenuItem.setVisible(false);
+                setMainActivity();
+            }
+        });
+    }
+
+    public void setMainActivity() {
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        startActivity(intent);
+    }
+
     public void setPlayer(final UserBean usuario) {
         getActivity().runOnUiThread(new Runnable() {
             public void run() {
@@ -231,7 +283,7 @@ public class CuentaFragment extends Fragment implements PlayerView {
         });
     }
 
-    private void setClaveFragment(){
+    private void setClaveFragment() {
         fm = getActivity().getSupportFragmentManager();
         Fragment newFragment;
         FragmentTransaction transaction;
@@ -242,19 +294,6 @@ public class CuentaFragment extends Fragment implements PlayerView {
         transaction.commit();
     }
 
-    /**
-     * Set the toolbar for the activity
-     */
-    private void setToolbar() {
-        FragmentManager fm = getActivity().getSupportFragmentManager();
-        Fragment fragment;
-        //if (fragment == null) {
-        fragment = ToolbarFragment.newInstance(2);
-        fm.beginTransaction()
-                .add(R.id.toolbar_fragment, fragment)
-                .commit();
-        //}
-    }
 
     @Override
     public void onAttach(Context context) {

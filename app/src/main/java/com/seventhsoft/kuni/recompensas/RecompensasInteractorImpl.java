@@ -50,14 +50,20 @@ public class RecompensasInteractorImpl implements RecompensasInteractor {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e(TAG, "OSE| error recompensas jugador "+ e);
+                        recompensasPresenter.setRecompensasEmpty();
+                        Log.e(TAG, "OSE| error recompensas jugador " + e);
 
                     }
 
                     @Override
                     public void onNext(List<RecompensasJugadorRestResponse> response) {
                         Log.i(TAG, "OSE| interactor set recompensas jugador ");
-                        recompensasPresenter.setRecompensasJugador(response);
+                        if (response.isEmpty()) {
+                            recompensasPresenter.setRecompensasEmpty();
+
+                        } else {
+                            recompensasPresenter.setRecompensasJugador(response);
+                        }
                     }
                 });
     }
@@ -78,14 +84,21 @@ public class RecompensasInteractorImpl implements RecompensasInteractor {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e(TAG, "OSE| error recompensas jugador "+ e);
+                        recompensasPresenter.setRecompensasEmpty();
+
+                        Log.e(TAG, "OSE| error recompensas jugador " + e);
 
                     }
 
                     @Override
                     public void onNext(List<RecompensasJugadorRestResponse> response) {
                         Log.i(TAG, "OSE| interactor set recompensas jugador ");
-                        recompensasPresenter.setRecompensasConcurso(response);
+                        if (response.isEmpty()) {
+                            recompensasPresenter.setRecompensasEmpty();
+
+                        } else {
+                            recompensasPresenter.setRecompensasConcurso(response);
+                        }
                     }
                 });
     }

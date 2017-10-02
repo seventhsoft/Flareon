@@ -55,6 +55,7 @@
         </activity>
         <activity android:name=".game.PresentacionActivity" />
         <activity android:name=".game.InstruccionesActivity" />
+        <activity android:name=".game.LegalesActivity"></activity>
     </application>
 
 </manifest>

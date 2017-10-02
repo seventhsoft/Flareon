@@ -1,6 +1,8 @@
 package com.seventhsoft.kuni.game;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,17 +19,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.seventhsoft.kuni.R;
 import com.seventhsoft.kuni.models.PreguntaBean;
 import com.seventhsoft.kuni.models.RespuestaBean;
 import com.seventhsoft.kuni.models.modelsrealm.Pregunta;
 import com.seventhsoft.kuni.utils.ToolbarFragment;
+import com.squareup.picasso.Picasso;
 
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 import static android.content.ContentValues.TAG;
@@ -41,6 +47,7 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
     private TextView txtEtiquetaPregunta;
     private TextView txtTiempo;
     private FrameLayout fondo;
+    private Fragment fragmentToolbar;
 
     private LinearLayout imageClase;
     private Button btnRespuestaUno;
@@ -63,6 +70,8 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pregunta);
         setToolbar();
+        Log.i(TAG, "OSE| " + "on create");
+
         gamePresenter = new GamePresenterImpl(this, this);
         btnRespuestaUno = (Button) findViewById(R.id.btnRespuestaUno);
         btnRespuestaDos = (Button) findViewById(R.id.btnRespuestaDos);
@@ -82,21 +91,72 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(TAG, "OSE| " + "on resume");
+
+        /*setContentView(R.layout.activity_pregunta);
+        setToolbar();
+        gamePresenter = new GamePresenterImpl(this, this);
+        btnRespuestaUno = (Button) findViewById(R.id.btnRespuestaUno);
+        btnRespuestaDos = (Button) findViewById(R.id.btnRespuestaDos);
+        btnRespuestaTres = (Button) findViewById(R.id.btnRespuestaTres);
+        btnSiguientePregunta = (Button) findViewById(R.id.btnSiguientePregunta);
+        txtDescripcion = (TextView) findViewById(R.id.txtDescripcion);
+        txtEtiquetaPregunta = (TextView) findViewById(R.id.txtEtiquetaPregunta);
+        txtClase = (TextView) findViewById(R.id.txtClase);
+        txtTiempo = (TextView) findViewById(R.id.txtTiempo);
+        //imageClase = (LinearLayout) findViewById(R.id.imageClase);
+        fondo = (FrameLayout) findViewById(R.id.fragment_container);
+        cardView = (ImageView) findViewById(R.id.imageView);
+
+        if (getIntent().hasExtra("position")) {
+            gamePresenter.getPregunta();
+
+        }*/
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (preguntaBean != null) {
+            gamePresenter.evaluatePregunta(preguntaBean, 4);
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (preguntaBean != null) {
+            gamePresenter.evaluatePregunta(preguntaBean, 4);
+        }
+    }
+
     public void setPregunta(final PreguntaBean pregunta) {
         this.preguntaBean = pregunta;
         PreguntaActivity.this.runOnUiThread(new Runnable() {
             public void run() {
                 if (pregunta.getRespuestaList() != null) {
+                    seleccionada = false;
                     btnRespuestaUno.setVisibility(View.VISIBLE);
                     btnRespuestaDos.setVisibility(View.VISIBLE);
                     btnRespuestaTres.setVisibility(View.VISIBLE);
+                    cardView.setVisibility(View.VISIBLE);
                     txtTiempo.setVisibility(View.VISIBLE);
-                    cardView.setBackgroundColor(getResources().getColor(R.color.colorPregunta));
+                    ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.colorPregunta));
+                    cardView.setBackground(colorDrawable);
+                    Picasso.with(getApplicationContext()).cancelRequest(cardView);
+                    Picasso.with(getApplicationContext()).load("http://images.juegakuni.com.mx")
+                            .error(colorDrawable).placeholder(colorDrawable).
+                            into(cardView);// + pregunta.getRuta()).into(cardView);
                     txtClase.setVisibility(View.GONE);
                     btnSiguientePregunta.setVisibility(View.GONE);
                     txtEtiquetaPregunta.setText(String.format(getApplicationContext()
                                     .getString(R.string.lbl_etiqueta_pregunta), preguntaBean.getNivelActual(),
-                            preguntaBean.getSerieActual(), preguntaBean.getNumeroPregunta()));
+                            preguntaBean.getSerieActual(), preguntaBean.getNumeroPregunta()+1));
                     txtDescripcion.setText(pregunta.getDescripcion());
                     btnRespuestaUno.setText(pregunta.getRespuestaList().get(0).getDescripcion());
                     btnRespuestaDos.setText(pregunta.getRespuestaList().get(1).getDescripcion());
@@ -104,25 +164,74 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
                     btnRespuestaUno.setTextColor(getResources().getColor(R.color.monsoon));
                     btnRespuestaDos.setTextColor(getResources().getColor(R.color.monsoon));
                     btnRespuestaTres.setTextColor(getResources().getColor(R.color.monsoon));
-                    new CountDownTimer(preguntaBean.getTiempo() * 1000, 1000) {
+                    clickListener();
+                    timer();
+                    /*new CountDownTimer(preguntaBean.getTiempo() * 1000, 1000) {
+                        int contador = 0;
 
                         public void onTick(long millisUntilFinished) {
                             txtTiempo.setText(String.valueOf(millisUntilFinished / 1000));
-                            //here you can have your logic to set text to edittext
                         }
-
                         public void onFinish() {
-                            if(!seleccionada){
+                            contador++;
+                            txtTiempo.setText("0");
+                            Log.i(TAG, "OSE| " + "on finish time, contador: " + contador);
 
+                            if (!seleccionada && contador == 1) {
+                                gamePresenter.evaluatePregunta(preguntaBean, 4);
                             }
                         }
 
+                    }.start();*/
 
-                    }.start();
-                    clickListener();
                 }
             }
         });
+    }
+
+    public void timer() {
+//build the Observable object
+        final Observable<Integer> timerObservable = Observable.create(new Observable.OnSubscribe<Integer>() {
+            int mSickTimer = preguntaBean.getTiempo();
+            boolean contar = true;
+
+            @Override
+            public void call(Subscriber<? super Integer> subscriber) {
+                subscriber.onStart();
+                while (mSickTimer >= 0 && !seleccionada) {
+                    subscriber.onNext(mSickTimer--);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        subscriber.onCompleted();
+                    }
+                }
+                subscriber.onCompleted();
+            }
+        });
+//Excute the observable by call *subscribe*,
+// Key features here, you can control what thread excute timer and handle callback.
+        timerObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onCompleted() {
+                        if (!seleccionada) {
+                            gamePresenter.evaluatePregunta(preguntaBean, 4);
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //error -> I will make it finish here
+                    }
+
+                    @Override
+                    public void onNext(Integer i) {
+                        txtTiempo.setText(String.valueOf(i));
+                    }
+                });
     }
 
     public void onFragmentInteraction() {
@@ -131,25 +240,26 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
         transaction.addToBackStack("clase");
         transaction.commit();
         fondo.setVisibility(View.GONE);
+        setToolbar();
         gamePresenter.getPregunta();
 
     }
 
-    public void setClase(final PreguntaBean pregunta, final RespuestaBean respuestaBean, final boolean nivel,
-                         final boolean serie, final boolean premio, final String descripcionPremio) {
+    public void setClase(final PreguntaBean pregunta, final RespuestaBean respuestaBean, final boolean bien,
+                         final boolean nivel, final boolean serie, final boolean premio,
+                         final String descripcionPremio) {
 
         PreguntaActivity.this.runOnUiThread(new Runnable() {
             public void run() {
-
                 btnRespuestaUno.setVisibility(View.GONE);
                 btnRespuestaDos.setVisibility(View.GONE);
                 btnRespuestaTres.setVisibility(View.GONE);
                 txtTiempo.setVisibility(View.GONE);
-                cardView.setBackgroundResource(R.drawable.noclass);
                 txtEtiquetaPregunta.setText(getString(R.string.lbl_respuesta_correcta));
-                Glide.with(getApplicationContext()).load("http://images.juegakuni.com.mx/images/clase/" + pregunta.getRuta()).into(cardView);
+                Picasso.with(getApplicationContext()).load("http://images.juegakuni.com.mx/images/clase/"+pregunta.getRuta())
+                        .error(R.drawable.noclass).placeholder(R.drawable.noclass).
+                        into(cardView);
                 txtDescripcion.setText(respuestaBean.getDescripcion());
-
                 txtClase.setVisibility(View.VISIBLE);
                 btnSiguientePregunta.setVisibility(View.VISIBLE);
                 txtClase.setText(pregunta.getClase());
@@ -157,17 +267,19 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
                     @Override
                     public void onClick(View v) {
                         if (!serie) {
-                            gamePresenter.getPregunta();
+                            if (bien)
+                                gamePresenter.getPregunta();
+                            else {
+                                setTerminado(nivel, bien, premio, descripcionPremio);
+
+                            }
                         } else {
-                            setTerminado(nivel, premio, descripcionPremio);
+                            setTerminado(nivel, bien, premio, descripcionPremio);
                         }
                     }
                 });
-
             }
         });
-
-
     }
 
 
@@ -214,14 +326,15 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
                             break;
                     }
                 }
-                afterColors(pregunta, respuestaBien, nivel, serie, premio, desripcionPremio);
+                afterColors(pregunta, respuestaBien, bien, nivel, serie, premio, desripcionPremio);
 
             }
         });
     }
 
-    public void afterColors(final PreguntaBean pregunta, final RespuestaBean respuestaBean, final boolean nivel,
-                            final boolean serie, final boolean premio, final String descripcionPremio) {
+    public void afterColors(final PreguntaBean pregunta, final RespuestaBean respuestaBean, final boolean bien,
+                            final boolean nivel, final boolean serie, final boolean premio,
+                            final String descripcionPremio) {
         if (subscription != null && !subscription.isUnsubscribed()) {
             subscription.unsubscribe();
             return;
@@ -232,10 +345,11 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
                 .subscribe(new Observer<Long>() {
                     @Override
                     public void onNext(Long t) {
-                        setClase(pregunta, respuestaBean, nivel, serie, premio, descripcionPremio);
+                        Log.i(TAG, "OSE| " + "Set clase");
+
+                        setClase(pregunta, respuestaBean, bien, nivel, serie, premio, descripcionPremio);
                         //Intent intent = new Intent(getApplicationContext(), Login.class);
                         //startActivity(intent);
-
                         subscription.unsubscribe();
                     }
 
@@ -251,41 +365,40 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
                 });
     }
 
-    private void setTerminado(boolean nivel, boolean premio, String descripcionPremio) {
+    private void setTerminado(boolean nivel, boolean mal, boolean premio, String descripcionPremio) {
         fondo.setVisibility(View.VISIBLE);
-        fragment = ClaseFragment.newInstance(nivel, premio, descripcionPremio);
+        fragment = ClaseFragment.newInstance(nivel, mal, premio, descripcionPremio);
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment, "clase");
         transaction.addToBackStack("clase");
         transaction.commit();
+        quitToolbar();
 
     }
 
     public void clickListener() {
-        seleccionada = true;
         btnRespuestaUno.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                seleccionada = true;
                 gamePresenter.evaluatePregunta(preguntaBean, 0);
-
             }
         });
         btnRespuestaDos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                seleccionada = true;
                 gamePresenter.evaluatePregunta(preguntaBean, 1);
-
             }
         });
         btnRespuestaTres.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                seleccionada = true;
                 gamePresenter.evaluatePregunta(preguntaBean, 2);
-
             }
         });
     }
-
 
     public void changeColorButton(PreguntaBean pregunta, RespuestaBean respuestaBean, int pressed, int correcta,
                                   RespuestaBean respuestaBien, boolean bien, boolean nivel, boolean serie,
@@ -350,13 +463,24 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
     /**
      * Set the toolbar for the activity
      */
+    private void quitToolbar() {
+        FragmentManager fm = this.getSupportFragmentManager();
+        //if (fragment == null) {
+        fm.beginTransaction()
+                .remove(fragmentToolbar)
+                .commit();
+        //}
+    }
+
+    /**
+     * Set the toolbar for the activity
+     */
     private void setToolbar() {
         FragmentManager fm = this.getSupportFragmentManager();
-        Fragment fragment;
         //if (fragment == null) {
-        fragment = ToolbarFragment.newInstance(1);
+        fragmentToolbar = ToolbarFragment.newInstance(1);
         fm.beginTransaction()
-                .add(R.id.toolbar_fragment, fragment)
+                .add(R.id.toolbar_fragment, fragmentToolbar)
                 .commit();
         //}
     }

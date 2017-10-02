@@ -32,8 +32,10 @@
         android:layout_height="wrap_content"
         android:layout_alignEnd="@id/carouselView"
         android:paddingEnd="16dp"
-        android:paddingTop="10dp"
+        android:paddingTop="16dp"
         android:text="@string/lbl_comenzar"
+        android:textSize="16sp"
+        android:textStyle="bold"
         android:textColor="@color/aluminum" />
 
 </RelativeLayout>

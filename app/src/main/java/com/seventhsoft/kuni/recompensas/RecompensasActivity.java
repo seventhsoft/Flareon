@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.seventhsoft.kuni.R;
+import com.seventhsoft.kuni.game.BottomNavigationFragment;
 import com.seventhsoft.kuni.game.MainActivity;
 import com.seventhsoft.kuni.utils.ToolbarFragment;
 
@@ -25,7 +26,7 @@ public class RecompensasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recompensas);
         setToolbar();
-
+        setBottomNavigation();
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
@@ -56,6 +57,13 @@ public class RecompensasActivity extends AppCompatActivity {
                 .add(R.id.toolbar_fragment, fragment)
                 .commit();
         //}
+    }
+    private void setBottomNavigation() {
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment;
+        fragment = BottomNavigationFragment.newInstance(2);
+        fm.beginTransaction()
+                .add(R.id.fragment_container, fragment, "bottom_navegation").commit();
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

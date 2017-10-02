@@ -194,13 +194,13 @@ public class MainActivity extends AppCompatActivity implements MainView, OnCompe
         }
         return result;
     }
-    private void setBottomNavigation() {
-        Fragment fragment = new BottomNavigationFragment();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment, "bottom_navegation");
-        transaction.addToBackStack("bottom_navegation");
-        transaction.commit();
 
+    private void setBottomNavigation() {
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment;
+        fragment = BottomNavigationFragment.newInstance(1);
+        fm.beginTransaction()
+                .add(R.id.fragment_container, fragment, "bottom_navegation").commit();
     }
 
     public void onCompetitionClidked(int position) {

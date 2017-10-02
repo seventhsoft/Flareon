@@ -13,7 +13,7 @@ public interface PreguntaView {
 
     //void changeColorButton(int bien, int pressed, boolean correcta);
 
-    void setClase(PreguntaBean pregunta, RespuestaBean respuestaBean, boolean nivel, boolean serie,
+    void setClase(PreguntaBean pregunta, RespuestaBean respuestaBean, boolean bien, boolean nivel, boolean serie,
                   boolean premio, String desripcionPremio);
 
     void setResultado(PreguntaBean pregunta, RespuestaBean respuestaBean, int pressed, int correcta,

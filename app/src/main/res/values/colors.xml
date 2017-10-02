@@ -21,7 +21,8 @@
     <color name="base">#AAAAAA</color>
     <color name="iron">#CCCCCC</color>
     <color name="white">#FFFFFF</color>
+    <color name="transparent_white">#CCFFFFFF</color>
+
     <color name="toolbar_prelogin">#008080</color>
 
-    #008080
 </resources>

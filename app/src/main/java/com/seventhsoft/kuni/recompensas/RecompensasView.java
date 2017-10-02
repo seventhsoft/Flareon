@@ -13,4 +13,6 @@ public interface RecompensasView {
     void onRecompensasConcursoSuccess();
 
     void onRecompensaSuccess(RecompensasJugadorRestResponse recompensasJugadorRestResponse);
+
+    void onRecompensasEmpty();
 }

@@ -12,8 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.seventhsoft.kuni.R;
+import com.seventhsoft.kuni.game.MainActivity;
 import com.seventhsoft.kuni.game.OnCompetitionClickListener;
 import com.seventhsoft.kuni.models.modelsrest.RecompensasJugadorRestResponse;
 import com.seventhsoft.kuni.utils.ToolbarFragment;
@@ -28,6 +30,7 @@ public class RecompensasJugadorFragment extends Fragment implements RecompensasV
     private ListRecompensasAdapterJugador adapter;
     private RecompensasPresenter recompensasPresenter;
     private FrameLayout fragmetCodigo;
+    private TextView txtRecompensas;
 
     public RecompensasJugadorFragment() {
         // Required empty public constructor
@@ -65,7 +68,8 @@ public class RecompensasJugadorFragment extends Fragment implements RecompensasV
         fragmetCodigo = (FrameLayout) getActivity().findViewById(R.id.fragment_container_codigo);
         fragmetCodigo.setVisibility(View.GONE);
         recyclerView = (RecyclerView) getActivity().findViewById(R.id.list_recycle_view);
-
+        txtRecompensas = (TextView) getActivity().findViewById(R.id.txtRecompensas);
+        txtRecompensas.setVisibility(View.GONE);
         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),
                 1, //number of grid columns
                 GridLayoutManager.VERTICAL,
@@ -83,7 +87,7 @@ public class RecompensasJugadorFragment extends Fragment implements RecompensasV
 
     @Override
     public void onRecompensaSuccess(RecompensasJugadorRestResponse recompensa) {
-        DialogFragment newFragment =  CodigoBarrasFragment.newInstance(recompensa, 0);
+        DialogFragment newFragment = CodigoBarrasFragment.newInstance(recompensa, 0);
         newFragment.show(getActivity().getSupportFragmentManager(), "codigo_barras");
     }
 
@@ -94,6 +98,18 @@ public class RecompensasJugadorFragment extends Fragment implements RecompensasV
 
     }
 
+    @Override
+    public void onRecompensasEmpty() {
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+
+                txtRecompensas.setVisibility(View.VISIBLE);
+
+                txtRecompensas.setText(getString(R.string.lbl_recompensas_vacias));
+            }
+        });
+
+    }
 
     @Override
     public void onRecompensasJugadorSuccess() {

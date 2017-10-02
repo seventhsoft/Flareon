@@ -32,6 +32,8 @@ public class ConcursoRepository {
 
     private static Realm realm;
 
+
+
     public void saveConcurso(final ConcursoBean concursoBean) {
         try {
             realm = Realm.getDefaultInstance();
@@ -56,6 +58,24 @@ public class ConcursoRepository {
             Log.e(TAG, "OSE| Error guardar concurso" + e);
 
         }
+    }
+
+    public boolean isConcurso(){
+        boolean existe= false;
+        try {
+            realm = Realm.getDefaultInstance();
+            Concurso concurso = realm.where(Concurso.class)
+                    .equalTo("idConcurso", setIdConcurso() - 1).findFirst();
+            if(concurso!=null){
+                existe= true;
+            }
+            realm.close(); // Remember to close Realm when done.
+        } catch (Exception e) {
+            Log.e(TAG, "OSE| Error traer pregunta " + e);
+            existe= false;
+
+        }
+        return existe;
     }
 
     public int getIdJugadorNivel() {
@@ -83,8 +103,8 @@ public class ConcursoRepository {
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
-                    Concurso concurso = realm.where(Concurso.class)
-                            .equalTo("idConcurso", setIdConcurso() - 1).findFirst();
+                    Concurso concurso = realm.where(Concurso.class).
+                            equalTo("idConcurso", setIdConcurso() - 1).findFirst();
                     concurso.setIdJugadorNivel(response.getJugadorNivel().getIdJugadorNivel());
                     concurso.setSerieActual(response.getJugadorNivel().getSerieActual());
                     concurso.setdNivel(response.getJugadorNivel().getNivel());
@@ -185,7 +205,7 @@ public class ConcursoRepository {
                         preguntaBean.setTiempo(serie.getTiempoPregunta());
                         preguntaBean.setNivelActual(concurso.getdNivel());
                         preguntaBean.setSerieActual(concurso.getSerieActual());
-                        preguntaBean.setNumeroPregunta(serie.getContador()+1);
+                        preguntaBean.setNumeroPregunta(serie.getContador());
                         serie.setContador(contador + 1);
                         preguntaBean.setClase(pregunta.getClase());
                         preguntaBean.setDescripcion(pregunta.getDescripcion());

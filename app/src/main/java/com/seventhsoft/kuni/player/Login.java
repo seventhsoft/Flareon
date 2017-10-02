@@ -1,6 +1,7 @@
 package com.seventhsoft.kuni.player;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -55,6 +56,8 @@ public class Login extends AppCompatActivity implements PlayerView {
     private TextView forgotPassword;
     private EditText txtEmail;
     private EditText txtxPassword;
+    private TextView bases;
+    private TextView privacidad;
     private Button btnEnter;
 
     private PlayerPresenter playerPresenter;
@@ -74,7 +77,8 @@ public class Login extends AppCompatActivity implements PlayerView {
         callbackManager = CallbackManager.Factory.create();
         signUp = (TextView) findViewById(R.id.link_signup);
         forgotPassword = (TextView) findViewById(R.id.link_forgot);
-
+        bases = (TextView) findViewById(R.id.txtBases);
+        privacidad = (TextView) findViewById(R.id.txtPrivacidad);
         fbLoginButton = (LoginButton) findViewById(R.id.login_button);
         if (isLoggedIn() || sesionPreference.getData("statusSesion")) {
             setMainActivity();
@@ -86,7 +90,22 @@ public class Login extends AppCompatActivity implements PlayerView {
         onClickSignUp();
         onClickForgotPassword();
 
-
+        bases.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri uri = Uri.parse("http://about.juegakuni.mx/bases.html");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
+        privacidad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri uri = Uri.parse("http://about.juegakuni.mx/privacidad.html");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
         // Callback registration
         fbLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -289,6 +308,11 @@ public class Login extends AppCompatActivity implements PlayerView {
     }
 
     public void setNameError() {
+    }
+
+    @Override
+    public void onUpdateSuccess() {
+
     }
 
     public void setFirstNameError() {

@@ -13,6 +13,8 @@
 
     <!--botones-->
     <string name="btn_entrar">Entrar</string>
+    <string name="btn_iniciar_sesion">Iniciar sesión</string>
+
     <string name="btn_crear_cuenta">Crear cuenta</string>
     <string name="btn_enviar">Enviar</string>
     <string name="btn_continuar">Continuar</string>
@@ -43,10 +45,18 @@
     <string name="lbl_correo">Correo</string>
     <string name="lbl_contraseña">Contraseña</string>
     <string name="lbl_nombre">Nombre(s)</string>
+    <string name="lbl_bases">Bases del concurso</string>
+    <string name="lbl_privacidad">Aviso de privacidad</string>
+    <string name="lbl_recompensas_vacias">No hay premios disponibles</string>
+
 
     <string name="lbl_apellido">Apellido(s)</string>
     <string name="lbl_contraseña_confirmar">Confirmar contraseña</string>
     <string name="lbl_series_progreso">%1$d/%2$d</string>
+    <string name="lbl_titulo_dialogo_contraseña">Te enviamos un correo</string>
+    <string name="lbl_dialogo_contraseña">Revisa tu correo electrónico y haz clic en el enlace para restablecer tu contraseña</string>
+    <string name="lbl_titulo_dialogo_cuenta">¡Casi estas listo!</string>
+    <string name="lbl_dialogo_cuenta">Revisa tu correo electrónico y haz clic en el enlace para confirmar tu cuenta</string>
 
     <string name="lbl_etiqueta_pregunta">Nivel %1$d/Serie %2$d \nPregunta %3$d</string>
 
@@ -99,6 +109,9 @@
     <string name="error_no_registrado">El correoUsuario electrónico no está registrado, favor de verificarlo</string>
     <string name="no_conexion">No cuenta con conexión a internet</string>
     <string name="error_exception">Algo salió mal, inténtelo más tarde</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

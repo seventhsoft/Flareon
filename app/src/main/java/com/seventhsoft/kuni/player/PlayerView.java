@@ -39,5 +39,7 @@ public interface PlayerView {
     void setSignUpSuccesss();
 
     void setPlayer(UserBean userBean);
+    void onUpdateSuccess();
+
 
 }

@@ -84,7 +84,7 @@ public class GamePresenterImpl implements GamePresenter {
             int serie = dashboardRestReponse.getJugadorNivel().getSerieActual();
 
             if (nivel == position + 1) {
-                rowView.setEstadoNivel(context.getString(R.string.lbl_estado_nivel_actual));
+                //rowView.setEstadoNivel(context.getString(R.string.lbl_estado_nivel_actual));
                 if (serie == 1 && dashboardRestReponse.getNiveles().get(position).getSeriesJugador() == 0) {
                     rowView.setSeries(dashboardRestReponse.getNiveles().get(position).getSeries(), 0);
                 } else {
@@ -94,7 +94,7 @@ public class GamePresenterImpl implements GamePresenter {
                 rowView.setTextColor(true);
 
             } else if (position + 1 < nivel) {
-                rowView.setEstadoNivel(context.getString(R.string.lbl_estado_nivel_terminado));
+                //rowView.setEstadoNivel(context.getString(R.string.lbl_estado_nivel_terminado));
                 rowView.setSeries(dashboardRestReponse.getNiveles().get(position).getSeries(),
                         dashboardRestReponse.getNiveles().get(position).getSeries());
                 rowView.setImage(gridViewImagesStarted[position]);
@@ -166,7 +166,7 @@ public class GamePresenterImpl implements GamePresenter {
 
     public void setClase(PreguntaBean pregunta, RespuestaBean respuestaBean, boolean nivel,
                          boolean serie, boolean premio, String desripcionPremio) {
-        preguntaView.setClase(pregunta, respuestaBean, nivel, serie, premio, desripcionPremio);
+        //preguntaView.setClase(pregunta, respuestaBean, nivel, serie, premio, desripcionPremio);
     }
 
     public void setResultado(PreguntaBean pregunta, RespuestaBean respuestaBean, int pressed, int correcta,

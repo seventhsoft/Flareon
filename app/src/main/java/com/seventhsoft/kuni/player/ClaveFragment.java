@@ -1,6 +1,7 @@
 package com.seventhsoft.kuni.player;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,8 +16,11 @@ import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.seventhsoft.kuni.R;
+import com.seventhsoft.kuni.game.MainActivity;
+import com.seventhsoft.kuni.game.PreguntaActivity;
 import com.seventhsoft.kuni.models.UserBean;
 import com.seventhsoft.kuni.utils.ToolbarFragment;
 
@@ -68,7 +72,7 @@ public class ClaveFragment extends Fragment implements PlayerView {
     @Override
     public void onActivityCreated(Bundle state) {
         super.onActivityCreated(state);
-        getActivity().setTitle("Editar contraseña");
+        getActivity().setTitle("Cambiar contraseña");
 
         txtContraseña = (EditText) getActivity().findViewById(R.id.txtContraseñaActual);
         txtContraseñaNueva = (EditText) getActivity().findViewById(R.id.txtContraseñaNueva);
@@ -81,59 +85,39 @@ public class ClaveFragment extends Fragment implements PlayerView {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
         inflater.inflate(R.menu.menu_guardar, menu);
         guardarMenuItem = menu.findItem(R.id.action_guardar);
         //guardarMenuItem.setVisible(true); // hide play button
         guardarMenuItem.setVisible(false);
-        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_guardar:
-                    getActivity().invalidateOptionsMenu();
-                    playerPresenter.validatePasswordUpdate(txtContraseña.getText().toString(),
-                            txtContraseñaNueva.getText().toString(),
-                            txtContraseñaRepetida.getText().toString());
+                getActivity().invalidateOptionsMenu();
+                playerPresenter.validatePasswordUpdate(txtContraseña.getText().toString(),
+                        txtContraseñaNueva.getText().toString(),
+                        txtContraseñaRepetida.getText().toString());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-
     public void listenerDatos() {
-
-        txtContraseñaRepetida.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        txtContraseña.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-
+            public void onFocusChange(View view, boolean b) {
                 if (guardarMenuItem != null)
-                    if (txtContraseñaRepetida.isFocused()) {
-                        guardarMenuItem.setVisible(true);
-                        txtContraseñaRepetida.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                            }
-
-                            @Override
-                            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                            }
-
-                            @Override
-                            public void afterTextChanged(Editable s) {
-                                //userBean.setNombreEditado(true);
-                            }
-                        });
-                    } else {
-                        guardarMenuItem.setVisible(false);
-                    }
+                    guardarMenuItem.setVisible(true);
             }
+
         });
     }
+
     public void setContraseñaValida(Boolean valida) {
         contraseñaValida = valida;
         if (!valida) {
@@ -160,16 +144,16 @@ public class ClaveFragment extends Fragment implements PlayerView {
     }
 
     public void setEmailError() {
-       // txtEmail.setError(getString(R.string.error_correo_formato));
+        // txtEmail.setError(getString(R.string.error_correo_formato));
 
     }
 
     public void setPasswordError() {
-        //txtPassword.setError(getString(R.string.error_contraseña));
+        txtContraseña.setError(getString(R.string.error_contraseña));
     }
 
     public void setPasswordFormatError() {
-        //txtPassword.setError(getString(R.string.error_contraseña_formato));
+        txtContraseña.setError(getString(R.string.error_contraseña_formato));
     }
 
     public void setPasswordSuccess() {
@@ -187,6 +171,19 @@ public class ClaveFragment extends Fragment implements PlayerView {
     }
 
     public void setError() {
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                Toast.makeText(getContext(), "Algo salió mal, intentálo más tarde",
+                        Toast.LENGTH_LONG).show();
+                guardarMenuItem.setVisible(false);
+                setMainActivity();
+            }
+        });
+    }
+
+    public void setMainActivity(){
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        startActivity(intent);
     }
 
     public void setNameError() {
@@ -199,7 +196,20 @@ public class ClaveFragment extends Fragment implements PlayerView {
     }
 
     public void setPasswordRepeatError() {
-        //txtPasswordRepeat.setError(getString(R.string.error_contraseña_repetida));
+        txtContraseñaRepetida.setError(getString(R.string.error_contraseña_repetida));
+    }
+
+    public void onUpdateSuccess() {
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                Toast.makeText(getContext(), "Se ha actualizado tu contraseña",
+                        Toast.LENGTH_LONG).show();
+                guardarMenuItem.setVisible(false);
+                setMainActivity();
+
+
+            }
+        });
     }
 
     public void setLoginSuccess() {
@@ -243,7 +253,7 @@ public class ClaveFragment extends Fragment implements PlayerView {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         Fragment fragment;
         //if (fragment == null) {
-        fragment = ToolbarFragment.newInstance(1);
+        fragment = ToolbarFragment.newInstance(2);
         fm.beginTransaction()
                 .add(R.id.toolbar_fragment, fragment)
                 .commit();

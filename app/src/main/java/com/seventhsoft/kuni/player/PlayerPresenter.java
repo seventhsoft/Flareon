@@ -33,6 +33,7 @@ public interface PlayerPresenter {
     void onRecoverPasswordSuccess();
 
     void onSignUpSuccesss();
+    void onUpdateSuccess();
 
     void closeSesion();
 

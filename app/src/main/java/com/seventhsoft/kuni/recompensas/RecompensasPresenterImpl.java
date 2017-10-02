@@ -82,4 +82,8 @@ public class RecompensasPresenterImpl implements RecompensasPresenter {
     public void getRecompensa(int position) {
         recompensasView.onRecompensaSuccess(recompensasJugador.get(position));
     }
+    public void setRecompensasEmpty(){
+        recompensasView.onRecompensasEmpty();
+    }
+
 }

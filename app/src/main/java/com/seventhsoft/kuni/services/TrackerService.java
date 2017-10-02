@@ -30,7 +30,7 @@ import rx.Observable;
 
 public interface TrackerService {
 
-    String SERVICE_ENDPOINT = "http://api.juegakuni.com.mx";
+    String SERVICE_ENDPOINT = "http://qa.api.juegakuni.com.mx";
 
     /**
      * Crear una cuenta

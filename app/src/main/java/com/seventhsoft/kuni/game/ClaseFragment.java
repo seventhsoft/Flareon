@@ -1,6 +1,7 @@
 package com.seventhsoft.kuni.game;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -27,8 +28,9 @@ public class ClaseFragment extends Fragment {
 
     private ImageView fondo;
     private OnFragmentInteractionListener mListener;
-    private LinearLayout frameLayout;
+    private RelativeLayout frameLayout;
     private Button btnSiguiente;
+    private Button btnTablero;
     private boolean nivel;
     private boolean recompensa;
 
@@ -37,10 +39,10 @@ public class ClaseFragment extends Fragment {
         // Required empty public constructor
     }
 
-
-    public static ClaseFragment newInstance(boolean nivel, boolean premio, String descripcionPremio) {
+    public static ClaseFragment newInstance(boolean nivel, boolean mal, boolean premio, String descripcionPremio) {
         ClaseFragment fragment = new ClaseFragment();
         Bundle args = new Bundle();
+        args.putBoolean("mal", mal);
         args.putBoolean("nivel", nivel);
         fragment.setArguments(args);
         return fragment;
@@ -48,6 +50,10 @@ public class ClaseFragment extends Fragment {
 
     private boolean isNivel() {
         return getArguments().getBoolean("nivel");
+    }
+
+    private boolean isMal() {
+        return getArguments().getBoolean("mal");
     }
 
     @Override
@@ -69,19 +75,22 @@ public class ClaseFragment extends Fragment {
         super.onActivityCreated(state);
         //fondo = (ImageView) getActivity().findViewById(R.id.imageView);
         btnSiguiente = (Button) getActivity().findViewById(R.id.btnSiguientePregunta);
-        frameLayout = (LinearLayout) getActivity().findViewById(R.id.frameLayoutImage);
+        btnTablero = (Button) getActivity().findViewById(R.id.btnTablero);
+        frameLayout = (RelativeLayout) getActivity().findViewById(R.id.frameLayoutImage);
         onButtonPressed();
-        if(isNivel()){
+        if (isNivel()) {
             frameLayout.setBackground(getActivity().getDrawable(R.drawable.bg_level_complete));
             //fondo.setImageDrawable(getActivity().getDrawable(R.drawable.bg_level_complete));
-        }else {
-            frameLayout.setBackground(getActivity().getDrawable(R.drawable.bg_serie_complete));
+        } else if (!isMal()) {
+            frameLayout.setBackground(getActivity().getDrawable(R.drawable.serie_incompleta));
 
+        } else if (isMal()) {
+            frameLayout.setBackground(getActivity().getDrawable(R.drawable.bg_serie_complete));
         }
+
 
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed() {
         btnSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +100,13 @@ public class ClaseFragment extends Fragment {
                 }
             }
         });
-
+        btnTablero.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.seventhsoft.kuni.R;
 import com.seventhsoft.kuni.models.modelsrest.RecompensasJugadorRestResponse;
@@ -17,12 +18,12 @@ import com.seventhsoft.kuni.models.modelsrest.RecompensasJugadorRestResponse;
 import static android.content.ContentValues.TAG;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
-public class RecompensasConcursoFragment extends Fragment implements RecompensasView{
+public class RecompensasConcursoFragment extends Fragment implements RecompensasView {
 
     private RecyclerView recyclerView;
     private ListRecompensasAdapterConcurso adapter;
     private RecompensasPresenter recompensasPresenter;
-
+    private TextView txtRecompensas;
 
     public RecompensasConcursoFragment() {
         // Required empty public constructor
@@ -47,6 +48,7 @@ public class RecompensasConcursoFragment extends Fragment implements Recompensas
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_recompensas_concurso, container, false);
     }
+
     @Override
     public void onActivityCreated(Bundle state) {
         super.onActivityCreated(state);
@@ -55,6 +57,8 @@ public class RecompensasConcursoFragment extends Fragment implements Recompensas
         recompensasPresenter.getRecompensasConcurso();
         //Log.i(TAG, "OSE| height recycle "+ recyclerView.getHeight());
         recyclerView = (RecyclerView) getActivity().findViewById(R.id.list_recycle_view_concurso);
+        txtRecompensas = (TextView) getActivity().findViewById(R.id.txtRecompensas);
+        txtRecompensas.setVisibility(View.GONE);
 
         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),
                 1, //number of grid columns
@@ -87,8 +91,21 @@ public class RecompensasConcursoFragment extends Fragment implements Recompensas
 
     @Override
     public void onRecompensaSuccess(RecompensasJugadorRestResponse recompensa) {
-        DialogFragment newFragment =  CodigoBarrasFragment.newInstance(recompensa, 0);
+        DialogFragment newFragment = CodigoBarrasFragment.newInstance(recompensa, 0);
         newFragment.show(getActivity().getSupportFragmentManager(), "codigo_barras");
+    }
+
+    @Override
+    public void onRecompensasEmpty() {
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+
+                txtRecompensas.setVisibility(View.VISIBLE);
+
+                txtRecompensas.setText(getString(R.string.lbl_recompensas_vacias));
+            }
+        });
+
     }
 
     @Override

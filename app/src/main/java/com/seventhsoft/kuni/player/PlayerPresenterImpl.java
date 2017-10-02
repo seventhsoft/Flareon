@@ -117,8 +117,8 @@ public class PlayerPresenterImpl implements PlayerPresenter {
             playerView.setPasswordError();
         } else if (passwordNew.length() < 4 || passwordNew.length() > 20) {
             error = true;
-            playerView.setPasswordError();
-        } else if (!passwordNew.equals(passwordRepeat.toString())) {
+            playerView.setPasswordFormatError();
+        } else if (!passwordNew.equals(passwordRepeat)) {
             error = true;
             playerView.setPasswordRepeatError();
         }
@@ -145,6 +145,9 @@ public class PlayerPresenterImpl implements PlayerPresenter {
         }
     }
 
+    public void onUpdateSuccess(){
+        playerView.onUpdateSuccess();
+    }
 
     public void onLoginFaiure() {
         if (playerView != null) {
@@ -171,6 +174,9 @@ public class PlayerPresenterImpl implements PlayerPresenter {
     }
 
     public void onRecoverPasswordSuccess() {
+        if (playerView != null) {
+            playerView.setRecoverPasswordSuccess();
+        }
     }
 
     public void onSignUpSuccesss() {

@@ -344,12 +344,14 @@ public class PlayerInteractorImpl implements PlayerInteractor {
 
                     @Override
                     public void onError(Throwable e) {
+                        playerPresenter.onFailure();
 
                         Log.e(TAG, "OSE|" + e.getMessage() + "Error en el servicio actualizar usuario");
                     }
 
                     @Override
                     public void onNext(Void response) {
+                        playerPresenter.onUpdateSuccess();
                         //refreshToken();
 
                         /*PersonaRest persona = new PersonaRest();

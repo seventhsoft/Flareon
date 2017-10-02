@@ -2,6 +2,7 @@ package com.seventhsoft.kuni.player;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -153,16 +154,15 @@ public class SignUpActivity extends AppCompatActivity implements PlayerView {
     }
 
     private void onClickLogin() {
-        login.setOnClickListener(new View.OnClickListener() {
+        /*login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Uri uri = Uri.parse("http://about.juegakuni.mx/privacidad.html");
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
             }
-        });
+        });*/
     }
-
 
     private void setLogin() {
         Intent intent = new Intent(getApplicationContext(), Login.class);
@@ -292,6 +292,11 @@ public class SignUpActivity extends AppCompatActivity implements PlayerView {
     public void setRecoverPassword() {
     }
 
+    @Override
+    public void onUpdateSuccess() {
+
+    }
+
     public void setError() {
     }
 
@@ -316,8 +321,9 @@ public class SignUpActivity extends AppCompatActivity implements PlayerView {
     }
 
     public void setSignUpSuccesss() {
-        setLogin();
 
+        DialogFragment newFragment =  DialogoFragment.newInstance(2);
+        newFragment.show(getSupportFragmentManager(), "dialogo");
     }
 
     public void setPlayer(final UserBean usuario) {

@@ -2,6 +2,7 @@ package com.seventhsoft.kuni.player;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.seventhsoft.kuni.R;
 import com.seventhsoft.kuni.models.UserBean;
+import com.seventhsoft.kuni.recompensas.CodigoBarrasFragment;
 import com.seventhsoft.kuni.utils.ToolbarFragment;
 
 public class ForgotPasswordFragment extends Fragment implements PlayerView {
@@ -137,12 +139,19 @@ public class ForgotPasswordFragment extends Fragment implements PlayerView {
     }
 
     public void setRecoverPasswordSuccess() {
+        DialogFragment newFragment =  DialogoFragment.newInstance(1);
+        newFragment.show(getActivity().getSupportFragmentManager(), "dialogo");
     }
 
     public void setSignUpSuccesss() {
     }
 
     public void setPlayer(final UserBean usuario) {
+    }
+
+    @Override
+    public void onUpdateSuccess() {
+
     }
 
     /**

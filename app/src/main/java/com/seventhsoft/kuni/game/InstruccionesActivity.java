@@ -16,14 +16,14 @@ public class InstruccionesActivity extends AppCompatActivity {
 
     CarouselView carouselView;
     private TextView btnComenzar;
-    int[] sampleImages = {R.drawable.onboarding, R.drawable.onboarding_dos, R.drawable.onboarding_tres};
+    int[] sampleImages = {R.drawable.instrucciones_uno, R.drawable.instrucciones_dos};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_presentacion);
         btnComenzar = (TextView) findViewById(R.id.btnComenzar);
-
+        btnComenzar.setTextColor(getResources().getColor(R.color.white));
         carouselView = (CarouselView) findViewById(R.id.carouselView);
         carouselView.setPageCount(sampleImages.length);
 
