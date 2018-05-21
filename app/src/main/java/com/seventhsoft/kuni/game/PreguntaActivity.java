@@ -1,29 +1,33 @@
 package com.seventhsoft.kuni.game;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.CountDownTimer;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.seventhsoft.kuni.R;
 import com.seventhsoft.kuni.models.PreguntaBean;
 import com.seventhsoft.kuni.models.RespuestaBean;
-import com.seventhsoft.kuni.models.modelsrealm.Pregunta;
+import com.seventhsoft.kuni.player.DialogoFragment;
+import com.seventhsoft.kuni.utils.ProgressFragment;
 import com.seventhsoft.kuni.utils.ToolbarFragment;
 import com.squareup.picasso.Picasso;
 
@@ -38,7 +42,7 @@ import rx.schedulers.Schedulers;
 
 import static android.content.ContentValues.TAG;
 
-public class PreguntaActivity extends AppCompatActivity implements PreguntaView, ClaseFragment.OnFragmentInteractionListener {
+public class PreguntaActivity extends AppCompatActivity implements PreguntaView, ResultadoFragment.OnFragmentInteractionListener, ClaseFragment.OnFragmentClaseInteractionListener {
 
     private GamePresenter gamePresenter;
     private TextView txtDescripcion;
@@ -49,6 +53,7 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
     private FrameLayout fondo;
     private Fragment fragmentToolbar;
 
+    private RelativeLayout relative;
     private LinearLayout imageClase;
     private Button btnRespuestaUno;
     private Button btnRespuestaDos;
@@ -57,10 +62,16 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
 
     private PreguntaBean preguntaBean;
     private LinearLayout transiciones;
-    private Fragment fragment;
+    private Fragment fragmentClase;
+    private Fragment fragmentTerminado;
+
     private FragmentTransaction transaction;
     private ImageView cardView;
     private boolean seleccionada;
+    private boolean destroyed;
+
+    private Fragment fragmentProgress;
+
 
     private Subscription subscription = null;
 
@@ -77,10 +88,12 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
         btnRespuestaDos = (Button) findViewById(R.id.btnRespuestaDos);
         btnRespuestaTres = (Button) findViewById(R.id.btnRespuestaTres);
         btnSiguientePregunta = (Button) findViewById(R.id.btnSiguientePregunta);
+
         txtDescripcion = (TextView) findViewById(R.id.txtDescripcion);
         txtEtiquetaPregunta = (TextView) findViewById(R.id.txtEtiquetaPregunta);
         txtClase = (TextView) findViewById(R.id.txtClase);
         txtTiempo = (TextView) findViewById(R.id.txtTiempo);
+        //relative = (RelativeLayout) findViewById(R.id.relative);
         //imageClase = (LinearLayout) findViewById(R.id.imageClase);
         fondo = (FrameLayout) findViewById(R.id.fragment_container);
         cardView = (ImageView) findViewById(R.id.imageView);
@@ -118,22 +131,6 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
 
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (preguntaBean != null) {
-            gamePresenter.evaluatePregunta(preguntaBean, 4);
-        }
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (preguntaBean != null) {
-            gamePresenter.evaluatePregunta(preguntaBean, 4);
-        }
-    }
 
     public void setPregunta(final PreguntaBean pregunta) {
         this.preguntaBean = pregunta;
@@ -156,7 +153,7 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
                     btnSiguientePregunta.setVisibility(View.GONE);
                     txtEtiquetaPregunta.setText(String.format(getApplicationContext()
                                     .getString(R.string.lbl_etiqueta_pregunta), preguntaBean.getNivelActual(),
-                            preguntaBean.getSerieActual(), preguntaBean.getNumeroPregunta()+1));
+                            preguntaBean.getSerieActual(), preguntaBean.getNumeroPregunta() + 1));
                     txtDescripcion.setText(pregunta.getDescripcion());
                     btnRespuestaUno.setText(pregunta.getRespuestaList().get(0).getDescripcion());
                     btnRespuestaDos.setText(pregunta.getRespuestaList().get(1).getDescripcion());
@@ -190,7 +187,7 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
     }
 
     public void timer() {
-//build the Observable object
+        //build the Observable object
         final Observable<Integer> timerObservable = Observable.create(new Observable.OnSubscribe<Integer>() {
             int mSickTimer = preguntaBean.getTiempo();
             boolean contar = true;
@@ -209,8 +206,8 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
                 subscriber.onCompleted();
             }
         });
-//Excute the observable by call *subscribe*,
-// Key features here, you can control what thread excute timer and handle callback.
+        //Excute the observable by call *subscribe*,
+        // Key features here, you can control what thread excute timer and handle callback.
         timerObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Integer>() {
@@ -236,9 +233,9 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
 
     public void onFragmentInteraction() {
         transaction = this.getSupportFragmentManager().beginTransaction();
-        transaction.remove(fragment);
-        transaction.addToBackStack("clase");
-        transaction.commit();
+        transaction.remove(fragmentTerminado);
+        transaction.addToBackStack("terminado");
+        transaction.commitAllowingStateLoss();
         fondo.setVisibility(View.GONE);
         setToolbar();
         gamePresenter.getPregunta();
@@ -251,12 +248,24 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
 
         PreguntaActivity.this.runOnUiThread(new Runnable() {
             public void run() {
-                btnRespuestaUno.setVisibility(View.GONE);
+
+                String ruta = "http://images.juegakuni.com.mx/images/clase/" + pregunta.getRuta();
+                setClaseFragment(pregunta.getClase(), respuestaBean.getDescripcion(),
+                        ruta, bien, nivel, serie,
+                        premio, descripcionPremio);
+
+                /*btnRespuestaUno.setVisibility(View.GONE);
                 btnRespuestaDos.setVisibility(View.GONE);
                 btnRespuestaTres.setVisibility(View.GONE);
                 txtTiempo.setVisibility(View.GONE);
+                int height = getResources().getDisplayMetrics().heightPixels + 225;
+                Log.i(TAG, "OSE| " + "height" + height);
+                Log.i(TAG, "OSE| " + "height" + convertPixelsToDp(height, getApplicationContext()));
+
+                //relative.getLayoutParams().height = ((int) convertPixelsToDp(height, getApplicationContext()));
+
                 txtEtiquetaPregunta.setText(getString(R.string.lbl_respuesta_correcta));
-                Picasso.with(getApplicationContext()).load("http://images.juegakuni.com.mx/images/clase/"+pregunta.getRuta())
+                Picasso.with(getApplicationContext()).load("http://images.juegakuni.com.mx/images/clase/" + pregunta.getRuta())
                         .error(R.drawable.noclass).placeholder(R.drawable.noclass).
                         into(cardView);
                 txtDescripcion.setText(respuestaBean.getDescripcion());
@@ -278,10 +287,44 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
                         }
                     }
                 });
+            }*/
             }
         });
     }
 
+    private void setClaseFragment(String clase, String respuesta, String imagen, boolean bien,
+                                  boolean nivel, boolean serie, boolean premio,
+                                  String descripcionPremio) {
+        fondo.setVisibility(View.VISIBLE);
+        showProgress();
+        fragmentClase = ClaseFragment.newInstance(clase, respuesta, imagen, bien, nivel, serie,
+                premio, descripcionPremio);
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragmentClase, "clase");
+        transaction.addToBackStack("clase");
+        transaction.commitAllowingStateLoss();
+        //quitToolbar();
+
+    }
+
+    @Override
+    public void onFragmentClaseInteraction(boolean correcta, boolean nivel, boolean serie, boolean premio, String descripcionPremio) {
+        transaction = this.getSupportFragmentManager().beginTransaction();
+        transaction.remove(fragmentClase);
+        transaction.addToBackStack("clase");
+        transaction.commitAllowingStateLoss();
+        fondo.setVisibility(View.GONE);
+        //setToolbar();
+        if (!serie) {
+            if (correcta)
+                gamePresenter.getPregunta();
+            else {
+                setTerminado(nivel, correcta, premio, descripcionPremio);
+            }
+        } else {
+            setTerminado(nivel, correcta, premio, descripcionPremio);
+        }
+    }
 
     @Override
     public void setResultado(final PreguntaBean pregunta, final RespuestaBean respuestaBean, final int pressed, final int correcta,
@@ -289,29 +332,47 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
                              final boolean premio, final String desripcionPremio) {
         PreguntaActivity.this.runOnUiThread(new Runnable() {
             public void run() {
+                SpannableString spanString;
                 if (bien) {
                     switch (correcta) {
                         case 0:
                             btnRespuestaUno.setTextColor(getResources().getColor(R.color.verde));
+                            spanString = new SpannableString(btnRespuestaUno.getText());
+                            spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
+                            btnRespuestaUno.setText(spanString);
                             break;
                         case 1:
                             btnRespuestaDos.setTextColor(getResources().getColor(R.color.verde));
+                            spanString = new SpannableString(btnRespuestaDos.getText());
+                            spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
+                            btnRespuestaDos.setText(spanString);
                             break;
                         case 2:
                             btnRespuestaTres.setTextColor(getResources().getColor(R.color.verde));
+                            spanString = new SpannableString(btnRespuestaTres.getText());
+                            spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
+                            btnRespuestaTres.setText(spanString);
                             break;
                     }
                 } else {
                     switch (pressed) {
                         case 0:
                             btnRespuestaUno.setTextColor(getResources().getColor(R.color.primary_dark));
-
+                            spanString = new SpannableString(btnRespuestaUno.getText());
+                            spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
+                            btnRespuestaUno.setText(spanString);
                             break;
                         case 1:
                             btnRespuestaDos.setTextColor(getResources().getColor(R.color.primary_dark));
+                            spanString = new SpannableString(btnRespuestaDos.getText());
+                            spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
+                            btnRespuestaDos.setText(spanString);
                             break;
                         case 2:
                             btnRespuestaTres.setTextColor(getResources().getColor(R.color.primary_dark));
+                            spanString = new SpannableString(btnRespuestaTres.getText());
+                            spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
+                            btnRespuestaTres.setText(spanString);
                             break;
                     }
                     switch (correcta) {
@@ -367,12 +428,13 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
 
     private void setTerminado(boolean nivel, boolean mal, boolean premio, String descripcionPremio) {
         fondo.setVisibility(View.VISIBLE);
-        fragment = ClaseFragment.newInstance(nivel, mal, premio, descripcionPremio);
+        fragmentTerminado = ResultadoFragment.newInstance(nivel, mal, premio, descripcionPremio);
         transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment, "clase");
-        transaction.addToBackStack("clase");
-        transaction.commit();
-        quitToolbar();
+        transaction.replace(R.id.fragment_container, fragmentTerminado, "terminado");
+        transaction.addToBackStack("terminado");
+        transaction.remove(fragmentToolbar);
+        transaction.commitAllowingStateLoss();
+        //quitToolbar();
 
     }
 
@@ -400,47 +462,6 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
         });
     }
 
-    public void changeColorButton(PreguntaBean pregunta, RespuestaBean respuestaBean, int pressed, int correcta,
-                                  RespuestaBean respuestaBien, boolean bien, boolean nivel, boolean serie,
-                                  boolean premio, String desripcionPremio) {
-        if (bien) {
-            switch (correcta) {
-                case 0:
-                    btnRespuestaUno.setTextColor(getResources().getColor(R.color.verde));
-                    break;
-                case 1:
-                    btnRespuestaDos.setTextColor(getResources().getColor(R.color.verde));
-                    break;
-                case 2:
-                    btnRespuestaTres.setTextColor(getResources().getColor(R.color.verde));
-                    break;
-            }
-        } else {
-            switch (pressed) {
-                case 0:
-                    btnRespuestaUno.setTextColor(getResources().getColor(R.color.primary_dark));
-                    break;
-                case 1:
-                    btnRespuestaDos.setTextColor(getResources().getColor(R.color.primary_dark));
-                    break;
-                case 2:
-                    btnRespuestaTres.setTextColor(getResources().getColor(R.color.primary_dark));
-                    break;
-            }
-            switch (correcta) {
-                case 0:
-                    btnRespuestaUno.setTextColor(getResources().getColor(R.color.verde));
-                    break;
-                case 1:
-                    btnRespuestaDos.setTextColor(getResources().getColor(R.color.verde));
-                    break;
-                case 2:
-                    btnRespuestaTres.setTextColor(getResources().getColor(R.color.verde));
-                    break;
-            }
-        }
-
-    }
 
     public void setCorrecta() {
     }
@@ -466,11 +487,19 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
     private void quitToolbar() {
         FragmentManager fm = this.getSupportFragmentManager();
         //if (fragment == null) {
+        fragmentToolbar = ToolbarFragment.newInstance(1);
         fm.beginTransaction()
                 .remove(fragmentToolbar)
-                .commit();
-        //}
+                .commitAllowingStateLoss();
+        /*fondo.setVisibility(View.GONE);
+        FragmentManager fm = this.getSupportFragmentManager();
+        //if (fragment == null) {
+        fm.beginTransaction()
+                .remove(fragmentToolbar)
+                .commitAllowingStateLoss();
+        //}*/
     }
+
 
     /**
      * Set the toolbar for the activity
@@ -481,7 +510,98 @@ public class PreguntaActivity extends AppCompatActivity implements PreguntaView,
         fragmentToolbar = ToolbarFragment.newInstance(1);
         fm.beginTransaction()
                 .add(R.id.toolbar_fragment, fragmentToolbar)
-                .commit();
+                .commitAllowingStateLoss();
         //}
     }
+
+    public static float convertPixelsToDp(float px, Context context) {
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float dp = px / ((float) metrics.densityDpi / metrics.DENSITY_DEFAULT);
+        return dp;
+    }
+
+    public void hideProgress() {
+        PreguntaActivity.this.runOnUiThread(new Runnable() {
+            public void run() {
+                fondo.setVisibility(View.GONE);
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.remove(fragmentProgress);
+                transaction.addToBackStack("progress");
+                transaction.commitAllowingStateLoss();
+            }
+        });
+    }
+
+    //view
+
+    public void showProgress() {
+        PreguntaActivity.this.runOnUiThread(new Runnable() {
+            public void run() {
+                fondo.setVisibility(View.VISIBLE);
+
+                fragmentProgress = ProgressFragment.newInstance();
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.add(R.id.fragment_container, fragmentProgress, "progress");
+                transaction.addToBackStack("progress");
+                transaction.commitAllowingStateLoss();
+            }
+        });
+    }
+
+    @Override
+    public void onNoConnection() {
+        PreguntaActivity.this.runOnUiThread(new Runnable() {
+            public void run() {
+                if (!destroyed) {
+                    DialogFragment newFragment = DialogoFragment.newInstance(3);
+                    newFragment.show(getSupportFragmentManager(), "dialogo");
+                }
+                //Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.no_conexion), Toast.LENGTH_LONG);
+                //toast.show();
+
+               /* FragmentTransaction transactionFragment = getSupportFragmentManager().beginTransaction();
+                DialogFragment newFragment = DialogoFragment.newInstance(3);
+                transactionFragment.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                transactionFragment.add(android.R.id.content, newFragment).addToBackStack("dialogo").commitAllowingStateLoss();*/
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        //gamePresenter.evaluatePregunta(preguntaBean, 4);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        destroyed = true;
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        destroyed = true;
+        /*if (preguntaBean != null) {
+            seleccionada = true;
+            gamePresenter.evaluatePregunta(preguntaBean, 5);
+        }*/
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (preguntaBean != null && preguntaBean.getRespuestaList() != null) {
+            seleccionada = true;
+            destroyed = true;
+            gamePresenter.evaluatePregunta(preguntaBean, 5);
+        }
+
+    }
+
 }

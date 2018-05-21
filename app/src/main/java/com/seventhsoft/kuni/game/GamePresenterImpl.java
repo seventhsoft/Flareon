@@ -73,6 +73,15 @@ public class GamePresenterImpl implements GamePresenter {
         mainView.setDashboard(fin, inicio);
     }
 
+    @Override
+    public void setNoConnection() {
+        if(mainView!=null) {
+            mainView.onNoConnection();
+        }else if(preguntaView!= null){
+            preguntaView.onNoConnection();
+        }
+    }
+
     public void onBindRepositoryRowViewAtPosition(int position, RepositoryRowView rowView) {
         //Log.i(TAG, "OSE| Presenter Blind");
         if (dashboardRestReponse != null) {
@@ -113,8 +122,8 @@ public class GamePresenterImpl implements GamePresenter {
                 rowView.setPremiosGanados(false);
 
             }
-
-            rowView.setPremiosDisponibles(context.getString(R.string.lbl_premios_disponibles, dashboardRestReponse.getNiveles().get(position).getRecompensasDisponibles()));
+            if (dashboardRestReponse.getNiveles().get(position).getRecompensasDisponibles() != 0)
+                rowView.setPremiosDisponibles(context.getString(R.string.lbl_premios_disponibles, dashboardRestReponse.getNiveles().get(position).getRecompensasDisponibles()));
             if (position == 0) {
                 gameInteractor.getSerie(dashboardRestReponse);
             }
@@ -145,7 +154,6 @@ public class GamePresenterImpl implements GamePresenter {
     public void setPreguntaView(int position) {
         if (position + 1 == dashboardRestReponse.getJugadorNivel().getNivel()) {
             mainView.setFragmentPregunta(position);
-
         }
     }
 

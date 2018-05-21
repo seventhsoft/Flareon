@@ -25,7 +25,7 @@ public class ConexionInternetPreference {
     public static void saveData(String key,Boolean value) {
         SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
         prefsEditor.putBoolean(key, value);
-        prefsEditor.commit();
+        prefsEditor.apply();
     }
 
     public Boolean getData(String key) {

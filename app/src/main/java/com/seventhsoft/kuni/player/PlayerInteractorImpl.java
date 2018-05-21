@@ -3,6 +3,7 @@ package com.seventhsoft.kuni.player;
 import android.content.Context;
 import android.util.Log;
 
+import com.seventhsoft.kuni.game.ConcursoRepository;
 import com.seventhsoft.kuni.models.UserBean;
 import com.seventhsoft.kuni.models.modelsrest.LoginRestRequest;
 import com.seventhsoft.kuni.models.modelsrest.LoginRestResponse;
@@ -14,6 +15,7 @@ import com.seventhsoft.kuni.models.modelsrest.SignUpRestRequest;
 import com.seventhsoft.kuni.services.RestServiceFactory;
 import com.seventhsoft.kuni.services.TrackerService;
 
+import java.util.Vector;
 import java.util.concurrent.Executors;
 
 import rx.Scheduler;
@@ -32,12 +34,14 @@ public class PlayerInteractorImpl implements PlayerInteractor {
     private String token;
     private PlayerRepositoryImpl playerRepository;
     private SesionPreference sesionPreference;
+    private ConcursoRepository concursoRepository;
 
 
     public PlayerInteractorImpl(PlayerPresenter playerPresenter, Context context) {
         this.playerPresenter = playerPresenter;
         this.playerRepository = new PlayerRepositoryImpl();
         sesionPreference = SesionPreference.getInstance(context);
+        concursoRepository = new ConcursoRepository();
     }
 
     public void login(String email, String password) {
@@ -123,14 +127,14 @@ public class PlayerInteractorImpl implements PlayerInteractor {
                 });
     }
 
-    public void signUp(String name, String firstName, final String email, String password, final Boolean facebook) {
+    public void signUp(final String name, String firstName, final String email, String password, final Boolean facebook) {
 
         SignUpRestRequest signUpRestRequest = new SignUpRestRequest();
         if (facebook) {
-            signUpRestRequest.setActivo(true);
+            signUpRestRequest.setActivo(false);
 
         } else {
-            signUpRestRequest.setActivo(false);
+            signUpRestRequest.setActivo(true);
 
         }
         signUpRestRequest.setApellidoPaterno(firstName);
@@ -149,7 +153,7 @@ public class PlayerInteractorImpl implements PlayerInteractor {
         restService.signUp(signUpRestRequest)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(scheduler)
-                .subscribe(new Subscriber<String>() {
+                .subscribe(new Subscriber<Void>() {
                     @Override
                     public void onCompleted() {
 
@@ -158,7 +162,7 @@ public class PlayerInteractorImpl implements PlayerInteractor {
                     @Override
                     public void onError(Throwable e) {
                         if (facebook) {
-                            login(email, "");
+                            login(name, "");
                         } else {
                             playerPresenter.onSignUpSuccesss();
                         }
@@ -166,9 +170,9 @@ public class PlayerInteractorImpl implements PlayerInteractor {
                     }
 
                     @Override
-                    public void onNext(String response) {
+                    public void onNext(Void response) {
                         if (facebook) {
-                            login(email, "");
+                            login(name, "");
                         } else {
                             playerPresenter.onSignUpSuccesss();
                         }
@@ -229,6 +233,8 @@ public class PlayerInteractorImpl implements PlayerInteractor {
                     public void onNext(Void response) {
                         sesionPreference.saveData("statusSesion", false);
                         playerRepository.deletePlayers();
+                        concursoRepository.deleteSerie();
+                        concursoRepository.deleteConcurso();
                         playerPresenter.onSesionClosed();
 
                     }

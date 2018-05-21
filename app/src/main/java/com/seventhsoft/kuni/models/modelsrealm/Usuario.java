@@ -21,14 +21,6 @@ public class Usuario extends RealmObject {
     private String tokenAccess;
     private String refreshToken;
 
-    public int getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
-    }
-
     public String getEmail() {
         return email;
     }

@@ -102,9 +102,7 @@ public class RecompensasJugadorFragment extends Fragment implements RecompensasV
     public void onRecompensasEmpty() {
         getActivity().runOnUiThread(new Runnable() {
             public void run() {
-
                 txtRecompensas.setVisibility(View.VISIBLE);
-
                 txtRecompensas.setText(getString(R.string.lbl_recompensas_vacias));
             }
         });

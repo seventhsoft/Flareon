@@ -27,4 +27,6 @@ public interface PreguntaView {
     void setNivelUp();
 
     void setSerieUp();
+
+    void onNoConnection();
 }

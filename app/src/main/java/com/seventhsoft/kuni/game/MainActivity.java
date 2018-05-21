@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -19,8 +20,10 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -30,11 +33,14 @@ import com.facebook.login.LoginManager;
 import com.seventhsoft.kuni.KuniApplication;
 import com.seventhsoft.kuni.R;
 import com.seventhsoft.kuni.models.PreguntaBean;
+import com.seventhsoft.kuni.player.DialogoFragment;
 import com.seventhsoft.kuni.player.Login;
 import com.seventhsoft.kuni.player.PlayerPresenter;
 import com.seventhsoft.kuni.player.PlayerPresenterImpl;
 import com.seventhsoft.kuni.player.SesionPreference;
 import com.seventhsoft.kuni.player.UserActivity;
+import com.seventhsoft.kuni.utils.ConexionInternetPreference;
+import com.seventhsoft.kuni.utils.ProgressFragment;
 import com.seventhsoft.kuni.utils.ToolbarFragment;
 
 import org.json.JSONException;
@@ -66,6 +72,9 @@ public class MainActivity extends AppCompatActivity implements MainView, OnCompe
     private Context context;
     private ArrayList arrayList;
     private TextView txtConcurso;
+    private FrameLayout fondo;
+    private FragmentTransaction transaction;
+    private Fragment fragmentProgress;
 
     private RecyclerViewAdapter adapter;
 
@@ -88,16 +97,19 @@ public class MainActivity extends AppCompatActivity implements MainView, OnCompe
         setDrawer();
         setToolbar();
         recyclerView = (RecyclerView) findViewById(R.id.gridView);
+        fondo = (FrameLayout) findViewById(R.id.fragment_progress);
+
         int height = this.getResources().getDisplayMetrics().heightPixels;
-        int alturaRecycle = height - 494;
-        recyclerView.getLayoutParams().height = alturaRecycle;//(int) convertPixelsToDp(alturaRecycle, this);
-        Log.i(TAG, "OSE| height recycle "+ recyclerView.getHeight());
+        int alturaRecycle = ((int) convertPixelsToDp(height, context));
+        recyclerView.getLayoutParams().height = alturaRecycle;
+
+        Log.i(TAG, "OSE| height recycle " + alturaRecycle + " " + height);
 
         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),
                 2, //number of grid columns
                 GridLayoutManager.VERTICAL,
                 false));
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10, context), true));
 
         if (adapter == null) {
             Log.i(TAG, "OSE| Adapter null ");
@@ -118,14 +130,25 @@ public class MainActivity extends AppCompatActivity implements MainView, OnCompe
         MainActivity.this.runOnUiThread(new Runnable() {
             public void run() {
                 Log.i(TAG, "OSE| Run ");
-                txtConcurso = (TextView) findViewById(R.id.txtConcurso);
+                //txtConcurso = (TextView) findViewById(R.id.txtConcurso);
 
-                txtConcurso.setText(getString(R.string.dias_restantes, getDias(inicio, fecha)));
+                //txtConcurso.setText(getString(R.string.dias_restantes, getDias(inicio, fecha)));
                 recyclerView.setAdapter(adapter);
             }
         });
     }
 
+    private boolean isConexionInternet() {
+        Boolean conexionInternet;
+        ConexionInternetPreference conexionInternetPreference = ConexionInternetPreference.
+                getInstance(context);
+        if (conexionInternetPreference.getData("estatusInternet")) {
+            conexionInternet = true;
+        } else {
+            conexionInternet = false;
+        }
+        return conexionInternet;
+    }
     /**
      * Set the progress time
      */
@@ -209,84 +232,15 @@ public class MainActivity extends AppCompatActivity implements MainView, OnCompe
     }
 
     public void setFragmentPregunta(int position) {
-        Intent intent = new Intent(MainActivity.this, PreguntaActivity.class);
-        intent.putExtra("position", position);
-        startActivity(intent);
+        if(isConexionInternet()) {
+            Intent intent = new Intent(MainActivity.this, PreguntaActivity.class);
+            intent.putExtra("position", position);
+            startActivity(intent);
+        }else {
+            onNoConnection();
+        }
     }
 
-    // @Override
-    public void onItemClick(View view, int position) {
-        /*Log.i("OSE", "You clicked number " + adapter.getItem(position) + ", which is at cell position " + position);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        QuestionFragment questionFragment;
-        Question question = new Question();
-        questionFragment = QuestionFragment.newInstance(question);
-
-
-        // Inflate transitions to apply
-        Transition changeTransform = TransitionInflater.from(this).inflateTransition(R.transition.change_image_transform);
-
-        Transition explodeTransform = TransitionInflater.from(this).inflateTransition(android.R.transition.explode);
-
-        //Setup exit transition on first fragment
-        //heroesListFragment.setSharedElementReturnTransition(changeTransform);
-        //heroesListFragment.setExitTransition(explodeTransform);
-
-        // Setup enter transition on second fragment
-        questionFragment.setSharedElementEnterTransition(changeTransform);
-        questionFragment.setEnterTransition(explodeTransform);
-        view.animate().translationX(-view.findViewById(R.id.)).setDuration(600);
-        transaction.addSharedElement(.getIvAvatar(), getString(R.string.transition_avatar));
-        JSONObject object = new JSONObject();
-        object.
-
-        transaction.addToBackStack(null);2
-
-        transaction.replace(R.id.main_container, heroeDetailFragment);
-
-        transaction.commit();*/
-    }
-
-    /*private void listenerGrid() {
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-
-            }
-
-        });
-    }
-
-    public void goToHeroeDetail(Question question, HeroesAdapter.Holder holder) {
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        QuestionFragment questionFragment;
-        questionFragment = QuestionFragment.newInstance(question);
-
-
-        // Inflate transitions to apply
-        Transition changeTransform = TransitionInflater.from(this).inflateTransition(R.transition.change_image_transform);
-
-        Transition explodeTransform = TransitionInflater.from(this).inflateTransition(android.R.transition.explode);
-
-        //Setup exit transition on first fragment
-        heroesListFragment.setSharedElementReturnTransition(changeTransform);
-        heroesListFragment.setExitTransition(explodeTransform);
-
-        // Setup enter transition on second fragment
-        questionFragment.setSharedElementEnterTransition(changeTransform);
-        questionFragment.setEnterTransition(explodeTransform);
-
-        transaction.addSharedElement(holder.getIvAvatar(), getString(R.string.transition_avatar));
-
-
-        transaction.addToBackStack(null);
-
-        transaction.replace(R.id.main_container, heroeDetailFragment);
-
-        transaction.commit();
-    }*/
 
     /**
      * Set the toolbar for the activity
@@ -345,8 +299,13 @@ public class MainActivity extends AppCompatActivity implements MainView, OnCompe
             case "Mi cuenta":
                 setCuenta();
                 break;
+            case "Legales":
+                Intent intent = new Intent(getApplicationContext(), LegalesActivity.class);
+                startActivity(intent);
+                break;
         }
         if (("Salir").equals(title)) {
+            showProgress();
             cerrarSesion();
         }
         drawerLayout.closeDrawers(); // Cerrar drawer
@@ -380,14 +339,13 @@ public class MainActivity extends AppCompatActivity implements MainView, OnCompe
                 try {
                     if (response.getError() != null) {
                         playerPresenter.closeSesion();
-                        setLogin();
                         /*Toast.makeText(
                                 MainActivity.this,
                                 R.string.error_exception,
                                 Toast.LENGTH_LONG).show();*/
                     } else if (response.getJSONObject().getBoolean(SUCCESS)) {
                         LoginManager.getInstance().logOut();
-                        setLogin();
+                        playerPresenter.closeSesion();
                         // updateUI();?
                     }
                 } catch (JSONException ex) { /* no op */ }
@@ -402,6 +360,7 @@ public class MainActivity extends AppCompatActivity implements MainView, OnCompe
     private void setLogin() {
         Intent intent = new Intent(this, Login.class);
         startActivity(intent);
+        hideProgress();
     }
 
     private void setCuenta() {
@@ -452,18 +411,84 @@ public class MainActivity extends AppCompatActivity implements MainView, OnCompe
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
     /**
      * Converting dp to pixel
      */
-    private int dpToPx(int dp) {
-        Resources r = getResources();
+    private static int dpToPx(int dp, Context context) {
+        Resources r = context.getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
     public static float convertPixelsToDp(float px, Context context) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
-        float dp = px / ((float) metrics.densityDpi / metrics.DENSITY_DEFAULT);
-        return dp;
+
+        float density = context.getResources().getDisplayMetrics().density;
+        if (density >= 4.0) {
+            return (px / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_XXXHIGH))-300;
+        }
+        if (density >= 3.5) {
+            return (px / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_560))-500;
+        }
+        if (density >= 3.0) {
+            return (px / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_XXHIGH))-397;
+        }
+        if (density >= 2.0) {
+            return px / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_XHIGH)-267;
+        }
+        if (density >= 1.5) {
+            return px / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_HIGH)- 196;//dpToPx(56, context);//207;
+        }
+        if (density >= 1.0) {
+            return px / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_MEDIUM)-130;
+        }
+        if(density<1){
+            return px / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_LOW)-100;
+        }
+        return 0;
+    }
+
+    @Override
+    public void onNoConnection() {
+        MainActivity.this.runOnUiThread(new Runnable() {
+            public void run() {
+                DialogFragment newFragment =  DialogoFragment.newInstance(3);
+                newFragment.show(getSupportFragmentManager(), "dialogo");
+                //Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.no_conexion), Toast.LENGTH_LONG);
+                //toast.show();
+            }
+        });
+    }
+    public void hideProgress() {
+        MainActivity.this.runOnUiThread(new Runnable() {
+            public void run() {
+                fondo.setVisibility(View.GONE);
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.remove(fragmentProgress);
+                transaction.addToBackStack("progress");
+                transaction.commitAllowingStateLoss();
+            }
+        });
+    }
+
+    //view
+
+    public void showProgress() {
+        MainActivity.this.runOnUiThread(new Runnable() {
+            public void run() {
+                fondo.setVisibility(View.VISIBLE);
+
+                fragmentProgress = ProgressFragment.newInstance();
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.add(R.id.fragment_progress, fragmentProgress, "progress");
+                transaction.addToBackStack("progress");
+                transaction.commitAllowingStateLoss();
+            }
+        });
     }
 }

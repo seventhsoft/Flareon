@@ -1,11 +1,14 @@
 <resources>
-    <string name="app_name">Kuni</string>
+    <string name="app_name">KUNI</string>
 
     <!--facebook-->
     <!--<string name="facebook_app_id">1398609956898291</string>-->
-    <string name="facebook_app_id">302068633592091</string>
+    <string name="facebook_app_id">486285708400666</string>
     <!--<string name="fb_login_protocol_scheme">fb1398609956898291</string>-->
-    <string name="fb_login_protocol_scheme">fb302068633592091</string>
+    <!--<string name="fb_login_protocol_scheme">fb302068633592091</string>-->
+    <string name="fb_login_protocol_scheme">fb486285708400666</string>
+
+    <string name="descripcion_service">Network Kuni Service</string>
 
     <string name="success">SUCCESS</string>
     <string name="cancel">CANCEL</string>
@@ -48,6 +51,7 @@
     <string name="lbl_bases">Bases del concurso</string>
     <string name="lbl_privacidad">Aviso de privacidad</string>
     <string name="lbl_recompensas_vacias">No hay premios disponibles</string>
+    <string name="lbl_intrucciones">Reglas del juego</string>
 
 
     <string name="lbl_apellido">Apellido(s)</string>
@@ -108,6 +112,8 @@
     <string name="error_inicio_sesion">El usuario y/o contraseña son incorrectos, favor de verificarlo</string>
     <string name="error_no_registrado">El correoUsuario electrónico no está registrado, favor de verificarlo</string>
     <string name="no_conexion">No cuenta con conexión a internet</string>
+    <string name="no_conexion_revisa">Revisa tu conexión a internet</string>
+
     <string name="error_exception">Algo salió mal, inténtelo más tarde</string>
 
     <!-- TODO: Remove or change this placeholder text -->

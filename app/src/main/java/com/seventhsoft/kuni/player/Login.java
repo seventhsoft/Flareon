@@ -1,16 +1,21 @@
 package com.seventhsoft.kuni.player;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,13 +30,18 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.DefaultAudience;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.seventhsoft.kuni.game.ClaseFragment;
 import com.seventhsoft.kuni.game.InicioActivity;
 import com.seventhsoft.kuni.game.InstruccionesActivity;
 import com.seventhsoft.kuni.game.MainActivity;
 import com.seventhsoft.kuni.R;
 import com.seventhsoft.kuni.models.UserBean;
+import com.seventhsoft.kuni.utils.ProgressFragment;
 
 import org.json.JSONObject;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class Login extends AppCompatActivity implements PlayerView {
 
@@ -59,6 +69,9 @@ public class Login extends AppCompatActivity implements PlayerView {
     private TextView bases;
     private TextView privacidad;
     private Button btnEnter;
+    private Fragment fragmentProgress;
+    //private FrameLayout fondo;
+
 
     private PlayerPresenter playerPresenter;
 
@@ -80,6 +93,8 @@ public class Login extends AppCompatActivity implements PlayerView {
         bases = (TextView) findViewById(R.id.txtBases);
         privacidad = (TextView) findViewById(R.id.txtPrivacidad);
         fbLoginButton = (LoginButton) findViewById(R.id.login_button);
+        //fondo = (FrameLayout) findViewById(R.id.fragment_container);
+        printKeyHash();
         if (isLoggedIn() || sesionPreference.getData("statusSesion")) {
             setMainActivity();
         }
@@ -111,7 +126,9 @@ public class Login extends AppCompatActivity implements PlayerView {
             @Override
             public void onSuccess(final LoginResult loginResult) {
                 // App code
-                Toast.makeText(Login.this, R.string.success, Toast.LENGTH_LONG).show();
+                //Toast.makeText(Login.this, R.string.success, Toast.LENGTH_LONG).show();
+                //showProgress();
+                Log.i("toast", loginResult.toString());
                 GraphRequest request = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
@@ -121,11 +138,13 @@ public class Login extends AppCompatActivity implements PlayerView {
 
                                 // Application code
                                 try {
-                                    String email = object.getString("email");
+                                    //String email = object.getString("email");
                                     String name = object.getString("name");
-                                    String firstName = object.getString("firstname");
+                                    //String firstName = object.getString("firstname");
                                     // 01/31/1980 format
-                                    playerPresenter.loginFacebook(name, email);
+
+                                    playerPresenter.loginFacebook(name, name);
+
 
                                 } catch (Exception e) {
                                     Log.e(TAG, "OSE| " + "Error email facebook" + e);
@@ -133,14 +152,14 @@ public class Login extends AppCompatActivity implements PlayerView {
                                 }
                             }
                         });
+                request.executeAsync();
                 //playerPresenter.validateCredentials();
-                //setMainActivity();
             }
 
             @Override
             public void onCancel() {
                 // App code
-                Toast.makeText(Login.this, R.string.cancel, Toast.LENGTH_LONG).show();
+                //Toast.makeText(Login.this, R.string.cancel, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -156,19 +175,33 @@ public class Login extends AppCompatActivity implements PlayerView {
             @Override
             protected void onCurrentProfileChanged(final Profile oldProfile, final Profile currentProfile) {
                 if (currentProfile != null) {
+                    Log.i(TAG, "OSE| " + "" + currentProfile.getFirstName());
+
                 }
             }
         };
     }
-
+    private void printKeyHash(){
+        // Add code to print out the key hash
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.seventhsoft.kuni",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.i("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e("KeyHash:", e.toString());
+        } catch (NoSuchAlgorithmException e) {
+            Log.e("KeyHash:", e.toString());
+        }
+    }
     @Override
     protected void onResume() {
         super.onResume();
-        if (isLoggedIn() || sesionPreference.getData("statusSesion")) {
-            setMainActivity();
-        } else {
-            //splashScreen();
-        }
+
     }
 
     private void setMainActivity() {
@@ -322,9 +355,10 @@ public class Login extends AppCompatActivity implements PlayerView {
     }
 
     public void setLoginSuccess() {
+        //hideProgress();
         Intent intent = new Intent(getApplicationContext(), InstruccionesActivity.class);
         startActivity(intent);
-        //setMainActivity();
+
     }
 
     public void setRecoverPasswordSuccess() {
@@ -333,6 +367,11 @@ public class Login extends AppCompatActivity implements PlayerView {
     public void setSignUpSuccesss() {
     }
 
+    /*
+    tiziano_oli@hotmail.com
+
+    blink821tznteroma
+*/
     public void onBackPressed() {
 
     }
@@ -340,4 +379,33 @@ public class Login extends AppCompatActivity implements PlayerView {
     public void setPlayer(final UserBean usuario) {
 
     }
+
+    public void hideProgress() {
+        Login.this.runOnUiThread(new Runnable() {
+            public void run() {
+                //fondo.setVisibility(View.GONE);
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.remove(fragmentProgress);
+                transaction.addToBackStack("progress");
+                transaction.commitAllowingStateLoss();
+            }
+        });
+    }
+
+    //view
+
+    public void showProgress() {
+        Login.this.runOnUiThread(new Runnable() {
+            public void run() {
+                //fondo.setVisibility(View.VISIBLE);
+
+                fragmentProgress = ProgressFragment.newInstance();
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, fragmentProgress, "progress");
+                transaction.addToBackStack("progress");
+                transaction.commitAllowingStateLoss();
+            }
+        });
+    }
+
 }

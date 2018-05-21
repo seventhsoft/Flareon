@@ -19,6 +19,7 @@
         android:id="@+id/carouselView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:autoPlay="false"
         app:fillColor="#FFFFFFFF"
         app:pageColor="#00000000"
         app:radius="6dp"
@@ -34,9 +35,9 @@
         android:paddingEnd="16dp"
         android:paddingTop="16dp"
         android:text="@string/lbl_comenzar"
+        android:textColor="@color/aluminum"
         android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="@color/aluminum" />
+        android:textStyle="bold" />
 
 </RelativeLayout>
 

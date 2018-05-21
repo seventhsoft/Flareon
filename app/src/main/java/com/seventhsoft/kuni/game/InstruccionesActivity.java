@@ -16,7 +16,7 @@ public class InstruccionesActivity extends AppCompatActivity {
 
     CarouselView carouselView;
     private TextView btnComenzar;
-    int[] sampleImages = {R.drawable.instrucciones_uno, R.drawable.instrucciones_dos};
+    int[] sampleImages = {R.drawable.instrucciones_uno, R.drawable.instrucciones_dos, R.drawable.instrucciones_tres, R.drawable.instrucciones_cuatro};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +28,7 @@ public class InstruccionesActivity extends AppCompatActivity {
         carouselView.setPageCount(sampleImages.length);
 
         carouselView.setImageListener(imageListener);
+
         btnComenzar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -16,6 +16,7 @@ import com.seventhsoft.kuni.models.modelsrest.SerieRestReponse;
 import com.seventhsoft.kuni.player.PlayerRepositoryImpl;
 import com.seventhsoft.kuni.services.RestServiceFactory;
 import com.seventhsoft.kuni.services.TrackerService;
+import com.seventhsoft.kuni.utils.ConexionInternetPreference;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -46,12 +47,26 @@ public class GameInteractorImpl implements GameInteractor {
     private PlayerRepositoryImpl playerRepository;
     private ConcursoRepository concursoRepository;
     private String token;
+    private Context context;
 
 
     public GameInteractorImpl(GamePresenter gamePresenter, Context context) {
         this.gamePresenter = gamePresenter;
         this.playerRepository = new PlayerRepositoryImpl();
         this.concursoRepository = new ConcursoRepository();
+        this.context = context;
+    }
+
+    private boolean isConexionInternet() {
+        Boolean conexionInternet;
+        ConexionInternetPreference conexionInternetPreference = ConexionInternetPreference.
+                getInstance(context);
+        if (conexionInternetPreference.getData("estatusInternet")) {
+            conexionInternet = true;
+        } else {
+            conexionInternet = false;
+        }
+        return conexionInternet;
     }
 
     public void getDashboard() {
@@ -71,18 +86,20 @@ public class GameInteractorImpl implements GameInteractor {
 
                     @Override
                     public void onError(Throwable e) {
+                        if (!isConexionInternet()){
+                            gamePresenter.setNoConnection();
+                        }
 
                     }
 
                     @Override
                     public void onNext(DashboardRestReponse response) {
                         Log.i(TAG, "OSE| interactor set dash ");
-                        String fecha = "8 días";//getDias(response.getConcursoRest().getFechaInicio(),
-                        //response.getConcursoRest().getFechaFin());
                         gamePresenter.setDashboard(response, response.getConcursoRest().getFechaFin(),
                                 response.getConcursoRest().getFechaInicio());
                     }
                 });
+
 
     }
 
@@ -112,7 +129,9 @@ public class GameInteractorImpl implements GameInteractor {
                     @Override
                     public void onError(Throwable e) {
                         Log.e(TAG, "OSE| getserie  error" + e);
-
+                        /*if (!isConexionInternet()){
+                            gamePresenter.setNoConnection();
+                        }*/
                     }
 
                     @Override
@@ -130,44 +149,44 @@ public class GameInteractorImpl implements GameInteractor {
 
                             concursoRepository.saveConcurso(concursoBean);
                         }
+                        if (!concursoRepository.isSerie()) {
+                            SerieBean serieBean = new SerieBean();
+                            serieBean.setTiempoPregunta(response.getTiempoPregunta());
+                            //serieBean.setBannerSerie(response.getBannerSerie());
+                            List<PreguntaBean> preguntas = new ArrayList<PreguntaBean>();
 
-                        SerieBean serieBean = new SerieBean();
-                        serieBean.setTiempoPregunta(response.getTiempoPregunta());
-                        //serieBean.setBannerSerie(response.getBannerSerie());
-                        List<PreguntaBean> preguntas = new ArrayList<PreguntaBean>();
+                            for (int i = 0; i < response.getPreguntas().size(); i++) {
+                                PreguntaBean preguntaBean = new PreguntaBean();
+                                preguntaBean.setActivo(response.getPreguntas().get(i).getActivo());
+                                preguntaBean.setDescripcion(response.getPreguntas().get(i).getDescripcion());
+                                preguntaBean.setRuta(response.getPreguntas().get(i).getRuta());
+                                preguntaBean.setClase(response.getPreguntas().get(i).getClase());
 
-                        for (int i = 0; i < response.getPreguntas().size(); i++) {
-                            PreguntaBean preguntaBean = new PreguntaBean();
-                            preguntaBean.setActivo(response.getPreguntas().get(i).getActivo());
-                            preguntaBean.setDescripcion(response.getPreguntas().get(i).getDescripcion());
-                            preguntaBean.setRuta(response.getPreguntas().get(i).getRuta());
-                            preguntaBean.setClase(response.getPreguntas().get(i).getClase());
+                                List<RespuestaRest> respuestasRest = response.getPreguntas().get(i).getRespuestaList();
 
-                            List<RespuestaRest> respuestasRest = response.getPreguntas().get(i).getRespuestaList();
+                                List<RespuestaBean> respuestas = new ArrayList<RespuestaBean>();
+                                for (int j = 0; j < respuestasRest.size(); j++) {
+                                    RespuestaBean respuestaBean = new RespuestaBean();
+                                    respuestaBean.setIdRespuesta(respuestasRest.get(j).getIdRespuesta());
+                                    respuestaBean.setActivo(respuestasRest.get(j).getActivo());
+                                    respuestaBean.setDescripcion(respuestasRest.get(j).getDescripcion());
+                                    respuestaBean.setCorrecta(respuestasRest.get(j).getCorrecta());
+                                    respuestaBean.setOrden(respuestasRest.get(j).getOrden());
 
-                            List<RespuestaBean> respuestas = new ArrayList<RespuestaBean>();
-                            for (int j = 0; j < respuestasRest.size(); j++) {
-                                RespuestaBean respuestaBean = new RespuestaBean();
-                                respuestaBean.setIdRespuesta(respuestasRest.get(j).getIdRespuesta());
-                                respuestaBean.setActivo(respuestasRest.get(j).getActivo());
-                                respuestaBean.setDescripcion(respuestasRest.get(j).getDescripcion());
-                                respuestaBean.setCorrecta(respuestasRest.get(j).getCorrecta());
-                                respuestaBean.setOrden(respuestasRest.get(j).getOrden());
+                                    respuestas.add(j, respuestaBean);
+                                }
+                                //Log.i(TAG, "OSE| despues for j" + i);
 
-                                respuestas.add(j, respuestaBean);
+                                preguntaBean.setRespuestaList(respuestas);
+                                preguntas.add(i, preguntaBean);
+
                             }
-                            //Log.i(TAG, "OSE| despues for j" + i);
 
-                            preguntaBean.setRespuestaList(respuestas);
-                            preguntas.add(i, preguntaBean);
+                            serieBean.setPreguntas(preguntas);
+                            Log.i(TAG, "OSE| concursobean " + serieBean);
 
+                            concursoRepository.saveSerie(serieBean);
                         }
-
-                        serieBean.setPreguntas(preguntas);
-                        Log.i(TAG, "OSE| concursobean " + serieBean);
-
-                        concursoRepository.saveSerie(serieBean);
-
 
                     }
                 });
@@ -194,7 +213,9 @@ public class GameInteractorImpl implements GameInteractor {
                     @Override
                     public void onError(Throwable e) {
                         Log.e(TAG, "OSE| getserie  error" + e);
-
+                        /*if (!isConexionInternet()){
+                            gamePresenter.setNoConnection();
+                        }*/
                     }
 
                     @Override
@@ -246,7 +267,8 @@ public class GameInteractorImpl implements GameInteractor {
 
     public void evaluarPregunta(final PreguntaBean pregunta, final int position) {
         final RespuestaBean respuestaBean;
-        if (position == 4 || position==5) {
+
+        if (position == 4 || position == 5) {
             Log.i(TAG, "OSE| mal");
             int buena = 0;
             for (int i = 0; i < pregunta.getRespuestaList().size(); i++) {
@@ -259,7 +281,6 @@ public class GameInteractorImpl implements GameInteractor {
             //gamePresenter.setResultado(pregunta, pregunta.getRespuestaList().get(buena), buena, buena, respuestaBien, false, false, false, false, "");
 
         } else {
-
             respuestaBean = pregunta.getRespuestaList().get(position);
         }
         final RespuestaPreguntaRequest respuestaPreguntaRequest = concursoRepository.getRespuestaPregunta(respuestaBean.getIdRespuesta());
@@ -278,6 +299,10 @@ public class GameInteractorImpl implements GameInteractor {
 
                     @Override
                     public void onError(Throwable e) {
+                        if (!isConexionInternet()){
+                            //actualizarSerie();
+                            gamePresenter.setNoConnection();
+                        }
                         //actualizarSerie();
                         //gamePresenter.setSuccessPregunta(pregunta, pregunta.getRespuestaList().get(position));
 
@@ -306,11 +331,10 @@ public class GameInteractorImpl implements GameInteractor {
                             gamePresenter.setResultado(pregunta, pregunta.getRespuestaList().get(buena), buena, buena,
                                     respuestaBean, false, false, false, false, "");
 
-                        } else if(position==5 && respuestaBean.getCorrecta()){
+                        } else if (position == 5 && respuestaBean.getCorrecta()) {
                             Log.i(TAG, "OSE| salio");
-
                             actualizarSerie();
-                        }else if (respuestaBean.getCorrecta()) {
+                        } else if (respuestaBean.getCorrecta()) {
                             if (respuestaPreguntaRequest.getPerfecta() == 1 && respuestaPreguntaRequest.getNivelActual() != response.getJugadorNivel().getNivel()) {
                                 Log.i(TAG, "OSE| nivel up ");
 

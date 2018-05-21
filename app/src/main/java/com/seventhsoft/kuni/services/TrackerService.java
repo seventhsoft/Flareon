@@ -30,8 +30,8 @@ import rx.Observable;
 
 public interface TrackerService {
 
-    String SERVICE_ENDPOINT = "http://qa.api.juegakuni.com.mx";
-
+    String SERVICE_ENDPOINT = "http://api.juegakuni.com.mx";
+    //String SERVICE_ENDPOINT = "http://qa.api.juegakuni.com.mx";
     /**
      * Crear una cuenta
      *
@@ -39,7 +39,7 @@ public interface TrackerService {
      * @return
      */
     @POST("/lfs/usuarios")
-    Observable<String> signUp(@Body SignUpRestRequest signUpRestRequest);
+    Observable<Void> signUp(@Body SignUpRestRequest signUpRestRequest);
 
     /**
      * Iniciar sesión

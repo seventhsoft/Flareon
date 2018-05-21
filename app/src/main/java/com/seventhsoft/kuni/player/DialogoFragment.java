@@ -57,11 +57,12 @@ public class DialogoFragment extends DialogFragment {
             txtTituloDialogo.setText(getString(R.string.lbl_titulo_dialogo_contraseña));
             txtDialogo.setText(getString(R.string.lbl_dialogo_contraseña));
 
-
-
-        } else {
+        } else if (dialogo == 2){
             txtTituloDialogo.setText(getString(R.string.lbl_titulo_dialogo_cuenta));
             txtDialogo.setText(getString(R.string.lbl_dialogo_cuenta));
+        }else if (dialogo ==3){
+            txtTituloDialogo.setText(getString(R.string.no_conexion));
+            txtDialogo.setText(getString(R.string.no_conexion_revisa));
         }
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override

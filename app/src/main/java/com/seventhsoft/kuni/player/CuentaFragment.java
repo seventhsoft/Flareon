@@ -226,7 +226,7 @@ public class CuentaFragment extends Fragment implements PlayerView {
     public void setError() {
         getActivity().runOnUiThread(new Runnable() {
             public void run() {
-                Toast.makeText(getContext(), "Algo salió mal, intentálo más tarde",
+                Toast.makeText(getContext(), "Los datos son incorrectos",
                         Toast.LENGTH_LONG).show();
                 guardarMenuItem.setVisible(false);
                 setMainActivity();
@@ -274,7 +274,7 @@ public class CuentaFragment extends Fragment implements PlayerView {
             public void run() {
                 userBean.setFirstName(usuario.getFirstName());
                 userBean.setName(usuario.getName());
-                txtContraseña.setText(usuario.getPassword());
+                txtContraseña.setText("Contraseña");//usuario.getPassword());
                 txtNombre.setText(usuario.getName());
                 txtApellidos.setText(usuario.getFirstName());
                 txtCorreoElectronico.setText(usuario.getEmail());

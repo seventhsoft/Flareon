@@ -14,4 +14,6 @@ public interface MainView {
 
     void setFragmentPregunta(int position);
 
+    void onNoConnection();
+
 }

@@ -85,9 +85,7 @@ public class RecompensasInteractorImpl implements RecompensasInteractor {
                     @Override
                     public void onError(Throwable e) {
                         recompensasPresenter.setRecompensasEmpty();
-
                         Log.e(TAG, "OSE| error recompensas jugador " + e);
-
                     }
 
                     @Override

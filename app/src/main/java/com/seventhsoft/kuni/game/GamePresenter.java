@@ -42,4 +42,5 @@ public interface GamePresenter {
 
     void setChangeColorsResponse(int position, boolean correcta);
 
+    void setNoConnection();
 }

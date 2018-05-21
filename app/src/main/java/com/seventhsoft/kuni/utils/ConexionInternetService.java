@@ -9,8 +9,11 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Process;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import com.github.pwittchen.reactivenetwork.library.ReactiveNetwork;
+import com.seventhsoft.kuni.player.DialogoFragment;
+
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -25,8 +28,6 @@ public class ConexionInternetService extends Service {
     boolean internetEnable;
     private Looper serviceLooper;
     private ServiceHandler serviceHandler;
-
-
 
     private final class ServiceHandler extends Handler {
         public ServiceHandler(Looper looper) {
